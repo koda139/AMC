@@ -15,6 +15,7 @@ public class amc {
     {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
+	int a = "salut";
     }
 
     public void setup(FMLCommonSetupEvent e)
