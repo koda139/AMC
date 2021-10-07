@@ -15,7 +15,6 @@ public class amc {
     {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
-        int a =3;
 
 
     }
