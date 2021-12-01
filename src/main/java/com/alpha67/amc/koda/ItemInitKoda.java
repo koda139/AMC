@@ -13,6 +13,6 @@ public class ItemInitKoda {
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
-
+    //tu déclare ici t'es item SIMON.
     //public static final RegistryObject<Item> AMETHYST = ITEMS.register("item_test", () -> new Item(new Item.Properties().stacksTo(3)));
 }
