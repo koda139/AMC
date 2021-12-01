@@ -1,8 +1,11 @@
 package com.alpha67.amc;
 
 
+import com.alpha67.amc.koda.ItemInitKoda;
+import com.alpha67.amc.vultorio.ItemInitVultorio;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -19,6 +22,13 @@ public class amc {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
+        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        //décracation class de vultorio
+        ItemInitVultorio.register(eventBus);
+
+        //déclaration class de koda
+        ItemInitKoda.register(eventBus);
 
     }
 
