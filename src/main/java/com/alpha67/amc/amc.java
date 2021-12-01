@@ -2,6 +2,7 @@ package com.alpha67.amc;
 
 
 import com.alpha67.amc.koda.ItemInitKoda;
+import com.alpha67.amc.vultorio.BlockInitVultorio;
 import com.alpha67.amc.vultorio.ItemInitVultorio;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
@@ -38,6 +39,7 @@ public class amc {
 
         //déclaration class de koda
         ItemInitKoda.register(eventBus);
+        BlockInitVultorio.register(eventBus);
 
     }
 
