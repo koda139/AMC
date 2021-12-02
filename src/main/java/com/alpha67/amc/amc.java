@@ -40,6 +40,8 @@ public class amc {
         //déclaration class de koda
         ItemInitKoda.register(eventBus);
         BlockInitVultorio.register(eventBus);
+        
+        int n = 1;
 
     }
 
