@@ -2,6 +2,7 @@ package com.alpha67.amc.koda;
 
 import com.alpha67.amc.amc;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -14,5 +15,5 @@ public class ItemInitKoda {
         ITEMS.register(eventBus);
     }
     //tu déclare ici t'es item SIMON.
-    //public static final RegistryObject<Item> AMETHYST = ITEMS.register("item_test", () -> new Item(new Item.Properties().stacksTo(3)));
+    public static final RegistryObject<Item> item_Test = ITEMS.register("item_test", () -> new Item(new Item.Properties().tab(ItemGroup.TAB_FOOD)));
 }

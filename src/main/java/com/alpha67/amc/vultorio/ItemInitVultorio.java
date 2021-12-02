@@ -18,6 +18,5 @@ public class ItemInitVultorio {
         ITEMS.register(eventBus);
     }
 
-    public static final RegistryObject<Item> AMETHYST = ITEMS.register("test",
-            () -> new Item(new Item.Properties().tab(ItemGroup.TAB_TOOLS)));
+    public static final RegistryObject<Item> test = ITEMS.register("test", () -> new Item(new Item.Properties().tab(ItemGroup.TAB_FOOD)));
 }
