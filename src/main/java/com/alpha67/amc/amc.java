@@ -42,6 +42,8 @@ public class amc {
         //déclaration class de koda
         ItemInitKoda.register(eventBus);
         BlockInitKoda.register(eventBus);
+        
+        int n = 1;
 
     }
 
