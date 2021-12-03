@@ -1,20 +1,20 @@
 modLoader = "javafml"
 loaderVersion = "[31,)"
 
-authors = "vultorio, koda"
+authors = "vultorio, koda, maxxx"
 license = "Unlicense"
 issueTrackerURL = "https://github.com/chylex/Minecraft-Window-Title/issues"
 
 [[mods]]
 modId = "amc"
 version = "1.1.0"
-displayName = "AMC"
+displayName = "amc"
 displayURL = "https://github.com/chylex/Minecraft-Window-Title"
 
 [[dependencies.amc]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.15.2,)"
+versionRange = "[1.16.5,)"
 ordering = "NONE"
 side = "CLIENT"
 

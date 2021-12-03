@@ -2,10 +2,12 @@ package com.alpha67.amc;
 
 
 import com.alpha67.amc.koda.ItemInitKoda;
-import com.alpha67.amc.vultorio.BlockInitVultorio;
-import com.alpha67.amc.vultorio.ItemInitVultorio;
+import com.alpha67.amc.vultorio.init.BlockInitVultorio;
+import com.alpha67.amc.vultorio.init.ItemInitVultorio;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -13,19 +15,11 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.ITextProperties;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TranslationTextComponent;
-
 @Mod(amc.MODID)
 public class amc {
 
     public static final String MODID ="amc";
+    public static final ItemGroup ALPHA_TAB = new AlphaGroup("alpha_tab");
 
     public amc()
     {
@@ -64,6 +58,19 @@ public class amc {
         final MainWindow window = Minecraft.getInstance().getWindow();
         window.setTitle(Name);
 
+
+    }
+
+    public static class AlphaGroup extends ItemGroup {
+
+        public AlphaGroup(String label) {
+            super(label);
+        }
+
+        @Override
+        public ItemStack makeIcon() {
+            return ItemInitVultorio.test.get().getDefaultInstance();
+        }
 
     }
 
