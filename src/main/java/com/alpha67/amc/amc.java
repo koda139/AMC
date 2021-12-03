@@ -73,7 +73,7 @@ public class amc {
 
         @Override
         public ItemStack makeIcon() {
-            return ItemInitVultorio.test.get().getDefaultInstance();
+            return ItemInitVultorio.alpharium_ingot.get().getDefaultInstance();
         }
 
     }

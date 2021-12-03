@@ -1,7 +1,6 @@
 package com.alpha67.amc.koda;
 
 import com.alpha67.amc.amc;
-import com.alpha67.amc.vultorio.ItemInitVultorio;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -35,7 +34,7 @@ public class BlockInitKoda {
     }
 
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
-        ItemInitVultorio.ITEMS.register(name, () -> new BlockItem(block.get(),
-                new Item.Properties().tab(ItemGroup.TAB_FOOD)));
+        ItemInitKoda.ITEMS.register(name, () -> new BlockItem(block.get(),
+                new Item.Properties().tab(amc.ALPHA_TAB)));
     }
 }

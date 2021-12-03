@@ -18,7 +18,11 @@ public class ItemInitVultorio {
         ITEMS.register(eventBus);
     }
 
-    public static final RegistryObject<Item> test = ITEMS.register("test",
+    public static final RegistryObject<Item> alpharium_ingot = ITEMS.register("alpharium_ingot",
             () -> new Item(new Item.Properties().tab(amc.ALPHA_TAB)));
+
+    public static final RegistryObject<Item> tungstene_ingot = ITEMS.register("tungstene_ingot",
+            () -> new Item(new Item.Properties().tab(amc.ALPHA_TAB)));
+
 
 }
