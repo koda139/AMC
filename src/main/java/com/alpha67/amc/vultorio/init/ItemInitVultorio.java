@@ -20,4 +20,5 @@ public class ItemInitVultorio {
 
     public static final RegistryObject<Item> test = ITEMS.register("test",
             () -> new Item(new Item.Properties().tab(amc.ALPHA_TAB)));
+
 }

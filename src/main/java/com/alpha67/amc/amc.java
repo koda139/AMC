@@ -1,6 +1,7 @@
 package com.alpha67.amc;
 
 
+import com.alpha67.amc.koda.BlockInitKoda;
 import com.alpha67.amc.koda.ItemInitKoda;
 import com.alpha67.amc.vultorio.init.BlockInitVultorio;
 import com.alpha67.amc.vultorio.init.ItemInitVultorio;
@@ -30,10 +31,13 @@ public class amc {
 
         //décracation class de vultorio
         ItemInitVultorio.register(eventBus);
+        BlockInitVultorio.register(eventBus);
 
         //déclaration class de koda
         ItemInitKoda.register(eventBus);
-        BlockInitVultorio.register(eventBus);
+        BlockInitKoda.register(eventBus);
+        
+        int n = 1;
 
     }
 
