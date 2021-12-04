@@ -1,6 +1,7 @@
 package com.alpha67.amc.koda;
 
 import com.alpha67.amc.amc;
+import com.alpha67.amc.mcreator.AlphatabItemGroup;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -35,6 +36,6 @@ public class BlockInitKoda {
 
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
         ItemInitKoda.ITEMS.register(name, () -> new BlockItem(block.get(),
-                new Item.Properties().tab(amc.ALPHA_TAB)));
+                new Item.Properties().tab(AlphatabItemGroup.tab)));
     }
 }

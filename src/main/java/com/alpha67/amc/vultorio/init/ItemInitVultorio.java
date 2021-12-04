@@ -1,6 +1,7 @@
 package com.alpha67.amc.vultorio.init;
 
 import com.alpha67.amc.amc;
+import com.alpha67.amc.mcreator.AlphatabItemGroup;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -19,10 +20,10 @@ public class ItemInitVultorio {
     }
 
     public static final RegistryObject<Item> alpharium_ingot = ITEMS.register("alpharium_ingot",
-            () -> new Item(new Item.Properties().tab(amc.ALPHA_TAB)));
+            () -> new Item(new Item.Properties().tab(AlphatabItemGroup.tab)));
 
     public static final RegistryObject<Item> tungstene_ingot = ITEMS.register("tungstene_ingot",
-            () -> new Item(new Item.Properties().tab(amc.ALPHA_TAB)));
+            () -> new Item(new Item.Properties().tab(AlphatabItemGroup.tab)));
 
 
 }

@@ -15,5 +15,5 @@ public class ItemInitKoda {
         ITEMS.register(eventBus);
     }
     //tu déclare ici t'es item SIMON.
-    public static final RegistryObject<Item> item_Test = ITEMS.register("item_test", () -> new Item(new Item.Properties().tab(amc.ALPHA_TAB)));
+    //public static final RegistryObject<Item> item_Test = ITEMS.register("item_test", () -> new Item(new Item.Properties().tab(AlphatabItemGroup.tab)));
 }

@@ -1,4 +1,6 @@
 {
   "item.amc.alpharium_ingot": "Alpharium ingot",
-  "item.amc.tungstene_ingot": "Tungstène ingot"
+  "item.amc.tungstene_ingot": "Tungstène ingot",
+  "block.amc.alphariteore": "Alpharite ore",
+  "itemGroup.tabalphatab": "Alpha67"
 }
