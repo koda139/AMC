@@ -25,5 +25,8 @@ public class ItemInitVultorio {
     public static final RegistryObject<Item> tungstene_ingot = ITEMS.register("tungstene_ingot",
             () -> new Item(new Item.Properties().tab(AlphatabItemGroup.tab)));
 
+    public static final RegistryObject<Item> ruby_nugets = ITEMS.register("ruby_nugets",
+            () -> new Item(new Item.Properties().tab(AlphatabItemGroup.tab)));
+
 
 }
