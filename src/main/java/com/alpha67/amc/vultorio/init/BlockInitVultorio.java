@@ -23,6 +23,10 @@ public class BlockInitVultorio {
 
     public static final RegistryObject<Block> alphariteore = registerBlock("alphariteore",
             () -> new Block(AbstractBlock.Properties.of(Material.STONE)));
+    public static final RegistryObject<Block> ruby_ore = registerBlock("ruby_ore",
+            () -> new Block(AbstractBlock.Properties.of(Material.STONE)));
+    public static final RegistryObject<Block> ruby_ore_nether = registerBlock("ruby_ore_nether",
+            () -> new Block(AbstractBlock.Properties.of(Material.STONE)));
 
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
