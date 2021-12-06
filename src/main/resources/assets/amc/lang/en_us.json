@@ -1,6 +1,17 @@
-{
+﻿{
   "item.amc.alpharium_ingot": "Alpharium ingot",
   "item.amc.tungstene_ingot": "Tungstène ingot",
   "block.amc.alphariteore": "Alpharite ore",
-  "itemGroup.tabalphatab": "Alpha67"
+  "itemGroup.tabalphatab": "Alpha67",
+  "item.amc.hell_sword": "hell sword",
+  "item.amc.supreme_hellsword": "supreme hellsword",
+  "item.amc.netherium_star": "netherium star",
+  "item.amc.ruby_nugets": "ruby nugets",
+  "item.amc.refined_ruby": "refined ruby",
+  "item.amc.ruby_axe": "ruby axe",
+  "item.amc.ruby_hoe": "ruby hoe",
+  "item.amc.ruby_pickaxe": "ruby pickaxe",
+  "item.amc.ruby_shovel": "ruby shovel",
+  "item.amc.ruby _sword": "ruby sword",
+  "item.amc.tungstène_ingot": "tungstène ingot",
 }
