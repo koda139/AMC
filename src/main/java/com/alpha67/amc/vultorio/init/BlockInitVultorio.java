@@ -21,7 +21,13 @@ public class BlockInitVultorio {
     public static final DeferredRegister<Block> BLOCKS
             = DeferredRegister.create(ForgeRegistries.BLOCKS, amc.MODID);
 
-    public static final RegistryObject<Block> alphariteore = registerBlock("alphariteore",
+    public static final RegistryObject<Block> alpharium_ore = registerBlock("alpharium_ore",
+            () -> new Block(AbstractBlock.Properties.of(Material.STONE)));
+    public static final RegistryObject<Block> tungstène_ore = registerBlock("tungstène_ore",
+            () -> new Block(AbstractBlock.Properties.of(Material.STONE)));
+    public static final RegistryObject<Block> ruby_ore = registerBlock("ruby_ore",
+            () -> new Block(AbstractBlock.Properties.of(Material.STONE)));
+    public static final RegistryObject<Block> ruby_ore_nether = registerBlock("ruby_ore_nether",
             () -> new Block(AbstractBlock.Properties.of(Material.STONE)));
 
     public static void register(IEventBus eventBus) {

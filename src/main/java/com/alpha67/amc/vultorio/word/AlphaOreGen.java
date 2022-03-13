@@ -1,14 +1,10 @@
 package com.alpha67.amc.vultorio.word;
 
 import com.alpha67.amc.vultorio.init.BlockInitVultorio;
-import com.alpha67.amc.vultorio.init.ItemInitVultorio;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.WorldGenRegistries;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.pattern.BlockMatcher;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
@@ -16,35 +12,48 @@ import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.feature.template.RuleTest;
 import net.minecraft.world.gen.placement.ConfiguredPlacement;
 import net.minecraft.world.gen.placement.Placement;
-import net.minecraft.world.gen.placement.TopSolidRangeConfig;
-import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class AlphaOreGen {
-    public static void generateOres(final BiomeLoadingEvent event) {
-        for (OreType ore : OreType.get()) {
-            OreFeatureConfig oreFeatureConfig = new OreFeatureConfig(
-                    OreFeatureConfig.FillerBlockType.NATURAL_STONE,
-                    ore.getBlock().get().defaultBlockState(), ore.getMaxVeinSize());
 
-            // bottomOffset -> minimum height for the ore
-            // maximum -> minHeight + maximum = top level (the vertical expansion of the ore, it grows x levels from bottomOffset)
-            // topOffset -> subtracted from the maximum to give actual top level
-            // ore effectively exists from bottomOffset to (bottomOffset + maximum - topOffset)
-            ConfiguredPlacement<TopSolidRangeConfig> configuredPlacement = Placement.RANGE.configure(
-                    new TopSolidRangeConfig(ore.getMinHeight(), ore.getMinHeight(), ore.getMaxHeight()));
+    public static final AlphaOreGen FEATURE = (AlphaOreGen) new AlphaOreGen().setRegistryName("amc:test");
+    public static final ConfiguredFeature<?, ?> CONFIGURED_FEATURE = FEATURE
+            .configured(new OreConfiguration(TestFeatureRuleTest.INSTANCE, AmcModBlocks.TEST.defaultBlockState(), 16))
+            .range(new RangeDecoratorConfiguration(UniformHeight.of(VerticalAnchor.absolute(0), VerticalAnchor.absolute(64)))).squared().count(10);
+    public static final Set<ResourceLocation> GENERATE_BIOMES = null;
 
-            ConfiguredFeature<?, ?> oreFeature = registerOreFeature(ore, oreFeatureConfig, configuredPlacement);
-
-            event.getGeneration().addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, oreFeature);
-        }
+    public TestFeature() {
+        super(OreConfiguration.CODEC);
     }
 
-    private static ConfiguredFeature<?, ?> registerOreFeature(OreType ore, OreFeatureConfig oreFeatureConfig,
-                                                              ConfiguredPlacement configuredPlacement) {
-        return Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, ore.getBlock().get().getRegistryName(),
-                Feature.ORE.configured(oreFeatureConfig).place(configuredPlacement)
-                        .square().count(ore.getMaxVeinSize()));
+    public boolean place(FeaturePlaceContext<OreConfiguration> context) {
+        WorldGenLevel world = context.level();
+        ResourceKey<Level> dimensionType = world.getLevel().dimension();
+        boolean dimensionCriteria = false;
+        if (dimensionType == Level.OVERWORLD)
+            dimensionCriteria = true;
+        if (!dimensionCriteria)
+            return false;
+        return super.place(context);
+    }
+
+    private static class TestFeatureRuleTest extends RuleTest {
+        static final TestFeatureRuleTest INSTANCE = new TestFeatureRuleTest();
+        static final com.mojang.serialization.Codec<TestFeatureRuleTest> codec = com.mojang.serialization.Codec.unit(() -> INSTANCE);
+        static final RuleTestType<TestFeatureRuleTest> CUSTOM_MATCH = Registry.register(Registry.RULE_TEST, new ResourceLocation("amc:test_match"),
+                () -> codec);
+
+        public boolean test(BlockState blockAt, Random random) {
+            boolean blockCriteria = false;
+            if (blockAt.getBlock() == Blocks.STONE)
+                blockCriteria = true;
+            return blockCriteria;
+        }
+
+        protected RuleTestType<?> getType() {
+            return CUSTOM_MATCH;
+        }
     }
 }
