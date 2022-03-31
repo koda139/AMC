@@ -3,6 +3,9 @@ package com.alpha67.amc;
 
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -62,6 +65,18 @@ public class AMCBase {
         final MainWindow window = Minecraft.getInstance().getWindow();
         window.setTitle(Name);
 
+
+    }
+
+    public static final ItemGroup ITEM_GROUP = new ItemGroup(AMCBase.MODID) {
+
+        @Override
+        public ItemStack makeIcon() {
+            return new ItemStack(Items.ACACIA_LOG.getItem());
+        }
+    };
+
+    public static void init(final FMLCommonSetupEvent event) {
 
     }
 

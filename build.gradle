@@ -12,9 +12,9 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.0'
-group = 'com.vultorio.AMCBase' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'AMCBase'
+version = "1.0"
+group = 'AMCBase' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "AMCBase-1.16.5"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8) // Mojang ships Java 8 to end users, so your mod should target Java 8.
 
@@ -125,7 +125,6 @@ dependencies {
 
     //compile 'ca.rmen:lib-sunrise-sunset:1.1.1'
     //compile 'org.springframework:spring-aop:5.3.4'
-    //implementation files('libs/Cucumber-1.16.5-4.1.12.jar')
     //implementation files('libs/MysticalAgriculture-1.16.5-4.2.6.jar')
 
     // You may put jars on which you depend on in ./libs or you may define them like so..
