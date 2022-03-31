@@ -1,6 +1,6 @@
 package com.alpha67.amc;
 
-import ca.rmen.sunrisesunset.SunriseSunset;
+import sunrisesunset.SunriseSunset;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.world.GameRules;
@@ -70,9 +70,6 @@ public class commonEvent {
 
                 float day = (float) SetMi / realTime * 24000;
 
-                System.out.println(SetMi);
-                System.out.println(realTime);
-                System.out.println(day);
 
 
                 if (world instanceof ServerWorld) {

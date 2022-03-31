@@ -6,19 +6,19 @@ license = "Unlicense"
 issueTrackerURL = "https://github.com/chylex/Minecraft-Window-Title/issues"
 
 [[mods]]
-modId = "amc"
+modId = "amcbase"
 version = "1.1.0"
 displayName = "amc"
 displayURL = "https://github.com/chylex/Minecraft-Window-Title"
 
-[[dependencies.amc]]
+[[dependencies.amcbase]]
 modId = "minecraft"
 mandatory = true
 versionRange = "[1.16.5,)"
 ordering = "NONE"
 side = "CLIENT"
 
-[[dependencies.amc]]
+[[dependencies.amcbase]]
 modId = "forge"
 mandatory = true
 versionRange = "[31,)"

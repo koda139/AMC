@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class saveData extends WorldSavedData {
 
-    public final static String Name = amc.MODID;
+    public final static String Name = AMCBase.MODID;
 
     private static final List<StorageObject> DATA = new ArrayList<>();
 

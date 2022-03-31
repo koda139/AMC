@@ -13,8 +13,8 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 version = '1.0'
-group = 'com.yourname.modid' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'modid'
+group = 'com.vultorio.AMCBase' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'AMCBase'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8) // Mojang ships Java 8 to end users, so your mod should target Java 8.
 
@@ -118,7 +118,13 @@ dependencies {
     // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.20'
-    implementation 'ca.rmen:lib-sunrise-sunset:1.1.1'
+    //implementation 'ca.rmen:lib-sunrise-sunset:1.1.1'
+    //compileOnly('ca.rmen:lib-sunrise-sunset:1.1.1')
+    //runtimeOnly('ca.rmen:lib-sunrise-sunset:1.1.1')
+
+
+    //compile 'ca.rmen:lib-sunrise-sunset:1.1.1'
+    //compile 'org.springframework:spring-aop:5.3.4'
     //implementation files('libs/Cucumber-1.16.5-4.1.12.jar')
     //implementation files('libs/MysticalAgriculture-1.16.5-4.2.6.jar')
 
@@ -128,7 +134,7 @@ dependencies {
 
     // Real examples
     //implementation 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    // compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
 
     // The 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
     // provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
@@ -140,6 +146,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
+    implementation 'ca.rmen:lib-sunrise-sunset:1.1.1'
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
@@ -181,3 +188,6 @@ publishing {
         }
     }
 }
+
+
+
