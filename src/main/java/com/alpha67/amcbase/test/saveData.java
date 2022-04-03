@@ -1,5 +1,6 @@
-package com.alpha67.amc;
+package com.alpha67.amcbase.test;
 
+import com.alpha67.amcbase.AMCBase;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.storage.WorldSavedData;

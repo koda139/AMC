@@ -1,6 +1,7 @@
-package com.alpha67.amc;
+package com.alpha67.amcbase;
 
-
+import com.alpha67.amcbase.Events.SunSet;
+import com.alpha67.amcbase.Events.weatherSet;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemGroup;
@@ -39,7 +40,8 @@ public class AMCBase {
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        MinecraftForge.EVENT_BUS.register(new commonEvent());
+        MinecraftForge.EVENT_BUS.register(new SunSet());
+        MinecraftForge.EVENT_BUS.register(new weatherSet());
 
     }
 
@@ -66,13 +68,14 @@ public class AMCBase {
         window.setTitle(Name);
 
 
+
     }
 
     public static final ItemGroup ITEM_GROUP = new ItemGroup(AMCBase.MODID) {
 
         @Override
         public ItemStack makeIcon() {
-            return new ItemStack(Items.ACACIA_LOG.getItem());
+            return new ItemStack(Items.ACACIA_LEAVES);
         }
     };
 

@@ -125,7 +125,7 @@ dependencies {
 
     //compile 'ca.rmen:lib-sunrise-sunset:1.1.1'
     //compile 'org.springframework:spring-aop:5.3.4'
-    //implementation files('libs/MysticalAgriculture-1.16.5-4.2.6.jar')
+    implementation files('libs/amcMc.jar')
 
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"

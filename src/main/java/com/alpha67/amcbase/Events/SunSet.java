@@ -1,22 +1,15 @@
-package com.alpha67.amc;
+package com.alpha67.amcbase.Events;
 
 import sunrisesunset.SunriseSunset;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.IWorldInfo;
-import net.minecraft.world.storage.ServerWorldInfo;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.*;
 
-public class commonEvent {
-
-
+public class SunSet {
 
     @SubscribeEvent
     public void TickEvent(TickEvent.WorldTickEvent event)
@@ -26,8 +19,11 @@ public class commonEvent {
 
             IWorld world = event.world;
 
+            //((ServerWorld) world).setWeatherParameters(5000,5000,true,false);
+            //System.out.println("weather");
 
             boolean rule = ((ServerWorld) world).getGameRules().getBoolean(GameRules.RULE_DAYLIGHT);
+            //((ServerWorld) world).setWeatherParameters();
 
 
             if (!rule) {
