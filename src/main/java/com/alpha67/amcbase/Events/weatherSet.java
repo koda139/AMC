@@ -1,10 +1,13 @@
 package com.alpha67.amcbase.Events;
 
+//import com.sun.xml.internal.ws.api.message.Packet;
+//import com.sun.xml.internal.ws.client.dispatch.PacketDispatch;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.network.PacketDispatcher;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.io.IOException;
@@ -23,15 +26,11 @@ public class weatherSet {
 
         //System.out.println(tick);
 
-        if (tick == 400) {
+        if (tick == 5000) {
 
             tick = 0;
 
             IWorld world = event.world;
-
-            ((ServerWorld) world).setWeatherParameters(0,10000,true,true);
-            System.out.println("weather");
-
 
             URL url = null;
             try {
@@ -45,16 +44,15 @@ public class weatherSet {
 
                 String string = scan.nextLine();
 
-                System.out.println(string);
 
                 if (string.contains("Clear") == true) {
                     ((ServerWorld) world).setWeatherParameters(10000,0,false,false);
-                    System.out.println("no cloud");
+
                 } else if (string.contains("Rain") == true) {
-                    System.out.println("it's rain");
+
                     ((ServerWorld) world).setWeatherParameters(0,10000,true,false);
                 } else if (string.contains("Clouds") == true) {
-                    System.out.println("it's cload");
+
                 }
             } catch (MalformedURLException e) {
                 e.printStackTrace();

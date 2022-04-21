@@ -125,7 +125,7 @@ dependencies {
 
     //compile 'ca.rmen:lib-sunrise-sunset:1.1.1'
     //compile 'org.springframework:spring-aop:5.3.4'
-    implementation files('libs/amcMc.jar')
+    implementation files('libs/betterweather-2.0.1-api.jar')
 
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
