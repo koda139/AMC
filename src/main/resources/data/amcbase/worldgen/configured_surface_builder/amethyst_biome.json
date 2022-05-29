@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:default",
+  "config": {
+    "top_material": {
+      "Name": "amcbase:amethyst_block"
+    },
+    "under_material": {
+      "Name": "amcbase:amethyst_ore"
+    },
+    "underwater_material": {
+      "Name": "minecraft:gravel"
+    }
+  }
+}
+

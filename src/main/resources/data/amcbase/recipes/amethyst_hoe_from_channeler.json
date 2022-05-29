@@ -1,0 +1,15 @@
+{
+  "type": "amcbase:lightning",
+  "weather": "clear",
+  "ingredients": [
+    {
+      "item": "amcbase:amethyst"
+    },
+    {
+      "item": "minecraft:stick"
+    }
+  ],
+  "output": {
+    "item": "amcbase:amethyst_hoe"
+  }
+}

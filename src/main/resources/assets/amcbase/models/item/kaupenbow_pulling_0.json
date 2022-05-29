@@ -1,0 +1,6 @@
+{
+    "parent": "amcbase:item/kaupenbow",
+    "textures": {
+        "layer0": "amcbase:item/kaupenbow_pulling_0"
+    }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "amcbase:block/firestone_block",
+    "particle": "minecraft:block/obsidian"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "amcbase:block/kaupen_altar",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "amcbase:block/kaupen_altar"
+    },
+    "facing=south": {
+      "model": "amcbase:block/kaupen_altar",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "amcbase:block/kaupen_altar",
+      "y": 270
+    }
+  }
+}

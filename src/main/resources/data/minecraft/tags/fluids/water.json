@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "amcbase:oil_flowing",
+    "amcbase:oil_fluid"
+  ]
+}
