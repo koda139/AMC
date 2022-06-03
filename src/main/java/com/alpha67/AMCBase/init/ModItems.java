@@ -23,6 +23,9 @@ public class ModItems {
     public static final RegistryObject<Item> AMC_LOGO = ITEMS.register("amc_logo",
             () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
 
+    public static final RegistryObject<Item> CREDIT_CARD = ITEMS.register("credit_card",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
+
 
 
     //les Items du tuot

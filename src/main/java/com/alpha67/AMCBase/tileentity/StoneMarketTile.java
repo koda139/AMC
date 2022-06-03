@@ -42,6 +42,7 @@ public class StoneMarketTile extends TileEntity implements ITickableTileEntity {
     int i = 0;
     int y = 0;
     double money;
+    double stonePrice;
 
     public StoneMarketTile(TileEntityType<?> tileEntityTypeIn) {
         super(tileEntityTypeIn);
@@ -134,22 +135,6 @@ public class StoneMarketTile extends TileEntity implements ITickableTileEntity {
 
 
 
-        if (!world.isRemote()) {
-            BlockPos _bp = new BlockPos((int) pos.getX(), (int) pos.getY(), (int) pos.getZ());
-            TileEntity _tileEntity = world.getTileEntity(_bp);
-            BlockState _bs = world.getBlockState(_bp);
-            if (_tileEntity != null)
-                _tileEntity.getTileData().putString("tagName", "tagValue");
-
-
-
-
-                world.updateBlock(pos, ModBlocks.STONE_MARKET.get());
-                ((World) world).notifyBlockUpdate(_bp, _bs, _bs, 0);
-        }
-
-
-
 
 
     //craftTheItem();
@@ -196,11 +181,15 @@ public class StoneMarketTile extends TileEntity implements ITickableTileEntity {
 
     public double getData()
     {
+        try{
+            double teee = Double.parseDouble(this.getTileData().getString("money"));
+            return teee;
+        }
 
-        double teee = Double.parseDouble(this.getTileData().getString("money"));
-
-
-        return teee;
+        catch (Exception e)
+        {
+            return 0;
+        }
 
     }
 
@@ -213,9 +202,11 @@ public class StoneMarketTile extends TileEntity implements ITickableTileEntity {
 
         y = y+1;
 
-       if(i <=20 )
+       if(i >=40 )
         {
+            i = 0;
             Object ob = null;
+            Object stone = null;
             try {
 
 
@@ -227,13 +218,19 @@ public class StoneMarketTile extends TileEntity implements ITickableTileEntity {
                 ob = new JSONParser().parse(new FileReader("communication-alpha/playerData/"+uuid+".json"));
                 JSONObject js = (JSONObject) ob;
 
+                stone = new JSONParser().parse(new FileReader("communication-alpha/bridge-Server.json"));
+                JSONObject jstone = (JSONObject) stone;
+
                 //Boolean modif = (Boolean) js.get("modification");
 
                 this.money = (double) js.get("money");
+                this.stonePrice = (double) jstone.get("stone");
 
                 this.getTileData().putString("money", String.valueOf(this.money));
+                this.getTileData().putString("stone", String.valueOf(this.stonePrice));
+                System.out.println( this.getTileData().get("owner"));
 
-                System.out.println(this.getTileData().getString("money"));
+                //System.out.println(this.getTileData().getString("money"));
 
                 BlockState bs = this.getBlockState();
 
@@ -244,16 +241,31 @@ public class StoneMarketTile extends TileEntity implements ITickableTileEntity {
                 }
 
 
-                System.out.println(this.money);
+               // System.out.println(this.money);
 
 
 
             } catch (Exception er) {
-                er.printStackTrace();
+              //  er.printStackTrace();
 
             }
 
         }
+
+       i = i+1;
+
         craft();
+    }
+
+    public double getStonePrice() {
+        try{
+            double teee = Double.parseDouble(this.getTileData().getString("stone"));
+            return teee;
+        }
+
+        catch (Exception e)
+        {
+            return 0;
+        }
     }
 }

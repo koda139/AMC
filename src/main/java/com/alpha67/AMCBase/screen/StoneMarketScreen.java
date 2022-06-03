@@ -49,10 +49,11 @@ public class StoneMarketScreen extends ContainerScreen<StoneMarketContainer> {
 
         StoneMarketTile BlockEntity = (StoneMarketTile) world.getTileEntity(pos);
         double data = this.getContainer().getDataContainer();
+        double stone = this.getContainer().getDataContainer();
 
-        System.out.println(data);
 
-        this.font.drawString(matrixStack, "Process: " + data, 5, 29, -12829636);
+        this.font.drawString(matrixStack, "money: " + data, 5, 29, -12829636);
+        this.font.drawString(matrixStack, "stone price: : " + stone, 5, 29, -12829636);
 
 
 
@@ -64,7 +65,6 @@ public class StoneMarketScreen extends ContainerScreen<StoneMarketContainer> {
         this.addButton(new Button(60, 47, 35, 20, name, e -> {
             if (true) {
                 AMCBase.PACKET_HANDLER.sendToServer(new ButtonPacketT(this.pos));
-                System.out.println(pos);
             }
         }));
 

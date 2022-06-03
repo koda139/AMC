@@ -83,6 +83,12 @@ public class StoneMarketContainer extends Container {
         return this.te.getData();
     }
 
+    @OnlyIn(Dist.CLIENT)
+    public double getStonePrice()
+    {
+        return this.te.getStonePrice();
+    }
+
 
     private int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
         for (int i = 0; i < amount; i++) {

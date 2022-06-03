@@ -2,6 +2,7 @@ package com.alpha67.AMCBase.block.tileBlock;
 
 import com.alpha67.AMCBase.container.StoneMarketContainer;
 import com.alpha67.AMCBase.init.ModBlocks;
+import com.alpha67.AMCBase.init.ModItems;
 import com.alpha67.AMCBase.init.ModTileEntities;
 import com.alpha67.AMCBase.tileentity.StoneMarketTile;
 import net.minecraft.block.Block;
@@ -11,6 +12,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -32,28 +34,59 @@ public class StoneMarketBlock extends Block {
         super(properties);
     }
 
+    int x;
+    int y;
+    int z;
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos,
                                              PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 
+        StoneMarketTile tile = (StoneMarketTile) worldIn.getTileEntity(pos);
 
-        if(!worldIn.isRemote()) {
-            StoneMarketTile tileEntity = (StoneMarketTile) worldIn.getTileEntity(pos);
+        if(ModItems.CREDIT_CARD.get() == player.getHeldItemMainhand().getItem())
+        {
 
-            tileEntity.getTileData().putString("player", String.valueOf(player.getUniqueID()));
-
-            System.out.println("2");
-
-            if(tileEntity instanceof StoneMarketTile) {
-                INamedContainerProvider containerProvider = createContainerProvider(worldIn, pos);
-
-                System.out.println("1");
-
-                NetworkHooks.openGui(((ServerPlayerEntity)player), containerProvider, tileEntity.getPos());
-            } else {
-                throw new IllegalStateException("Our Container provider is missing!");
+            if (!tile.getTileData().getString("owner").contains("-"))
+            {
+                tile.getTileData().putString("owner", String.valueOf(player.getUniqueID()));
             }
+        }
+
+        else if (!worldIn.isRemote())
+        {
+
+            StoneMarketTile tileEntity = (StoneMarketTile) worldIn.getTileEntity(pos);
+            String owner = tileEntity.getTileData().getString("owner");
+            System.out.println(owner);
+            System.out.println(player.getUniqueID().toString());
+
+            if(owner.contains(String.valueOf(player.getUniqueID()))) {
+
+
+                tileEntity.getTileData().putString("player", String.valueOf(player.getUniqueID()));
+
+                System.out.println("2");
+
+                if (tileEntity instanceof StoneMarketTile) {
+                    INamedContainerProvider containerProvider = createContainerProvider(worldIn, pos);
+
+                    System.out.println("1");
+
+                    NetworkHooks.openGui(((ServerPlayerEntity) player), containerProvider, tileEntity.getPos());
+                } else {
+                    throw new IllegalStateException("Our Container provider is missing!");
+                }
+            }
+
+            else {
+            }
+        }
+
+        else {
+            System.out.println("can't open GUI");
+
+
         }
         return ActionResultType.SUCCESS;
     }
@@ -76,12 +109,6 @@ public class StoneMarketBlock extends Block {
     @Override
     public void tick(BlockState blockstate, ServerWorld world, BlockPos pos, Random random) {
         super.tick(blockstate, world, pos, random);
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
-
-        System.out.println("update");
-        world.updateBlock(pos, ModBlocks.STONE_MARKET.get());
 
     }
 
