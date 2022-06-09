@@ -15,6 +15,7 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -37,17 +38,20 @@ public class StoneMarketBlock extends HorizontalBlock {
     int y;
     int z;
 
-
-    public static final DirectionProperty FACING = DirectionalBlock.FACING;
-    public static final BooleanProperty EXTENDED = BlockStateProperties.EXTENDED;
-
     public StoneMarketBlock(Properties properties) {
         super(properties);
-        //this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(EXTENDED, Boolean.valueOf(false)));
     }
 
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(HORIZONTAL_FACING);
+    }
 
-
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        return this.getDefaultState().with(HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite());
+    }
 
 
     @Override
@@ -66,6 +70,9 @@ public class StoneMarketBlock extends HorizontalBlock {
             if (!tile.getTileData().getString("owner").contains("-"))
             {
                 tile.getTileData().putString("owner", String.valueOf(player.getUniqueID()));
+
+                String message = "This stone market block is now yours";
+                player.sendMessage(ITextComponent.getTextComponentOrEmpty(message), player.getUniqueID());
             }
         }
 
@@ -74,30 +81,39 @@ public class StoneMarketBlock extends HorizontalBlock {
 
             StoneMarketTile tileEntity = (StoneMarketTile) worldIn.getTileEntity(pos);
             String owner = tileEntity.getTileData().getString("owner");
-            System.out.println(owner);
-            System.out.println(player.getUniqueID().toString());
 
-            if(owner.contains(String.valueOf(player.getUniqueID())) && worldIn.getBlockState(new BlockPos((int) x, (int) y+1, (int) z)).getBlock() == ModBlocks.ANTENNA.get()) {
+            if(owner.contains(String.valueOf(player.getUniqueID()))) {
 
+                if(worldIn.getBlockState(new BlockPos((int) x, (int) y + 1, (int) z)).getBlock() == ModBlocks.ANTENNA.get())
+                {
+                    System.out.println(worldIn.getBlockState(new BlockPos((int) x, (int) y+1, (int) z)).getBlock());
+                    System.out.println(ModBlocks.ANTENNA.get());
 
-                tileEntity.getTileData().putString("player", String.valueOf(player.getUniqueID()));
+                    tileEntity.getTileData().putString("player", String.valueOf(player.getUniqueID()));
 
-                if (tileEntity instanceof StoneMarketTile) {
-                    INamedContainerProvider containerProvider = createContainerProvider(worldIn, pos);
+                    if (tileEntity instanceof StoneMarketTile) {
+                        INamedContainerProvider containerProvider = createContainerProvider(worldIn, pos);
 
-                    NetworkHooks.openGui(((ServerPlayerEntity) player), containerProvider, tileEntity.getPos());
-                } else {
-                    throw new IllegalStateException("Our Container provider is missing!");
+                        NetworkHooks.openGui(((ServerPlayerEntity) player), containerProvider, tileEntity.getPos());
+                    } else {
+                        throw new IllegalStateException("Our Container provider is missing!");
+                    }
+                }
+                else{
+                    String message = "sorry but your stone market block is not connecte to the the network ! You need an antenna.";
+                    player.sendMessage(ITextComponent.getTextComponentOrEmpty(message), player.getUniqueID());
                 }
             }
 
             else {
+                String message = "Sorry but this is not your Stone market block";
+                player.sendMessage(ITextComponent.getTextComponentOrEmpty(message), player.getUniqueID());
             }
         }
 
         else {
             //System.out.println("can't open GUI");
-            player.sendMessage(new TextComponent("Message"));
+           // player.sendMessage(new TextComponent("Message"));
 
 
         }

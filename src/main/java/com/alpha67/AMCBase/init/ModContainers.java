@@ -2,6 +2,7 @@ package com.alpha67.AMCBase.init;
 
 import com.alpha67.AMCBase.container.LightningChannelerContainer;
 import com.alpha67.AMCBase.container.StoneMarketContainer;
+import com.alpha67.AMCBase.container.compressorBlockContainer;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -31,6 +32,14 @@ public class ModContainers {
                 BlockPos pos = data.readBlockPos();
                 World world = inv.player.getEntityWorld();
                 return new StoneMarketContainer(windowId, world, pos, inv, inv.player);
+            })));
+
+    public static final RegistryObject<ContainerType<compressorBlockContainer>> COMPRESSOR_BLOCK_CONTAINER
+            = CONTAINERS.register("compressor_block_container",
+            () -> IForgeContainerType.create(((windowId, inv, data) -> {
+                BlockPos pos = data.readBlockPos();
+                World world = inv.player.getEntityWorld();
+                return new compressorBlockContainer(windowId, world, pos, inv, inv.player);
             })));
 
 

@@ -1,5 +1,6 @@
 package com.alpha67.AMCBase.init;
 
+import com.alpha67.AMCBase.tileentity.CompressorBlockTile;
 import com.alpha67.AMCBase.tileentity.LightningChannelerTile;
 import com.alpha67.AMCBase.tileentity.ModSignTileEntity;
 import com.alpha67.AMCBase.tileentity.StoneMarketTile;
@@ -22,6 +23,10 @@ public class ModTileEntities {
     public static RegistryObject<TileEntityType<StoneMarketTile>> STONE_MARKET_TILE =
             TILE_ENTITIES.register("stone_market_tile", () -> TileEntityType.Builder.create(
                     StoneMarketTile::new, ModBlocks.STONE_MARKET.get()).build(null));
+
+    public static RegistryObject<TileEntityType<CompressorBlockTile>> COMPRESSOR_BLOCK_TILE =
+            TILE_ENTITIES.register("compressor_block_tile", () -> TileEntityType.Builder.create(
+                    CompressorBlockTile::new, ModBlocks.COMPRESSOR_BLOCK.get()).build(null));
 
     public static final RegistryObject<TileEntityType<ModSignTileEntity>> SIGN_TILE_ENTITIES =
             TILE_ENTITIES.register("sign", () -> TileEntityType.Builder.create(ModSignTileEntity::new,

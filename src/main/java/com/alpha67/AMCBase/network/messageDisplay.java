@@ -11,23 +11,23 @@ import java.util.function.Supplier;
 
 public class messageDisplay {
 
-    private final String message;
+ //   private final String message;
 
 
-    public messageDisplay(PacketBuffer buf) {
-        message = buf.writ();
+   public messageDisplay(PacketBuffer buf) {
+        //message = buf.writ();
     }
 
     public static void toBytes(messageDisplay md,PacketBuffer buf) {
-        buf.writeU;
+       // buf.writeU;
     }
 
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             ServerPlayerEntity player = ctx.get().getSender();
-            BlockPos pos = new BlockPos(x, y, z);
-            StoneMarketTile te = (StoneMarketTile) player.getServerWorld().getTileEntity(pos);
+           // BlockPos pos = new BlockPos(x, y, z);
+          //  StoneMarketTile te = (StoneMarketTile) player.getServerWorld().getTileEntity(pos);
 
 
             //te.craftTheItem();

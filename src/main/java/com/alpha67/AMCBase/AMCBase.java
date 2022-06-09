@@ -13,9 +13,11 @@ import com.alpha67.AMCBase.init.ModItems;
 import com.alpha67.AMCBase.network.ButtonPacket;
 import com.alpha67.AMCBase.network.ButtonPacketT;
 import com.alpha67.AMCBase.paintings.ModPaintings;
+import com.alpha67.AMCBase.screen.CompressorBlockScreen;
 import com.alpha67.AMCBase.screen.LightningChannelerScreen;
 import com.alpha67.AMCBase.init.ModTileEntities;
 import com.alpha67.AMCBase.screen.StoneMarketScreen;
+import com.alpha67.AMCBase.tileentity.CompressorBlockTile;
 import com.alpha67.AMCBase.util.ModItemModelProperties;
 import com.alpha67.AMCBase.util.ModSoundEvents;
 import com.alpha67.AMCBase.world.biome.ModBiomes;
@@ -152,6 +154,9 @@ public class AMCBase {
 
             ScreenManager.registerFactory(ModContainers.STONE_MARKET_CONTAINER.get(),
                     StoneMarketScreen::new);
+
+            ScreenManager.registerFactory(ModContainers.COMPRESSOR_BLOCK_CONTAINER.get(),
+                    CompressorBlockScreen::new);
 
             ClientRegistry.bindTileEntityRenderer(ModTileEntities.SIGN_TILE_ENTITIES.get(),
                     SignTileEntityRenderer::new);
