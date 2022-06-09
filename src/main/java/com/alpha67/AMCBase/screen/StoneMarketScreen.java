@@ -7,6 +7,7 @@ import com.alpha67.AMCBase.tileentity.StoneMarketTile;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,6 +26,12 @@ public class StoneMarketScreen extends ContainerScreen<StoneMarketContainer> {
     private World world;
     private PlayerEntity player;
 
+    int imagex;
+    int imagey;
+
+    int modifX;
+    int modifY;
+
 
     private final ResourceLocation GUI = new ResourceLocation(AMCBase.MOD_ID,
             "textures/gui/stone_market_gui.png");
@@ -32,8 +39,14 @@ public class StoneMarketScreen extends ContainerScreen<StoneMarketContainer> {
     public StoneMarketScreen(StoneMarketContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);
         this.pos = screenContainer.BlockPos;
+        this.x = pos.getX();
+        this.y = pos.getY();
+        this.z = pos.getZ();
         this.world = screenContainer.world;
         this.player = screenContainer.player;
+        this.imagex = 196+modifX;
+        this.imagey = 171+modifY;
+
 
     }
 
@@ -49,22 +62,29 @@ public class StoneMarketScreen extends ContainerScreen<StoneMarketContainer> {
 
         StoneMarketTile BlockEntity = (StoneMarketTile) world.getTileEntity(pos);
         double data = this.getContainer().getDataContainer();
-        double stone = this.getContainer().getDataContainer();
+        double stone = this.getContainer().getStonePrice();
+        double maxPrice = this.getContainer().getMaxPrice();
 
 
-        this.font.drawString(matrixStack, "money: " + data, 5, 29, -12829636);
-        this.font.drawString(matrixStack, "stone price: : " + stone, 5, 29, -12829636);
+        this.font.drawString(matrixStack, "money : " + data, this.guiLeft + 5, this.guiTop + 23, -16737997);
+        this.font.drawString(matrixStack, "stone price: " + stone, this.guiLeft + 5, this.guiTop + 40, -16750900);
+        if (world.getBlockState(new BlockPos((int) x+1, (int) y, (int) z)).getBlock() == Blocks.COBBLESTONE) {
+            this.font.drawString(matrixStack, "max price: " + maxPrice, this.guiLeft + 5, this.guiTop + 57, -6750208);
+
+            System.out.println("okk");
+        }
 
 
 
 
         //this.font.drawText(matrixStack, time, 50, 50);
-        this.minecraft.fontRenderer.drawText(matrixStack, ITextComponent.getTextComponentOrEmpty(test), 7, this.getYSize() - 93, 4210752);
+        //this.minecraft.fontRenderer.drawText(matrixStack, ITextComponent.getTextComponentOrEmpty(test), this.guiLeft + 122, this.getYSize() + 93, 4210752);
+        System.out.println(world.getBlockState(new BlockPos((int) x, (int) y+1, (int) z)).getBlock());
 
-
-        this.addButton(new Button(60, 47, 35, 20, name, e -> {
+        this.addButton(new Button(this.guiLeft + 119, this.guiTop + 63, 35, 18, name, e -> {
             if (true) {
                 AMCBase.PACKET_HANDLER.sendToServer(new ButtonPacketT(this.pos));
+                System.out.println("okk");
             }
         }));
 
@@ -79,9 +99,13 @@ public class StoneMarketScreen extends ContainerScreen<StoneMarketContainer> {
     protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
         RenderSystem.color4f(1f, 1f, 1f, 1f);
         this.minecraft.getTextureManager().bindTexture(GUI);
-        int i = this.guiLeft;
-        int j = this.guiTop;
-        this.blit(matrixStack, i, j, 0, 0, this.xSize, this.ySize);
+        //int i = this.guiLeft;
+       // int j = this.guiTop;
+
+        int i = (this.width - this.xSize) / 2;
+        int j = (this.height - this.ySize) / 2;
+        this.blit(matrixStack, i-8, j, 0, 0, this.xSize+17, this.ySize+4, 192, 171);
+
     }
 
 

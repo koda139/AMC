@@ -61,7 +61,7 @@ public class StoneMarketContainer extends Container {
 
         if(tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 80, 31));
+                addSlot(new SlotItemHandler(h, 0, 129, 31));
             });
         }
 
@@ -89,6 +89,11 @@ public class StoneMarketContainer extends Container {
         return this.te.getStonePrice();
     }
 
+    @OnlyIn(Dist.CLIENT)
+    public double getMaxPrice()
+    {
+        return this.te.getMaxPrice();
+    }
 
     private int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
         for (int i = 0; i < amount; i++) {

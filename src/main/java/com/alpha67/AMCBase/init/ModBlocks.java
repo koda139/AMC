@@ -39,6 +39,10 @@ public class ModBlocks {
             () -> new StoneMarketBlock(AbstractBlock.Properties.create(Material.IRON)
                     .harvestLevel(1).hardnessAndResistance(5f)));
 
+    public static final RegistryObject<Block> ANTENNA = registerBlock("antenna",
+            () -> new StoneMarketBlock(AbstractBlock.Properties.create(Material.IRON)
+                    .harvestLevel(1).hardnessAndResistance(5f)));
+
 
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

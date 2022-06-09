@@ -43,6 +43,7 @@ public class StoneMarketTile extends TileEntity implements ITickableTileEntity {
     int y = 0;
     double money;
     double stonePrice;
+    double maxPrice;
 
     public StoneMarketTile(TileEntityType<?> tileEntityTypeIn) {
         super(tileEntityTypeIn);
@@ -188,7 +189,7 @@ public class StoneMarketTile extends TileEntity implements ITickableTileEntity {
 
         catch (Exception e)
         {
-            return 0;
+            return -1;
         }
 
     }
@@ -202,11 +203,13 @@ public class StoneMarketTile extends TileEntity implements ITickableTileEntity {
 
         y = y+1;
 
-       if(i >=40 )
+       if(y >=40 )
         {
-            i = 0;
+
+            y = 0;
             Object ob = null;
             Object stone = null;
+            System.out.println("ok");
             try {
 
 
@@ -225,9 +228,13 @@ public class StoneMarketTile extends TileEntity implements ITickableTileEntity {
 
                 this.money = (double) js.get("money");
                 this.stonePrice = (double) jstone.get("stone");
+                this.maxPrice = (double) jstone.get("stoneMaxPrice");
+
+                System.out.println(money);
 
                 this.getTileData().putString("money", String.valueOf(this.money));
                 this.getTileData().putString("stone", String.valueOf(this.stonePrice));
+                this.getTileData().putString("stoneMaxPrice", String.valueOf(this.maxPrice));
                 System.out.println( this.getTileData().get("owner"));
 
                 //System.out.println(this.getTileData().getString("money"));
@@ -246,7 +253,7 @@ public class StoneMarketTile extends TileEntity implements ITickableTileEntity {
 
 
             } catch (Exception er) {
-              //  er.printStackTrace();
+              er.printStackTrace();
 
             }
 
@@ -265,7 +272,19 @@ public class StoneMarketTile extends TileEntity implements ITickableTileEntity {
 
         catch (Exception e)
         {
-            return 0;
+            return -1;
+        }
+    }
+
+    public double getMaxPrice() {
+        try{
+            double teee = Double.parseDouble(this.getTileData().getString("stoneMaxPrice"));
+            return teee;
+        }
+
+        catch (Exception e)
+        {
+            return -1;
         }
     }
 }

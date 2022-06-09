@@ -5,20 +5,23 @@ import com.alpha67.AMCBase.init.ModBlocks;
 import com.alpha67.AMCBase.init.ModItems;
 import com.alpha67.AMCBase.init.ModTileEntities;
 import com.alpha67.AMCBase.tileentity.StoneMarketTile;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -28,19 +31,32 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class StoneMarketBlock extends Block {
-
-    public StoneMarketBlock(Properties properties) {
-        super(properties);
-    }
+public class StoneMarketBlock extends HorizontalBlock {
 
     int x;
     int y;
     int z;
 
+
+    public static final DirectionProperty FACING = DirectionalBlock.FACING;
+    public static final BooleanProperty EXTENDED = BlockStateProperties.EXTENDED;
+
+    public StoneMarketBlock(Properties properties) {
+        super(properties);
+        //this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(EXTENDED, Boolean.valueOf(false)));
+    }
+
+
+
+
+
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos,
                                              PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+
+        this.x = pos.getX();
+        this.y = pos.getY();
+        this.z = pos.getZ();
 
         StoneMarketTile tile = (StoneMarketTile) worldIn.getTileEntity(pos);
 
@@ -61,17 +77,13 @@ public class StoneMarketBlock extends Block {
             System.out.println(owner);
             System.out.println(player.getUniqueID().toString());
 
-            if(owner.contains(String.valueOf(player.getUniqueID()))) {
+            if(owner.contains(String.valueOf(player.getUniqueID())) && worldIn.getBlockState(new BlockPos((int) x, (int) y+1, (int) z)).getBlock() == ModBlocks.ANTENNA.get()) {
 
 
                 tileEntity.getTileData().putString("player", String.valueOf(player.getUniqueID()));
 
-                System.out.println("2");
-
                 if (tileEntity instanceof StoneMarketTile) {
                     INamedContainerProvider containerProvider = createContainerProvider(worldIn, pos);
-
-                    System.out.println("1");
 
                     NetworkHooks.openGui(((ServerPlayerEntity) player), containerProvider, tileEntity.getPos());
                 } else {
@@ -84,7 +96,8 @@ public class StoneMarketBlock extends Block {
         }
 
         else {
-            System.out.println("can't open GUI");
+            //System.out.println("can't open GUI");
+            player.sendMessage(new TextComponent("Message"));
 
 
         }

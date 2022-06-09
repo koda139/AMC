@@ -26,6 +26,9 @@ public class ModItems {
     public static final RegistryObject<Item> CREDIT_CARD = ITEMS.register("credit_card",
             () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
 
+    public static final RegistryObject<Item> STONE_PALLET = ITEMS.register("stone_pallet",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase).maxStackSize(1)));
+
 
 
     //les Items du tuot

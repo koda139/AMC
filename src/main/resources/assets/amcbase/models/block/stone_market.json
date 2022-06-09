@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "amcbase:block/redwood_log",
+    "up": "amcbase:block/amethyst_ore",
+    "north": "amcbase:block/amethyst_ore",
+    "east": "amcbase:block/amethyst_ore",
+    "south": "amcbase:block/amethyst_ore",
+    "west": "amcbase:block/redwood_log",
+    "particle": "amcbase:block/amethyst_ore"
+  }
+}
