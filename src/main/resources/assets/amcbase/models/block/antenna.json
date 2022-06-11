@@ -646,8 +646,16 @@
 		}
 	],
 	"display": {
-		"thirdperson_righthand": {
-			"scale": [0.37, 0.36, 0.37]
+		"firstperson_righthand": {
+			"scale": [0.53, 0.53, 0.53]
+		},
+		"firstperson_lefthand": {
+			"scale": [0.53, 0.52, 0.51]
+		},
+		"gui": {
+			"rotation": [6, 20, 0],
+			"translation": [0.25, -3, 0],
+			"scale": [0.86, 0.43, 1]
 		}
 	},
 	"groups": [
