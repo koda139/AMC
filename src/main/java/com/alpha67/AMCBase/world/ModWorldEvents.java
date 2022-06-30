@@ -30,13 +30,13 @@ public class ModWorldEvents {
 
     @SubscribeEvent
     public static void biomeLoadingEvent(final BiomeLoadingEvent event) {
-        ModStructureGeneration.generateStructures(event);
+        //ModStructureGeneration.generateStructures(event);
 
         ModOreGeneration.generateOres(event);
-        ModFlowerGeneration.generateFlowers(event);
-        ModTreeGeneration.generateTrees(event);
+        //ModFlowerGeneration.generateFlowers(event);
+        //ModTreeGeneration.generateTrees(event);
 
-        ModEntityGeneration.onEntitySpawn(event);
+       // ModEntityGeneration.onEntitySpawn(event);
     }
 
     @SubscribeEvent

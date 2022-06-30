@@ -13,11 +13,8 @@ import com.alpha67.AMCBase.init.ModItems;
 import com.alpha67.AMCBase.network.ButtonPacket;
 import com.alpha67.AMCBase.network.ButtonPacketT;
 import com.alpha67.AMCBase.paintings.ModPaintings;
-import com.alpha67.AMCBase.screen.CompressorBlockScreen;
-import com.alpha67.AMCBase.screen.LightningChannelerScreen;
+import com.alpha67.AMCBase.screen.*;
 import com.alpha67.AMCBase.init.ModTileEntities;
-import com.alpha67.AMCBase.screen.StoneMarketScreen;
-import com.alpha67.AMCBase.tileentity.CompressorBlockTile;
 import com.alpha67.AMCBase.util.ModItemModelProperties;
 import com.alpha67.AMCBase.util.ModSoundEvents;
 import com.alpha67.AMCBase.world.biome.ModBiomes;
@@ -27,7 +24,10 @@ import com.alpha67.AMCBase.world.structure.ModStructures;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.WoodType;
+import net.minecraft.client.MainWindow;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -40,11 +40,14 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -54,8 +57,10 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.network.FMLNetworkConstants;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import top.theillusivec4.curios.api.SlotTypeMessage;
@@ -78,8 +83,12 @@ public class AMCBase {
     );
 
     public AMCBase() {
+
+        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
         // Register the setup method for modloading
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        MinecraftForge.EVENT_BUS.register(this);
 
         ModItems.register(eventBus);
         ModBlocks.register(eventBus);
@@ -138,6 +147,9 @@ public class AMCBase {
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
+
+        event.getMinecraftSupplier().get().execute(this::updateTitle);
+
         event.enqueueWork(() -> {
             RenderTypeLookup.setRenderLayer(ModBlocks.AMETHYST_DOOR.get(), RenderType.getCutout());
             RenderTypeLookup.setRenderLayer(ModBlocks.AMETHYST_TRAPDOOR.get(), RenderType.getCutout());
@@ -176,6 +188,16 @@ public class AMCBase {
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.REDWOOD_BOAT.get(), ModBoatRenderer::new);
     }
 
+    @SubscribeEvent
+    public void onOpenGui(GuiOpenEvent event)
+    {
+        if(event.getGui() != null && event.getGui().getClass() == MainMenuScreen.class)
+        {
+            //event.setGui(new GuiCustomMainMenu(false));
+            System.out.println("saluit");
+        }
+    }
+
     private void enqueueIMC(final InterModEnqueueEvent event) {
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE,
                 () -> SlotTypePreset.CHARM.getMessageBuilder().build());
@@ -190,6 +212,13 @@ public class AMCBase {
     public void onServerStarting(FMLServerStartingEvent event) {
         // do something when the server starts
         LOGGER.info("HELLO from server starting");
+    }
+
+    private void updateTitle(){
+        String Name = "Alpha67";
+        final MainWindow window = Minecraft.getInstance().getMainWindow();
+        window.setWindowTitle(Name);
+
     }
 
     // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD

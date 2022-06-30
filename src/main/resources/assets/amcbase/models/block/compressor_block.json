@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "amcbase:block/compressor_block_bord",
+    "up": "amcbase:block/compressor_block_bord",
+    "north": "amcbase:block/compressor_block_face",
+    "east": "amcbase:block/compressor_block_bord",
+    "south": "amcbase:block/compressor_block_bord",
+    "west": "amcbase:block/compressor_block_bord",
+    "particle": "amcbase:block/amethyst_ore"
+  }
+}

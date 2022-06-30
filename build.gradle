@@ -144,6 +144,14 @@ dependencies {
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.2")
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.2:api")
 
+
+    // If you want to test/use Mekanism & its modules during `runClient` invocation, use the following
+    compileOnly fg.deobf("mekanism:Mekanism:1.16.5-10.1.2.457")// core
+
+
+    //implementation files('libs/Lollipop-1.16.5-3.2.9.jar')
+
+
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
     // compile "some.group:artifact:version"

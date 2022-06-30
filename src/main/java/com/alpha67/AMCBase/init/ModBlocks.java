@@ -5,7 +5,8 @@ import com.alpha67.AMCBase.block.custom.*;
 import com.alpha67.AMCBase.block.custom.trees.RedwoodTree;
 import com.alpha67.AMCBase.block.tileBlock.LightningChannelerBlock;
 import com.alpha67.AMCBase.block.tileBlock.StoneMarketBlock;
-import com.alpha67.AMCBase.block.tileBlock.compressorBlock;
+import com.alpha67.AMCBase.block.tileBlock.compresorBlock;
+import com.alpha67.AMCBase.block.tileBlock.electricBankBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItem;
@@ -41,11 +42,14 @@ public class ModBlocks {
                     .harvestLevel(1).hardnessAndResistance(5f)));
 
     public static final RegistryObject<Block> COMPRESSOR_BLOCK = registerBlock("compressor_block",
-            () -> new compressorBlock(AbstractBlock.Properties.create(Material.IRON)
+            () -> new compresorBlock(AbstractBlock.Properties.create(Material.IRON)
                     .harvestLevel(1).hardnessAndResistance(5f)));
 
     public static final RegistryObject<Block> ANTENNA = registerBlock("antenna",
             () -> new antennaBlock(AbstractBlock.Properties.create(Material.IRON).notSolid()));
+
+    public static final RegistryObject<Block> ELECTRIC_BANK = registerBlock("electric_bank",
+            () -> new electricBankBlock(AbstractBlock.Properties.create(Material.IRON).notSolid()));
 
 
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block) {

@@ -1,11 +1,10 @@
 package com.alpha67.AMCBase.block.tileBlock;
 
+import com.alpha67.AMCBase.container.LightningChannelerContainer;
 import com.alpha67.AMCBase.container.compressorBlockContainer;
-import com.alpha67.AMCBase.init.ModBlocks;
-import com.alpha67.AMCBase.init.ModItems;
 import com.alpha67.AMCBase.init.ModTileEntities;
 import com.alpha67.AMCBase.tileentity.CompressorBlockTile;
-import net.minecraft.block.AbstractBlock;
+import com.alpha67.AMCBase.tileentity.LightningChannelerTile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
@@ -25,19 +24,12 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
-public class compressorBlock extends HorizontalBlock {
-
-    int x;
-    int y;
-    int z;
-
-    public compressorBlock(AbstractBlock.Properties properties) {
+public class compresorBlock extends HorizontalBlock {
+    public compresorBlock(Properties properties) {
         super(properties);
     }
 
@@ -52,26 +44,20 @@ public class compressorBlock extends HorizontalBlock {
         return this.getDefaultState().with(HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite());
     }
 
-
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos,
                                              PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if(!worldIn.isRemote()) {
+            TileEntity tileEntity = worldIn.getTileEntity(pos);
 
-        this.x = pos.getX();
-        this.y = pos.getY();
-        this.z = pos.getZ();
+            if(tileEntity instanceof CompressorBlockTile) {
+                INamedContainerProvider containerProvider = createContainerProvider(worldIn, pos);
 
-        CompressorBlockTile tileEntity = (CompressorBlockTile) worldIn.getTileEntity(pos);
-
-
-        if (tileEntity instanceof CompressorBlockTile && !worldIn.isRemote) {
-            INamedContainerProvider containerProvider = createContainerProvider(worldIn, pos);
-
-            NetworkHooks.openGui(((ServerPlayerEntity) player), containerProvider, tileEntity.getPos());
-        } else {
-            throw new IllegalStateException("Our Container provider is missing!");
+                NetworkHooks.openGui(((ServerPlayerEntity)player), containerProvider, tileEntity.getPos());
+            } else {
+                throw new IllegalStateException("Our Container provider is missing!");
+            }
         }
-
         return ActionResultType.SUCCESS;
     }
 
@@ -79,7 +65,7 @@ public class compressorBlock extends HorizontalBlock {
         return new INamedContainerProvider() {
             @Override
             public ITextComponent getDisplayName() {
-                return new TranslationTextComponent("screen.amcmode.compressor_block");
+                return new TranslationTextComponent(" ");
             }
 
             @Nullable
@@ -89,13 +75,6 @@ public class compressorBlock extends HorizontalBlock {
             }
         };
     }
-
-    @Override
-    public void tick(BlockState blockstate, ServerWorld world, BlockPos pos, Random random) {
-        super.tick(blockstate, world, pos, random);
-
-    }
-
 
     @Nullable
     @Override
@@ -107,5 +86,4 @@ public class compressorBlock extends HorizontalBlock {
     public boolean hasTileEntity(BlockState state) {
         return true;
     }
-
 }

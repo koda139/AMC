@@ -4,6 +4,7 @@ import com.alpha67.AMCBase.data.recipes.LightningChannelerRecipe;
 import com.alpha67.AMCBase.data.recipes.ModRecipeTypes;
 import com.alpha67.AMCBase.init.ModTileEntities;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.inventory.Inventory;
@@ -16,6 +17,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -85,6 +88,9 @@ public class LightningChannelerTile extends TileEntity implements ITickableTileE
             return handler.cast();
         }
 
+        if (!this.removed && cap == CapabilityEnergy.ENERGY)
+            return LazyOptional.of(() -> energyStorage).cast();;
+
         return super.getCapability(cap, side);
     }
 
@@ -138,6 +144,29 @@ public class LightningChannelerTile extends TileEntity implements ITickableTileE
         if(world.isRemote)
             return;
 
+
         craft();
     }
+
+    private final EnergyStorage energyStorage = new EnergyStorage(400000, 200, 200, 0) {
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate) {
+            int retval = super.receiveEnergy(maxReceive, simulate);
+            if (!simulate) {
+                markDirty();
+                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+            }
+            return retval;
+        }
+
+        @Override
+        public int extractEnergy(int maxExtract, boolean simulate) {
+            int retval = super.extractEnergy(maxExtract, simulate);
+            if (!simulate) {
+                markDirty();
+                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+            }
+            return retval;
+        }
+    };
 }

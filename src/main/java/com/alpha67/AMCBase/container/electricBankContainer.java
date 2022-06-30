@@ -1,5 +1,6 @@
 package com.alpha67.AMCBase.container;
 
+import com.alpha67.AMCBase.init.ModBlocks;
 import com.alpha67.AMCBase.init.ModContainers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -14,15 +15,14 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
-import com.alpha67.AMCBase.init.ModBlocks;
 
-public class LightningChannelerContainer extends Container {
+public class electricBankContainer extends Container {
     private final TileEntity tileEntity;
     private final PlayerEntity playerEntity;
     private final IItemHandler playerInventory;
 
-    public LightningChannelerContainer(int windowId, World world, BlockPos pos,
-                                       PlayerInventory playerInventory, PlayerEntity player) {
+    public electricBankContainer(int windowId, World world, BlockPos pos,
+                                 PlayerInventory playerInventory, PlayerEntity player) {
         super(ModContainers.LIGHTNING_CHANNELER_CONTAINER.get(), windowId);
         this.tileEntity = world.getTileEntity(pos);
         playerEntity = player;
@@ -31,8 +31,8 @@ public class LightningChannelerContainer extends Container {
 
         if(tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 80, 31));
-                addSlot(new SlotItemHandler(h, 1, 80, 53));
+                //addSlot(new SlotItemHandler(h, 0, 80, 31));
+                //addSlot(new SlotItemHandler(h, 1, 80, 53));
                 //addSlot(new SlotItemHandler(h, 0, 79, 35));
                 //addSlot(new SlotItemHandler(h, 1, 61, 35));
                 //addSlot(new SlotItemHandler(h, 2, 79, 53));

@@ -1,9 +1,6 @@
 package com.alpha67.AMCBase.init;
 
-import com.alpha67.AMCBase.tileentity.CompressorBlockTile;
-import com.alpha67.AMCBase.tileentity.LightningChannelerTile;
-import com.alpha67.AMCBase.tileentity.ModSignTileEntity;
-import com.alpha67.AMCBase.tileentity.StoneMarketTile;
+import com.alpha67.AMCBase.tileentity.*;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
@@ -27,6 +24,10 @@ public class ModTileEntities {
     public static RegistryObject<TileEntityType<CompressorBlockTile>> COMPRESSOR_BLOCK_TILE =
             TILE_ENTITIES.register("compressor_block_tile", () -> TileEntityType.Builder.create(
                     CompressorBlockTile::new, ModBlocks.COMPRESSOR_BLOCK.get()).build(null));
+
+    public static RegistryObject<TileEntityType<electricBankTile>> ELECTRIC_BANK_TILE =
+            TILE_ENTITIES.register("electric_bank_tile", () -> TileEntityType.Builder.create(
+                    electricBankTile::new, ModBlocks.ELECTRIC_BANK.get()).build(null));
 
     public static final RegistryObject<TileEntityType<ModSignTileEntity>> SIGN_TILE_ENTITIES =
             TILE_ENTITIES.register("sign", () -> TileEntityType.Builder.create(ModSignTileEntity::new,
