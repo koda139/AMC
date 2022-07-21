@@ -2,6 +2,7 @@ package com.alpha67.AMCBase.container;
 
 import com.alpha67.AMCBase.init.ModBlocks;
 import com.alpha67.AMCBase.init.ModContainers;
+import com.alpha67.AMCBase.tileentity.CompressorBlockTile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -11,6 +12,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -21,26 +24,34 @@ public class compressorBlockContainer extends Container {
     private final PlayerEntity playerEntity;
     private final IItemHandler playerInventory;
 
+    public final CompressorBlockTile generator;
+
     public compressorBlockContainer(int windowId, World world, BlockPos pos,
                                     PlayerInventory playerInventory, PlayerEntity player) {
         super(ModContainers.COMPRESSOR_BLOCK_CONTAINER.get(), windowId);
         this.tileEntity = world.getTileEntity(pos);
+        this.generator = (CompressorBlockTile) tileEntity;
         playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);
         layoutPlayerInventorySlots(8, 86);
 
         if(tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 80, 31));
-                addSlot(new SlotItemHandler(h, 1, 80, 53));
-                //addSlot(new SlotItemHandler(h, 0, 79, 35));
-                //addSlot(new SlotItemHandler(h, 1, 61, 35));
-                //addSlot(new SlotItemHandler(h, 2, 79, 53));
-                //addSlot(new SlotItemHandler(h, 3, 97, 35));
-                //addSlot(new SlotItemHandler(h, 4, 79, 17));
-                //addSlot(new SlotItemHandler(h, 5, 136, 35));
+                //addSlot(new SlotItemHandler(h, 0, 80, 31));
+                //addSlot(new SlotItemHandler(h, 1, 80, 53));
+                addSlot(new SlotItemHandler(h, 0, 79, 35));
+                addSlot(new SlotItemHandler(h, 1, 61, 35));
+                addSlot(new SlotItemHandler(h, 2, 79, 53));
+                addSlot(new SlotItemHandler(h, 3, 97, 35));
+                addSlot(new SlotItemHandler(h, 4, 79, 17));
+                addSlot(new SlotItemHandler(h, 5, 145, 35));
             });
         }
+    }
+
+    public int getAvanc()
+    {
+        return this.generator.getAvanc();
     }
 
 

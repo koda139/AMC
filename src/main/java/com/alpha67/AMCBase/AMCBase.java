@@ -88,7 +88,7 @@ public class AMCBase {
         // Register the setup method for modloading
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        MinecraftForge.EVENT_BUS.register(this);
+        //MinecraftForge.EVENT_BUS.register(this);
 
         ModItems.register(eventBus);
         ModBlocks.register(eventBus);
@@ -115,7 +115,7 @@ public class AMCBase {
         eventBus.addListener(this::doClientStuff);
 
         // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
+       // MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -194,7 +194,7 @@ public class AMCBase {
         if(event.getGui() != null && event.getGui().getClass() == MainMenuScreen.class)
         {
             //event.setGui(new GuiCustomMainMenu(false));
-            System.out.println("saluit");
+            //System.out.println("saluit");
         }
     }
 

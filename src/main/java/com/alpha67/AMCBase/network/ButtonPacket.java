@@ -1,16 +1,10 @@
 package com.alpha67.AMCBase.network;
 
-import com.alpha67.AMCBase.init.ModItems;
 import com.alpha67.AMCBase.tileentity.StoneMarketTile;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import java.util.Map;
 import java.util.function.Supplier;
 
 public class ButtonPacket extends StoneMarketTile {

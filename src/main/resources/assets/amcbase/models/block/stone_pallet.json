@@ -1,0 +1,82 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"1": "amcbase:block/stone_pallet",
+		"particle": "amcbase:block/stone_pallet"
+	},
+	"elements": [
+		{
+			"from": [1, 15, 1],
+			"to": [15, 17, 15],
+			"faces": {
+				"north": {"uv": [12, 7, 15.5, 7.5], "texture": "#1"},
+				"east": {"uv": [12, 7.5, 15.5, 8], "texture": "#1"},
+				"south": {"uv": [12, 8, 15.5, 8.5], "texture": "#1"},
+				"west": {"uv": [12, 8.5, 15.5, 9], "texture": "#1"},
+				"up": {"uv": [15.5, 3.5, 12, 0], "texture": "#1"},
+				"down": {"uv": [15.5, 3.5, 12, 7], "texture": "#1"}
+			}
+		},
+		{
+			"from": [0, 0, 0],
+			"to": [16, 15, 16],
+			"faces": {
+				"north": {"uv": [0, 8, 4, 11.75], "texture": "#1"},
+				"east": {"uv": [8, 0, 12, 3.75], "texture": "#1"},
+				"south": {"uv": [8, 3.75, 12, 7.5], "texture": "#1"},
+				"west": {"uv": [4, 8, 8, 11.75], "texture": "#1"},
+				"up": {"uv": [4, 4, 0, 0], "texture": "#1"},
+				"down": {"uv": [4, 4, 0, 8], "texture": "#1"}
+			}
+		},
+		{
+			"from": [0, 17, 0],
+			"to": [16, 32, 16],
+			"faces": {
+				"north": {"uv": [8, 7.5, 12, 11.25], "texture": "#1"},
+				"east": {"uv": [8, 11.25, 12, 15], "texture": "#1"},
+				"south": {"uv": [0, 11.75, 4, 15.5], "texture": "#1"},
+				"west": {"uv": [4, 11.75, 8, 15.5], "texture": "#1"},
+				"up": {"uv": [8, 4, 4, 0], "texture": "#1"},
+				"down": {"uv": [8, 4, 4, 8], "texture": "#1"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"scale": [0.35, 0.35, 0.35]
+		},
+		"thirdperson_lefthand": {
+			"scale": [0.35, 0.35, 0.35]
+		},
+		"firstperson_righthand": {
+			"scale": [0.35, 0.35, 0.35]
+		},
+		"firstperson_lefthand": {
+			"scale": [0.35, 0.35, 0.35]
+		},
+		"ground": {
+			"scale": [0.35, 0.35, 0.35]
+		},
+		"gui": {
+			"rotation": [27.99, -44.43, -0.03],
+			"translation": [0, -3, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"head": {
+			"scale": [0.35, 0.35, 0.35]
+		},
+		"fixed": {
+			"scale": [0.35, 0.35, 0.35]
+		}
+	},
+	"groups": [
+		{
+			"name": "group",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"children": [0, 1, 2]
+		}
+	]
+}

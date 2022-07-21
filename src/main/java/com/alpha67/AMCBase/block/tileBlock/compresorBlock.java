@@ -47,6 +47,7 @@ public class compresorBlock extends HorizontalBlock {
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos,
                                              PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        worldIn.notifyBlockUpdate(pos, state, state, 1);
         if(!worldIn.isRemote()) {
             TileEntity tileEntity = worldIn.getTileEntity(pos);
 

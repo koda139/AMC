@@ -35,32 +35,45 @@ public class ModBlocks {
     //AMC mod
     public static final RegistryObject<Block> ALPHARIUM_LOGO = registerBlock("alpharium_logo",
             () -> new Block(AbstractBlock.Properties.create(Material.ROCK)
-                    .harvestLevel(2).setRequiresTool().harvestTool(ToolType.PICKAXE).hardnessAndResistance(5f)));
+                    .harvestLevel(2).setRequiresTool().harvestTool(ToolType.PICKAXE).hardnessAndResistance(5f)), 64);
 
     public static final RegistryObject<Block> STONE_MARKET = registerBlock("stone_market",
             () -> new StoneMarketBlock(AbstractBlock.Properties.create(Material.IRON)
-                    .harvestLevel(1).hardnessAndResistance(5f)));
+                    .harvestLevel(1).hardnessAndResistance(5f)), 64);
 
     public static final RegistryObject<Block> COMPRESSOR_BLOCK = registerBlock("compressor_block",
             () -> new compresorBlock(AbstractBlock.Properties.create(Material.IRON)
-                    .harvestLevel(1).hardnessAndResistance(5f)));
+                    .harvestLevel(1).hardnessAndResistance(5f)), 64);
 
     public static final RegistryObject<Block> ANTENNA = registerBlock("antenna",
-            () -> new antennaBlock(AbstractBlock.Properties.create(Material.IRON).notSolid()));
+            () -> new antennaBlock(AbstractBlock.Properties.create(Material.IRON).notSolid()), 64);
 
     public static final RegistryObject<Block> ELECTRIC_BANK = registerBlock("electric_bank",
-            () -> new electricBankBlock(AbstractBlock.Properties.create(Material.IRON).notSolid()));
+            () -> new palletBlock(AbstractBlock.Properties.create(Material.IRON).notSolid()), 64);
+
+    public static final RegistryObject<Block> STONE_PALLET = registerBlock("stone_pallet",
+            () -> new palletBlock(AbstractBlock.Properties.create(Material.WOOD)), 1);
+
+    public static final RegistryObject<Block> WOOD_PALLET = registerBlock("wood_pallet",
+            () -> new palletBlock(AbstractBlock.Properties.create(Material.WOOD)), 1);
+
+    public static final RegistryObject<Block> GOLD_PALLET = registerBlock("gold_pallet",
+            () -> new palletBlock(AbstractBlock.Properties.create(Material.WOOD)), 1);
+
+    public static final RegistryObject<Block> DIAMOND_PALLET = registerBlock("diamond_pallet",
+            () -> new palletBlock(AbstractBlock.Properties.create(Material.WOOD)), 1);
 
 
-    private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block) {
+
+    private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block, int maxStack) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
-        registerBlockItem(name, toReturn);
+        registerBlockItem(name, toReturn, maxStack);
         return toReturn;
     }
 
-    private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
+    private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block, int maxStack) {
         ModItems.ITEMS.register(name, () -> new BlockItem(block.get(),
-                new Item.Properties().group(AMCBase.AMCBase)));
+                new Item.Properties().group(AMCBase.AMCBase).maxStackSize(maxStack)));
     }
 
 

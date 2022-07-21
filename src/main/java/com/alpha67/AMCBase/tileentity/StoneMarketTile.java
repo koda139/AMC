@@ -1,57 +1,66 @@
 package com.alpha67.AMCBase.tileentity;
 
-import com.alpha67.AMCBase.init.ModBlocks;
 import com.alpha67.AMCBase.init.ModTileEntities;
+import com.alpha67.AMCBase.tileentity.util.CustomEnergyStorage;
+import com.alpha67.AMCBase.tileentity.util.IEnergyDisplay;
+import com.alpha67.AMCBase.tileentity.util.ISharingEnergyProvider;
 import com.alpha67.AMCBase.tileentity.util.TileEntityBase;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.world.World;
+import net.minecraft.util.Direction;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 import javax.annotation.Nonnull;
-import java.io.FileReader;
-import java.util.UUID;
+import javax.annotation.Nullable;
 
-public class StoneMarketTile extends TileEntityBase {
-    String test;
+public class StoneMarketTile extends TileEntityBase implements ITickableTileEntity, ISharingEnergyProvider, IEnergyDisplay {
 
+    private final ItemStackHandler itemHandler = createHandler();
+    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
+    public final CustomEnergyStorage storage = new CustomEnergyStorage(50000, 2000, 0);
+    public final LazyOptional<IEnergyStorage> lazyEnergy = LazyOptional.of(() -> this.storage);
+
+    int state;
+    int time;
+    int finishTime = 3;
+    int maxStack = 64;
     int i = 0;
-    int y = 0;
-    double money;
-    double stonePrice;
-    double maxPrice;
+
+
+    public StoneMarketTile(TileEntityType<?> tileEntityTypeIn) {
+        super(tileEntityTypeIn);
+    }
 
     public StoneMarketTile() {
-        super(ModTileEntities.STONE_MARKET_TILE.get());
-    }
-    public final ItemStackHandler itemHandler = createHandler();
-    public final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
-
-    public StoneMarketTile(TileEntityType<?> tileentitytypeIn) {
-        super(tileentitytypeIn);
+        this(ModTileEntities.STONE_MARKET_TILE.get());
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT nbt) {
-        itemHandler.deserializeNBT(nbt.getCompound("inv"));
-        super.read(state, nbt);
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
-        compound.put("inv", itemHandler.serializeNBT());
-        return super.write(compound);
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        this.read(this.getBlockState(), pkt.getNbtCompound());
     }
+
+
+
 
     private ItemStackHandler createHandler() {
-        return new ItemStackHandler(1) {
+        return new ItemStackHandler(6) {
             @Override
             protected void onContentsChanged(int slot) {
                 markDirty();
@@ -64,7 +73,7 @@ public class StoneMarketTile extends TileEntityBase {
 
             @Override
             public int getSlotLimit(int slot) {
-                return 1;
+                return maxStack;
             }
 
             @Nonnull
@@ -80,59 +89,41 @@ public class StoneMarketTile extends TileEntityBase {
     }
 
     @Override
-    public void tick() {
+    public void writeSyncableNBT(CompoundNBT compound, NBTType type) {
+        if (type != NBTType.SAVE_BLOCK) {}
+        this.storage.writeToNBT(compound);
+        super.writeSyncableNBT(compound, type);
+    }
 
-        if(world.isRemote)
-            return;
+    @Override
+    public void readSyncableNBT(CompoundNBT compound, NBTType type) {
+        if (type != NBTType.SAVE_BLOCK) {}
+        this.storage.readFromNBT(compound);
+        super.readSyncableNBT(compound, type);
+    }
 
-        y = y+1;
-
-       if(y >=40 )
-        {
-            y = 0;
-            Object ob = null;
-            Object stone = null;
-            System.out.println("ok");
-
-            try {
-                UUID uuid = UUID.fromString(this.getTileEntity().getTileData().getString("player"));
-
-                PlayerEntity player = world.getPlayerByUuid(uuid);
-
-                ob = new JSONParser().parse(new FileReader("communication-alpha/playerData/"+uuid+".json"));
-                JSONObject js = (JSONObject) ob;
-
-                stone = new JSONParser().parse(new FileReader("communication-alpha/bridge-Server.json"));
-                JSONObject jstone = (JSONObject) stone;
-
-                //Boolean modif = (Boolean) js.get("modification");
-
-                this.money = (double) js.get("money");
-                this.stonePrice = (double) jstone.get("stone");
-                this.maxPrice = (double) jstone.get("stoneMaxPrice");
-
-                System.out.println(money);
-
-                this.getTileData().putString("money", String.valueOf(this.money));
-                this.getTileData().putString("stone", String.valueOf(this.stonePrice));
-                this.getTileData().putString("stoneMaxPrice", String.valueOf(this.maxPrice));
-                System.out.println( this.getTileData().get("owner"));
-
-                //System.out.println(this.getTileData().getString("money"));
-
-                BlockState bs = this.getBlockState();
-
-                world.updateBlock(pos, ModBlocks.STONE_MARKET.get());
-
-                if (world instanceof World) {
-                    ((World) world).notifyBlockUpdate(pos, bs, bs, 3);
-                }
-
-            } catch (Exception er) {
-              //er.printStackTrace();
-            }
+    @Nonnull
+    @Override
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+        if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return handler.cast();
         }
-       i = i+1;
+
+        if (!this.removed && cap == CapabilityEnergy.ENERGY)
+            return LazyOptional.of(() -> storage).cast();;
+
+        return super.getCapability(cap, side);
+    }
+
+
+    @Override
+    public void updateEntity() {
+        super.updateEntity();
+        if (!world.isRemote) {
+
+            System.out.println(storage.getEnergyStored());
+
+        }
     }
 
     public double getStonePrice() {
@@ -162,8 +153,40 @@ public class StoneMarketTile extends TileEntityBase {
 
     public double getData()
     {try{double teee = Double.parseDouble(this.getTileData().getString("money"));return teee;}
-        catch (Exception e)
-        {return -1;}
+    catch (Exception e)
+    {return -1;}
 
+    }
+
+
+
+    @Override
+    public int getEnergyToSplitShare() {
+        return this.storage.getEnergyStored();
+    }
+
+    @Override
+    public boolean doesShareEnergy() {
+        return true;
+    }
+
+    @Override
+    public Direction[] getEnergyShareSides() {
+        return Direction.values();
+    }
+
+    @Override
+    public boolean canShareTo(TileEntity tile) {
+        return true;
+    }
+
+    @Override
+    public CustomEnergyStorage getEnergyStorage() {
+        return storage;
+    }
+
+    @Override
+    public boolean needsHoldShift() {
+        return false;
     }
 }

@@ -24,22 +24,33 @@ public class ModItems {
             () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
 
     public static final RegistryObject<Item> CREDIT_CARD = ITEMS.register("credit_card",
-            () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase).maxStackSize(1)));
 
     public static final RegistryObject<Item> EMPTY_PALLET = ITEMS.register("empty_pallet",
             () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
 
-    public static final RegistryObject<Item> STONE_PALLET = ITEMS.register("stone_pallet",
-            () -> new Item(new Item.Properties().group(AMCBase.AMCBase).maxStackSize(1)));
 
-    public static final RegistryObject<Item> WOOD_PALLET = ITEMS.register("wood_pallet",
-            () -> new Item(new Item.Properties().group(AMCBase.AMCBase).maxStackSize(1)));
+    // la money
+    public static final RegistryObject<Item> ONE_CF = ITEMS.register("one_cf",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase).maxStackSize(50)));
 
-    public static final RegistryObject<Item> GOLD_PALLET = ITEMS.register("gold_pallet",
-            () -> new Item(new Item.Properties().group(AMCBase.AMCBase).maxStackSize(1)));
+    public static final RegistryObject<Item> FIVE_CF = ITEMS.register("five_cf",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase).maxStackSize(50)));
 
-    public static final RegistryObject<Item> DIAMOND_PALLET = ITEMS.register("diamond_pallet",
-            () -> new Item(new Item.Properties().group(AMCBase.AMCBase).maxStackSize(1)));
+    public static final RegistryObject<Item> TEN_CF = ITEMS.register("ten_cf",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase).maxStackSize(50)));
+
+    public static final RegistryObject<Item> TWENTY_CF = ITEMS.register("twenty_cf",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase).maxStackSize(50)));
+
+    public static final RegistryObject<Item> FIFTY_CF = ITEMS.register("fifty_cf",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase).maxStackSize(50)));
+
+    public static final RegistryObject<Item> HUNDRED_CF = ITEMS.register("hundred_cf",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase).maxStackSize(50)));
+
+    public static final RegistryObject<Item> FIVE_HUNDRED_CF = ITEMS.register("five_hundred_cf",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase).maxStackSize(50)));
 
 
 

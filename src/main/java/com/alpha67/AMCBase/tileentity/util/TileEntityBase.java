@@ -77,7 +77,7 @@ public abstract class TileEntityBase extends TileEntity implements ITickableTile
     //        this.readSyncableNBT(compound, NBTType.SAVE_TILE);
     //    }
 
-    @Nullable
+   /* @Nullable
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
         CompoundNBT compound = new CompoundNBT();
@@ -88,7 +88,7 @@ public abstract class TileEntityBase extends TileEntity implements ITickableTile
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         this.readSyncableNBT(pkt.getNbtCompound(), NBTType.SYNC);
-    }
+    }*/
 
     @Override
     public final CompoundNBT getUpdateTag() {

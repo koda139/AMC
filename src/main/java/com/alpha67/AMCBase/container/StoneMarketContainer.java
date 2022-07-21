@@ -19,13 +19,14 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
-import org.lwjgl.system.CallbackI;
 
 public class StoneMarketContainer extends Container {
     private final TileEntity tileEntity;
     private final PlayerEntity playerEntity;
     private final IItemHandler playerInventory;
     public BlockPos BlockPos;
+
+    public final StoneMarketTile generator;
 
     protected StoneMarketTile te;
 
@@ -46,6 +47,8 @@ public class StoneMarketContainer extends Container {
         playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);
         layoutPlayerInventorySlots(8, 86);
+
+        this.generator = (StoneMarketTile) tileEntity;
 
         this.te = (StoneMarketTile) world.getTileEntity(pos);
 
