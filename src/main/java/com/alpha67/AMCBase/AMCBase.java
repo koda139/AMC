@@ -15,6 +15,10 @@ import com.alpha67.AMCBase.network.ButtonPacketT;
 import com.alpha67.AMCBase.paintings.ModPaintings;
 import com.alpha67.AMCBase.screen.*;
 import com.alpha67.AMCBase.init.ModTileEntities;
+import com.alpha67.AMCBase.screen.market.DiamondMarketScreen;
+import com.alpha67.AMCBase.screen.market.GoldMarketScreen;
+import com.alpha67.AMCBase.screen.market.StoneMarketScreen;
+import com.alpha67.AMCBase.screen.market.WoodMarketScreen;
 import com.alpha67.AMCBase.util.ModItemModelProperties;
 import com.alpha67.AMCBase.util.ModSoundEvents;
 import com.alpha67.AMCBase.world.biome.ModBiomes;
@@ -41,7 +45,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -166,6 +169,12 @@ public class AMCBase {
 
             ScreenManager.registerFactory(ModContainers.STONE_MARKET_CONTAINER.get(),
                     StoneMarketScreen::new);
+            ScreenManager.registerFactory(ModContainers.WOOD_MARKET_CONTAINER.get(),
+                    WoodMarketScreen::new);
+            ScreenManager.registerFactory(ModContainers.GOLD_MARKET_CONTAINER.get(),
+                    GoldMarketScreen::new);
+            ScreenManager.registerFactory(ModContainers.DIAMOND_MARKET_CONTAINER.get(),
+                    DiamondMarketScreen::new);
 
             ScreenManager.registerFactory(ModContainers.COMPRESSOR_BLOCK_CONTAINER.get(),
                     CompressorBlockScreen::new);

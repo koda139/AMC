@@ -57,11 +57,13 @@ public class CompressorBlockTile extends TileEntityBase implements ITickableTile
 
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
+        System.out.println("packet 2");
         return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        System.out.println("packet 1");
         this.read(this.getBlockState(), pkt.getNbtCompound());
     }
 

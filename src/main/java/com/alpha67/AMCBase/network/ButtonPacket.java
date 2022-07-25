@@ -1,6 +1,6 @@
 package com.alpha67.AMCBase.network;
 
-import com.alpha67.AMCBase.tileentity.StoneMarketTile;
+import com.alpha67.AMCBase.tileentity.market.StoneMarketTile;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;

@@ -1,8 +1,8 @@
-package com.alpha67.AMCBase.container;
+package com.alpha67.AMCBase.container.market;
 
 import com.alpha67.AMCBase.init.ModBlocks;
 import com.alpha67.AMCBase.init.ModContainers;
-import com.alpha67.AMCBase.tileentity.StoneMarketTile;
+import com.alpha67.AMCBase.tileentity.market.StoneMarketTile;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -82,15 +82,21 @@ public class StoneMarketContainer extends Container {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public double getDataContainer()
+    public double getMoneyContainer()
     {
-        return this.te.getData();
+        return this.te.getMoney();
     }
 
     @OnlyIn(Dist.CLIENT)
     public double getStonePrice()
     {
         return this.te.getStonePrice();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getStoneTime()
+    {
+        return this.te.getStoneTime();
     }
 
     @OnlyIn(Dist.CLIENT)

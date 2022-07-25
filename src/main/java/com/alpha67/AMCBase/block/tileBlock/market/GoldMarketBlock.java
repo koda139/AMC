@@ -1,11 +1,13 @@
-package com.alpha67.AMCBase.block.tileBlock;
+package com.alpha67.AMCBase.block.tileBlock.market;
 
-import com.alpha67.AMCBase.container.StoneMarketContainer;
+import com.alpha67.AMCBase.container.market.GoldMarketContainer;
 import com.alpha67.AMCBase.init.ModBlocks;
 import com.alpha67.AMCBase.init.ModItems;
 import com.alpha67.AMCBase.init.ModTileEntities;
-import com.alpha67.AMCBase.tileentity.StoneMarketTile;
-import net.minecraft.block.*;
+import com.alpha67.AMCBase.tileentity.market.GoldMarketTile;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -14,26 +16,25 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
-public class StoneMarketBlock extends HorizontalBlock {
+public class GoldMarketBlock extends HorizontalBlock {
 
     int x;
     int y;
     int z;
 
-    public StoneMarketBlock(Properties properties) {
+    public GoldMarketBlock(Properties properties) {
         super(properties);
     }
 
@@ -57,7 +58,7 @@ public class StoneMarketBlock extends HorizontalBlock {
         this.y = pos.getY();
         this.z = pos.getZ();
 
-        StoneMarketTile tile = (StoneMarketTile) worldIn.getTileEntity(pos);
+        GoldMarketTile tile = (GoldMarketTile) worldIn.getTileEntity(pos);
 
         if(ModItems.CREDIT_CARD.get() == player.getHeldItemMainhand().getItem())
         {
@@ -66,15 +67,15 @@ public class StoneMarketBlock extends HorizontalBlock {
             {
                 tile.getTileData().putString("owner", String.valueOf(player.getUniqueID()));
 
-                String message = "This stone market block is now yours";
-                player.sendMessage(ITextComponent.getTextComponentOrEmpty(message), player.getUniqueID());
+                String message = "This Gold market block is now yours";
+                //player.sendMessage(ITextComponent.getTextComponentOrEmpty(message), player.getUniqueID());
             }
         }
 
         else if (!worldIn.isRemote())
         {
 
-            StoneMarketTile tileEntity = (StoneMarketTile) worldIn.getTileEntity(pos);
+            GoldMarketTile tileEntity = (GoldMarketTile) worldIn.getTileEntity(pos);
             String owner = tileEntity.getTileData().getString("owner");
 
             if(owner.contains(String.valueOf(player.getUniqueID()))) {
@@ -86,7 +87,7 @@ public class StoneMarketBlock extends HorizontalBlock {
 
                     tileEntity.getTileData().putString("player", String.valueOf(player.getUniqueID()));
 
-                    if (tileEntity instanceof StoneMarketTile) {
+                    if (tileEntity instanceof GoldMarketTile) {
                         INamedContainerProvider containerProvider = createContainerProvider(worldIn, pos);
 
                         NetworkHooks.openGui(((ServerPlayerEntity) player), containerProvider, tileEntity.getPos());
@@ -95,20 +96,18 @@ public class StoneMarketBlock extends HorizontalBlock {
                     }
                 }
                 else{
-                    String message = "sorry but your stone market block is not connecte to the the network ! You need an antenna.";
-                    player.sendMessage(ITextComponent.getTextComponentOrEmpty(message), player.getUniqueID());
+                    String message = "sorry but your Gold market block is not connecte to the the network ! You need an antenna.";
+                   // player.sendMessage(ITextComponent.getTextComponentOrEmpty(message), player.getUniqueID());
                 }
             }
 
             else {
-                String message = "Sorry but this is not your Stone market block";
-                player.sendMessage(ITextComponent.getTextComponentOrEmpty(message), player.getUniqueID());
+                String message = "Sorry but this is not your Gold market block";
+                //player.sendMessage(ITextComponent.getTextComponentOrEmpty(message), player.getUniqueID());
             }
         }
 
         else {
-            //System.out.println("can't open GUI");
-           // player.sendMessage(new TextComponent("Message"));
 
 
         }
@@ -119,28 +118,22 @@ public class StoneMarketBlock extends HorizontalBlock {
         return new INamedContainerProvider() {
             @Override
             public ITextComponent getDisplayName() {
-                return new TranslationTextComponent("screen.amcmode.stone_market_block");
+                return new TranslationTextComponent("");
             }
 
             @Nullable
             @Override
             public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-                return new StoneMarketContainer(i, worldIn, pos, playerInventory, playerEntity);
+                return new GoldMarketContainer(i, worldIn, pos, playerInventory, playerEntity);
             }
         };
-    }
-
-    @Override
-    public void tick(BlockState blockstate, ServerWorld world, BlockPos pos, Random random) {
-        super.tick(blockstate, world, pos, random);
-
     }
 
 
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return ModTileEntities.STONE_MARKET_TILE.get().create();
+        return ModTileEntities.GOLD_MARKET_TILE.get().create();
     }
 
     @Override

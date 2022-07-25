@@ -1,10 +1,10 @@
-package com.alpha67.AMCBase.screen;
+package com.alpha67.AMCBase.screen.market;
 
 import com.alpha67.AMCBase.AMCBase;
-import com.alpha67.AMCBase.container.StoneMarketContainer;
+import com.alpha67.AMCBase.container.market.GoldMarketContainer;
 import com.alpha67.AMCBase.network.ButtonPacketT;
 import com.alpha67.AMCBase.screen.util.EnergyDisplay;
-import com.alpha67.AMCBase.tileentity.StoneMarketTile;
+import com.alpha67.AMCBase.tileentity.market.GoldMarketTile;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -16,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 
-public class StoneMarketScreen extends ContainerScreen<StoneMarketContainer> {
+public class GoldMarketScreen extends ContainerScreen<GoldMarketContainer> {
 
     private int x;
     private int y;
@@ -31,14 +31,14 @@ public class StoneMarketScreen extends ContainerScreen<StoneMarketContainer> {
     int modifX;
     int modifY;
 
-    private final StoneMarketTile generator;
+    private final GoldMarketTile generator;
     private EnergyDisplay energy;
 
 
     private final ResourceLocation GUI = new ResourceLocation(AMCBase.MOD_ID,
             "textures/gui/stone_market_gui.png");
 
-    public StoneMarketScreen(StoneMarketContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
+    public GoldMarketScreen(GoldMarketContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);
         this.pos = screenContainer.BlockPos;
         this.x = pos.getX();
@@ -56,7 +56,7 @@ public class StoneMarketScreen extends ContainerScreen<StoneMarketContainer> {
     @Override
     public void init() {
         super.init();
-        this.energy = new EnergyDisplay(this.guiLeft , this.guiTop , this.generator.storage);
+        this.energy = new EnergyDisplay(this.guiLeft , this.guiTop + 10, this.generator.storage);
         //this.avanc = this.generator.avanc;
 
     }
@@ -71,16 +71,20 @@ public class StoneMarketScreen extends ContainerScreen<StoneMarketContainer> {
         ITextComponent name = ITextComponent.getTextComponentOrEmpty("Sell");
         String test = String.valueOf(System.currentTimeMillis());
 
-        StoneMarketTile BlockEntity = (StoneMarketTile) world.getTileEntity(pos);
+        GoldMarketTile BlockEntity = (GoldMarketTile) world.getTileEntity(pos);
 
-        double data = this.getContainer().getDataContainer();
-        double stone = this.getContainer().getStonePrice();
+        double money = this.getContainer().getMoneyContainer();
+        double Gold = this.getContainer().getGoldPrice();
         double maxPrice = this.getContainer().getMaxPrice();
 
+        int time = this.getContainer().getGoldTime();
 
-        this.font.drawString(matrixStack, "money : " + data, this.guiLeft + 5, this.guiTop + 23, -16737997);
-        this.font.drawString(matrixStack, "stone price: " + stone, this.guiLeft + 5, this.guiTop + 40, -16750900);
-        this.font.drawString(matrixStack, "max price: " + maxPrice, this.guiLeft + 5, this.guiTop + 57, -6750208);
+
+        this.font.drawString(matrixStack, "money : " + money, this.guiLeft + 17, this.guiTop + 40, -16737997);
+        this.font.drawString(matrixStack, "gold price: " + Gold, this.guiLeft + 17, this.guiTop + 23, -16750900);
+        this.font.drawString(matrixStack, "max price: " + maxPrice, this.guiLeft + 17, this.guiTop + 57, -6750208);
+
+        this.font.drawString(matrixStack,  String.valueOf(time)+ "%", this.guiLeft + 150, this.guiTop + 33, -16737997);
 
         this.energy.render(matrixStack, mouseX, mouseY);
 

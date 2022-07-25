@@ -1,6 +1,10 @@
 package com.alpha67.AMCBase.init;
 
 import com.alpha67.AMCBase.tileentity.*;
+import com.alpha67.AMCBase.tileentity.market.DiamondMarketTile;
+import com.alpha67.AMCBase.tileentity.market.GoldMarketTile;
+import com.alpha67.AMCBase.tileentity.market.StoneMarketTile;
+import com.alpha67.AMCBase.tileentity.market.WoodMarketTile;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
@@ -20,6 +24,18 @@ public class ModTileEntities {
     public static RegistryObject<TileEntityType<StoneMarketTile>> STONE_MARKET_TILE =
             TILE_ENTITIES.register("stone_market_tile", () -> TileEntityType.Builder.create(
                     StoneMarketTile::new, ModBlocks.STONE_MARKET.get()).build(null));
+
+    public static RegistryObject<TileEntityType<WoodMarketTile>> WOOD_MARKET_TILE =
+            TILE_ENTITIES.register("wood_market_tile", () -> TileEntityType.Builder.create(
+                    WoodMarketTile::new, ModBlocks.WOOD_MARKET.get()).build(null));
+
+    public static RegistryObject<TileEntityType<GoldMarketTile>> GOLD_MARKET_TILE =
+            TILE_ENTITIES.register("gold_market_tile", () -> TileEntityType.Builder.create(
+                    GoldMarketTile::new, ModBlocks.GOLD_MARKET.get()).build(null));
+
+    public static RegistryObject<TileEntityType<DiamondMarketTile>> DIAMOND_MARKET_TILE =
+            TILE_ENTITIES.register("diamond_market_tile", () -> TileEntityType.Builder.create(
+                    DiamondMarketTile::new, ModBlocks.DIAMOND_MARKET.get()).build(null));
 
     public static RegistryObject<TileEntityType<CompressorBlockTile>> COMPRESSOR_BLOCK_TILE =
             TILE_ENTITIES.register("compressor_block_tile", () -> TileEntityType.Builder.create(

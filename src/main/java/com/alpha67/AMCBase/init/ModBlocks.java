@@ -4,9 +4,11 @@ import com.alpha67.AMCBase.block.ModWoodTypes;
 import com.alpha67.AMCBase.block.custom.*;
 import com.alpha67.AMCBase.block.custom.trees.RedwoodTree;
 import com.alpha67.AMCBase.block.tileBlock.LightningChannelerBlock;
-import com.alpha67.AMCBase.block.tileBlock.StoneMarketBlock;
+import com.alpha67.AMCBase.block.tileBlock.market.DiamondMarketBlock;
+import com.alpha67.AMCBase.block.tileBlock.market.GoldMarketBlock;
+import com.alpha67.AMCBase.block.tileBlock.market.StoneMarketBlock;
 import com.alpha67.AMCBase.block.tileBlock.compresorBlock;
-import com.alpha67.AMCBase.block.tileBlock.electricBankBlock;
+import com.alpha67.AMCBase.block.tileBlock.market.WoodMarketBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItem;
@@ -39,6 +41,15 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> STONE_MARKET = registerBlock("stone_market",
             () -> new StoneMarketBlock(AbstractBlock.Properties.create(Material.IRON)
+                    .harvestLevel(1).hardnessAndResistance(5f)), 64);
+    public static final RegistryObject<Block> WOOD_MARKET = registerBlock("wood_market",
+            () -> new WoodMarketBlock(AbstractBlock.Properties.create(Material.IRON)
+                    .harvestLevel(1).hardnessAndResistance(5f)), 64);
+    public static final RegistryObject<Block> GOLD_MARKET = registerBlock("gold_market",
+            () -> new GoldMarketBlock(AbstractBlock.Properties.create(Material.IRON)
+                    .harvestLevel(1).hardnessAndResistance(5f)), 64);
+    public static final RegistryObject<Block> DIAMOND_MARKET = registerBlock("diamond_market",
+            () -> new DiamondMarketBlock(AbstractBlock.Properties.create(Material.IRON)
                     .harvestLevel(1).hardnessAndResistance(5f)), 64);
 
     public static final RegistryObject<Block> COMPRESSOR_BLOCK = registerBlock("compressor_block",

@@ -1,6 +1,8 @@
-package com.alpha67.AMCBase.tileentity;
+package com.alpha67.AMCBase.tileentity.market;
 
+import com.alpha67.AMCBase.init.ModBlocks;
 import com.alpha67.AMCBase.init.ModTileEntities;
+import com.alpha67.AMCBase.pluginManage.money;
 import com.alpha67.AMCBase.tileentity.util.CustomEnergyStorage;
 import com.alpha67.AMCBase.tileentity.util.IEnergyDisplay;
 import com.alpha67.AMCBase.tileentity.util.ISharingEnergyProvider;
@@ -20,39 +22,49 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.FileReader;
+import java.io.IOException;
 
-public class StoneMarketTile extends TileEntityBase implements ITickableTileEntity, ISharingEnergyProvider, IEnergyDisplay {
+public class WoodMarketTile extends TileEntityBase implements ITickableTileEntity, ISharingEnergyProvider, IEnergyDisplay {
 
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
-    public final CustomEnergyStorage storage = new CustomEnergyStorage(50000, 2000, 0);
+    public final CustomEnergyStorage storage = new CustomEnergyStorage(40000, 1000, 0);
     public final LazyOptional<IEnergyStorage> lazyEnergy = LazyOptional.of(() -> this.storage);
 
     int state;
     int time;
-    int finishTime = 3;
+    int finishTime = 10;
     int maxStack = 64;
     int i = 0;
 
+    boolean buttonClick;
 
-    public StoneMarketTile(TileEntityType<?> tileEntityTypeIn) {
+    public int avanc;
+
+    public WoodMarketTile(TileEntityType<?> tileEntityTypeIn) {
         super(tileEntityTypeIn);
     }
 
-    public StoneMarketTile() {
-        this(ModTileEntities.STONE_MARKET_TILE.get());
+    public WoodMarketTile() {
+        this(ModTileEntities.WOOD_MARKET_TILE.get());
     }
 
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
+        //System.out.println("packet 2");
         return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+       // System.out.println("packet 1");
         this.read(this.getBlockState(), pkt.getNbtCompound());
     }
 
@@ -99,6 +111,7 @@ public class StoneMarketTile extends TileEntityBase implements ITickableTileEnti
     public void readSyncableNBT(CompoundNBT compound, NBTType type) {
         if (type != NBTType.SAVE_BLOCK) {}
         this.storage.readFromNBT(compound);
+        this.buttonClick = this.getTileData().getBoolean("buttonClick");
         super.readSyncableNBT(compound, type);
     }
 
@@ -115,21 +128,109 @@ public class StoneMarketTile extends TileEntityBase implements ITickableTileEnti
         return super.getCapability(cap, side);
     }
 
+    public int getAvanc()
+    {
+        return this.getTileData().getInt("avanc");
+    }
+
+    public void startSell()
+    {
+        this.buttonClick = true;
+        this.getTileData().putBoolean("buttonClick", true);
+    }
+
 
     @Override
     public void updateEntity() {
         super.updateEntity();
         if (!world.isRemote) {
 
-            System.out.println(storage.getEnergyStored());
+            avanc = (time/(finishTime*20))*100;
+            this.getTileData().putInt("avanc", avanc);
+            String owner = this.getTileData().getString("owner");
 
+            if(i >=5)
+                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 1);
+            else
+                i = i+1;
+
+           // System.out.println("energy store "+storage.getEnergyStored());
+           // System.out.println("owner" + owner);
+
+            try {
+                Object ob2 = new JSONParser().parse(new FileReader("communication-alpha/playerData/"+owner+".json"));
+                JSONObject js2 = (JSONObject) ob2;
+
+                double money = (double) js2.get("money");
+
+                this.getTileData().putDouble("money", money);
+
+                Object ob3 = new JSONParser().parse(new FileReader("communication-alpha/bridge-Server.json"));
+                JSONObject js3 = (JSONObject) ob3;
+
+                double WoodPrice = (double) js3.get("WoodPrice");
+                double WoodMax = (double) js3.get("WoodMax");
+
+                this.getTileData().putDouble("WoodPrice", WoodPrice);
+                this.getTileData().putDouble("WoodMax", WoodMax);
+
+
+            } catch (Exception e) {
+               // e.printStackTrace();
+            }
+
+
+
+            if (itemHandler.getStackInSlot(0).getItem() == ModBlocks.WOOD_PALLET.get().asItem() && this.buttonClick)
+            {
+                time = time+1;
+                this.getTileData().putInt("WoodTime", time);
+
+                if (time >= finishTime*20 && this.buttonClick)
+                {
+                    System.out.println(time);
+                    time = 0;
+
+                    this.getTileData().putBoolean("buttonClick", false);
+                    this.buttonClick = false;
+
+                    Object ob = null;
+                    try {
+                        ob = new JSONParser().parse(new FileReader("communication-alpha/bridge-Server.json"));
+                        JSONObject js = (JSONObject) ob;
+
+                        double WoodPrice = (double) js.get("WoodPrice");
+
+                        System.out.println("give the money !!!!!");
+
+                        money.giveMoney(owner, WoodPrice);
+
+                        itemHandler.extractItem(0, 1, false);
+
+
+                    } catch (IOException | ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+            }
         }
     }
 
-    public double getStonePrice() {
+    public double getWoodPrice() {
         try{
-            double teee = Double.parseDouble(this.getTileData().getString("stone"));
-            return teee;
+            return this.getTileData().getDouble("WoodPrice");
+        }
+
+        catch (Exception e)
+        {
+            return -1;
+        }
+    }
+
+    public int getWoodTime() {
+        try{
+            return this.getTileData().getInt("WoodTime");
         }
 
         catch (Exception e)
@@ -140,8 +241,7 @@ public class StoneMarketTile extends TileEntityBase implements ITickableTileEnti
 
     public double getMaxPrice() {
         try{
-            double teee = Double.parseDouble(this.getTileData().getString("stoneMaxPrice"));
-            return teee;
+            return this.getTileData().getDouble("WoodMax");
         }
 
         catch (Exception e)
@@ -150,11 +250,16 @@ public class StoneMarketTile extends TileEntityBase implements ITickableTileEnti
         }
     }
 
-
-    public double getData()
-    {try{double teee = Double.parseDouble(this.getTileData().getString("money"));return teee;}
-    catch (Exception e)
-    {return -1;}
+    public double getMoney()
+    {
+        try{
+            double teee = this.getTileData().getDouble("money");
+            //System.out.println("teeee"+teee);
+            return teee;}
+        catch (Exception e)
+        {
+            return -2;
+        }
 
     }
 

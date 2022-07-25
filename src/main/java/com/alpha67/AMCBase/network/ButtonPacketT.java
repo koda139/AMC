@@ -1,6 +1,6 @@
 package com.alpha67.AMCBase.network;
 
-import com.alpha67.AMCBase.tileentity.StoneMarketTile;
+import com.alpha67.AMCBase.tileentity.market.StoneMarketTile;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -36,6 +36,8 @@ public class ButtonPacketT {
             ServerPlayerEntity player = ctx.get().getSender();
             BlockPos pos = new BlockPos(x, y, z);
             StoneMarketTile te = (StoneMarketTile) player.getServerWorld().getTileEntity(pos);
+
+            te.startSell();
 
 
             //te.craftTheItem();
