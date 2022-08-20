@@ -23,8 +23,10 @@ import java.util.Arrays;
 public class ModOreGeneration {
     public static void generateOres(final BiomeLoadingEvent event) {
         //spawnOreInSpecificModBiome(ModBiomes.RIFT_BIOME.get(), OreType.AMETHYST, event, Dimension.OVERWORLD.toString());
-        spawnOreInSpecificBiome(Biomes.DARK_FOREST, OreType.AMETHYST, event, Dimension.OVERWORLD.toString());
-        spawnOreInAllBiomes(OreType.FIRESTONE, event, Dimension.THE_NETHER.toString());
+        //spawnOreInSpecificBiome(Biomes.DARK_FOREST, OreType.AMETHYST, event, Dimension.OVERWORLD.toString());
+        //spawnOreInAllBiomes(OreType.FIRESTONE, event, Dimension.THE_NETHER.toString());
+        spawnOreInAllBiomes(OreType.COPPER, event, Dimension.OVERWORLD.toString());
+        spawnOreInAllBiomes(OreType.LITHIUM, event, Dimension.OVERWORLD.toString());
     }
 
 

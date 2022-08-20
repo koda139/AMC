@@ -2,7 +2,7 @@ package com.alpha67.AMCBase.screen.market;
 
 import com.alpha67.AMCBase.AMCBase;
 import com.alpha67.AMCBase.container.market.WoodMarketContainer;
-import com.alpha67.AMCBase.network.ButtonPacketT;
+import com.alpha67.AMCBase.network.ButtonMarket;
 import com.alpha67.AMCBase.screen.util.EnergyDisplay;
 import com.alpha67.AMCBase.tileentity.market.WoodMarketTile;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -95,7 +95,7 @@ public class WoodMarketScreen extends ContainerScreen<WoodMarketContainer> {
 
         this.addButton(new Button(this.guiLeft + 119, this.guiTop + 63, 35, 18, name, e -> {
             if (true) {
-                AMCBase.PACKET_HANDLER.sendToServer(new ButtonPacketT(this.pos));
+                AMCBase.PACKET_HANDLER.sendToServer(new ButtonMarket(this.pos, 1));
             }
         }));
 

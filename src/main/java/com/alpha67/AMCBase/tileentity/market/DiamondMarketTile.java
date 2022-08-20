@@ -3,6 +3,7 @@ package com.alpha67.AMCBase.tileentity.market;
 import com.alpha67.AMCBase.init.ModBlocks;
 import com.alpha67.AMCBase.init.ModTileEntities;
 import com.alpha67.AMCBase.pluginManage.money;
+import com.alpha67.AMCBase.pluginManage.sell;
 import com.alpha67.AMCBase.tileentity.util.CustomEnergyStorage;
 import com.alpha67.AMCBase.tileentity.util.IEnergyDisplay;
 import com.alpha67.AMCBase.tileentity.util.ISharingEnergyProvider;
@@ -15,6 +16,7 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -43,6 +45,10 @@ public class DiamondMarketTile extends TileEntityBase implements ITickableTileEn
     int finishTime = 10;
     int maxStack = 64;
     int i = 0;
+
+    int x;
+    int y;
+    int z;
 
     boolean buttonClick;
 
@@ -149,12 +155,14 @@ public class DiamondMarketTile extends TileEntityBase implements ITickableTileEn
             this.getTileData().putInt("avanc", avanc);
             String owner = this.getTileData().getString("owner");
 
-            if(i >=5)
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 1);
+            if(i >=5){
+                x = pos.getX();
+                y = pos.getY();
+                z = pos.getZ();
+                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 1);}
             else
                 i = i+1;
 
-            System.out.println("energy store "+storage.getEnergyStored());
            // System.out.println("owner" + owner);
 
             try {
@@ -165,7 +173,7 @@ public class DiamondMarketTile extends TileEntityBase implements ITickableTileEn
 
                 this.getTileData().putDouble("money", money);
 
-                Object ob3 = new JSONParser().parse(new FileReader("communication-alpha/bridge-Server.json"));
+                Object ob3 = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
                 JSONObject js3 = (JSONObject) ob3;
 
                 double DiamondPrice = (double) js3.get("DiamondPrice");
@@ -186,32 +194,37 @@ public class DiamondMarketTile extends TileEntityBase implements ITickableTileEn
                 time = time+1;
                 this.getTileData().putInt("DiamondTime", time);
 
-                if (time >= finishTime*20 && this.buttonClick)
-                {
-                    System.out.println(time);
-                    time = 0;
+                if(this.buttonClick && world.getBlockState(new BlockPos((int) x, (int) y + 1, (int) z)).getBlock() == ModBlocks.ANTENNA.get()) {
 
-                    this.getTileData().putBoolean("buttonClick", false);
-                    this.buttonClick = false;
+                    if (time >= finishTime * 20) {
 
-                    Object ob = null;
-                    try {
-                        ob = new JSONParser().parse(new FileReader("communication-alpha/bridge-Server.json"));
-                        JSONObject js = (JSONObject) ob;
+                        storage.extractEnergy(100, false);
 
-                        double DiamondPrice = (double) js.get("DiamondPrice");
+                        this.getTileData().putBoolean("buttonClick", false);
+                        this.buttonClick = false;
 
-                        System.out.println("give the money !!!!!");
+                        Object ob = null;
+                        try {
+                            ob = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
+                            JSONObject js = (JSONObject) ob;
 
-                        money.giveMoney(owner, DiamondPrice);
+                            double DiamondPrice = (double) js.get("DiamondPrice");
 
-                        itemHandler.extractItem(0, 1, false);
+                            System.out.println("give the money !!!!!");
+
+                            money.giveMoney(owner, DiamondPrice, 0, "diamond");
+
+                            itemHandler.extractItem(0, 1, false);
+
+                            sell.sell("diamond");
 
 
-                    } catch (IOException | ParseException e) {
-                        throw new RuntimeException(e);
+                        } catch (IOException | ParseException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
-                }
+                }else
+                {time = 0;}
 
             }
         }

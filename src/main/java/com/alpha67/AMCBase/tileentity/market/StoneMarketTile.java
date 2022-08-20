@@ -1,20 +1,14 @@
 package com.alpha67.AMCBase.tileentity.market;
 
 import com.alpha67.AMCBase.init.ModBlocks;
-import com.alpha67.AMCBase.init.ModItems;
 import com.alpha67.AMCBase.init.ModTileEntities;
 import com.alpha67.AMCBase.pluginManage.money;
+import com.alpha67.AMCBase.pluginManage.sell;
 import com.alpha67.AMCBase.tileentity.util.CustomEnergyStorage;
 import com.alpha67.AMCBase.tileentity.util.IEnergyDisplay;
 import com.alpha67.AMCBase.tileentity.util.ISharingEnergyProvider;
 import com.alpha67.AMCBase.tileentity.util.TileEntityBase;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -22,6 +16,7 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -50,6 +45,10 @@ public class StoneMarketTile extends TileEntityBase implements ITickableTileEnti
     int finishTime = 10;
     int maxStack = 64;
     int i = 0;
+
+    int x;
+    int y;
+    int z;
 
     boolean buttonClick;
 
@@ -156,12 +155,14 @@ public class StoneMarketTile extends TileEntityBase implements ITickableTileEnti
             this.getTileData().putInt("avanc", avanc);
             String owner = this.getTileData().getString("owner");
 
-            if(i >=5)
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 1);
+            if(i >=5){
+                x = pos.getX();
+                y = pos.getY();
+                z = pos.getZ();
+                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 1);}
             else
                 i = i+1;
 
-            System.out.println("energy store "+storage.getEnergyStored());
            // System.out.println("owner" + owner);
 
             try {
@@ -172,14 +173,14 @@ public class StoneMarketTile extends TileEntityBase implements ITickableTileEnti
 
                 this.getTileData().putDouble("money", money);
 
-                Object ob3 = new JSONParser().parse(new FileReader("communication-alpha/bridge-Server.json"));
+                Object ob3 = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
                 JSONObject js3 = (JSONObject) ob3;
 
-                double stonePrice = (double) js3.get("StonePrice");
-                double stoneMax = (double) js3.get("StoneMax");
+                double StonePrice = (double) js3.get("StonePrice");
+                double StoneMax = (double) js3.get("StoneMax");
 
-                this.getTileData().putDouble("StonePrice", stonePrice);
-                this.getTileData().putDouble("StoneMax", stoneMax);
+                this.getTileData().putDouble("StonePrice", StonePrice);
+                this.getTileData().putDouble("StoneMax", StoneMax);
 
 
             } catch (Exception e) {
@@ -191,34 +192,39 @@ public class StoneMarketTile extends TileEntityBase implements ITickableTileEnti
             if (itemHandler.getStackInSlot(0).getItem() == ModBlocks.STONE_PALLET.get().asItem() && this.buttonClick)
             {
                 time = time+1;
-                this.getTileData().putInt("stoneTime", time);
+                this.getTileData().putInt("StoneTime", time);
 
-                if (time >= finishTime*20 && this.buttonClick)
-                {
-                    System.out.println(time);
-                    time = 0;
+                if(this.buttonClick && world.getBlockState(new BlockPos((int) x, (int) y + 1, (int) z)).getBlock() == ModBlocks.ANTENNA.get()) {
 
-                    this.getTileData().putBoolean("buttonClick", false);
-                    this.buttonClick = false;
+                    if (time >= finishTime * 20) {
 
-                    Object ob = null;
-                    try {
-                        ob = new JSONParser().parse(new FileReader("communication-alpha/bridge-Server.json"));
-                        JSONObject js = (JSONObject) ob;
+                        storage.extractEnergy(100, false);
+                        time = 0;
 
-                        double stonePrice = (double) js.get("stonePrice");
+                        sell.sell("stone");
 
-                        System.out.println("give the money !!!!!");
+                        this.getTileData().putBoolean("buttonClick", false);
+                        this.buttonClick = false;
 
-                        money.giveMoney(owner, stonePrice);
+                        Object ob = null;
+                        try {
+                            ob = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
+                            JSONObject js = (JSONObject) ob;
 
-                        itemHandler.extractItem(0, 1, false);
+                            double StonePrice = (double) js.get("StonePrice");
+
+                            System.out.println("give the money !!!!!");
+
+                            money.giveMoney(owner, StonePrice, 0, "Stone");
+
+                            itemHandler.extractItem(0, 1, false);
 
 
-                    } catch (IOException | ParseException e) {
-                        throw new RuntimeException(e);
+                        } catch (IOException | ParseException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
-                }
+                }else {time = 0;}
 
             }
         }
@@ -226,7 +232,7 @@ public class StoneMarketTile extends TileEntityBase implements ITickableTileEnti
 
     public double getStonePrice() {
         try{
-            return this.getTileData().getDouble("stonePrice");
+            return this.getTileData().getDouble("StonePrice");
         }
 
         catch (Exception e)
@@ -237,7 +243,7 @@ public class StoneMarketTile extends TileEntityBase implements ITickableTileEnti
 
     public int getStoneTime() {
         try{
-            return this.getTileData().getInt("stoneTime");
+            return this.getTileData().getInt("StoneTime");
         }
 
         catch (Exception e)
@@ -248,7 +254,7 @@ public class StoneMarketTile extends TileEntityBase implements ITickableTileEnti
 
     public double getMaxPrice() {
         try{
-            return this.getTileData().getDouble("stoneMax");
+            return this.getTileData().getDouble("StoneMax");
         }
 
         catch (Exception e)

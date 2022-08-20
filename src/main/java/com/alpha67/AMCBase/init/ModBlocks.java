@@ -75,6 +75,14 @@ public class ModBlocks {
             () -> new palletBlock(AbstractBlock.Properties.create(Material.WOOD)), 1);
 
 
+    //monerai
+    public static final RegistryObject<Block> COPPER_ORE = registerBlock("copper_ore",
+            () -> new Block(AbstractBlock.Properties.create(Material.ROCK)), 64);
+
+    public static final RegistryObject<Block> LITHIUM_ORE = registerBlock("lithium_ore",
+            () -> new Block(AbstractBlock.Properties.create(Material.ROCK)), 64);
+
+
 
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block, int maxStack) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

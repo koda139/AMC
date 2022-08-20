@@ -11,7 +11,7 @@ import com.alpha67.AMCBase.entity.render.PigeonRenderer;
 import com.alpha67.AMCBase.init.ModFluids;
 import com.alpha67.AMCBase.init.ModItems;
 import com.alpha67.AMCBase.network.ButtonPacket;
-import com.alpha67.AMCBase.network.ButtonPacketT;
+import com.alpha67.AMCBase.network.ButtonMarket;
 import com.alpha67.AMCBase.paintings.ModPaintings;
 import com.alpha67.AMCBase.screen.*;
 import com.alpha67.AMCBase.init.ModTileEntities;
@@ -69,6 +69,13 @@ import org.apache.logging.log4j.Logger;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import top.theillusivec4.curios.api.SlotTypePreset;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(AMCBase.MOD_ID)
 public class AMCBase {
@@ -76,6 +83,9 @@ public class AMCBase {
 
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
+
+    public Path icon16 = Paths.get("mods/icon16.png");
+    public Path icon32 = Paths.get("mods/icon32.png");
 
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(
@@ -126,10 +136,10 @@ public class AMCBase {
 
         int index = 0;
         PACKET_HANDLER.registerMessage(index, ButtonPacket.class, ButtonPacket::encode, ButtonPacket::decode, ButtonPacket::handle);
-        PACKET_HANDLER.registerMessage(index, ButtonPacketT.class,
-                ButtonPacketT::toBytes,
-                ButtonPacketT::new,
-                ButtonPacketT::handle);
+        PACKET_HANDLER.registerMessage(index, ButtonMarket.class,
+                ButtonMarket::toBytes,
+                ButtonMarket::new,
+                ButtonMarket::handle);
 
 
         event.enqueueWork(() -> {
@@ -224,10 +234,29 @@ public class AMCBase {
     }
 
     private void updateTitle(){
-        String Name = "Alpha67";
+        String Name = "Capitalium Factory";
         final MainWindow window = Minecraft.getInstance().getMainWindow();
         window.setWindowTitle(Name);
+        window.setWindowIcon(readIcon16(), readIcon32());
 
+
+    }
+
+
+    public InputStream readIcon16() {
+        try {
+            return Files.newInputStream(icon16, StandardOpenOption.READ);
+        } catch (final IOException e) {
+            throw new RuntimeException("CustomWindowTitle could not open the specified 16x16 icon: " + icon16, e);
+        }
+    }
+
+    public InputStream readIcon32() {
+        try {
+            return Files.newInputStream(icon32, StandardOpenOption.READ);
+        } catch (final IOException e) {
+            throw new RuntimeException("CustomWindowTitle could not open the specified 32x32 icon: " + icon16, e);
+        }
     }
 
     // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD

@@ -29,6 +29,33 @@ public class ModItems {
     public static final RegistryObject<Item> EMPTY_PALLET = ITEMS.register("empty_pallet",
             () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
 
+    public static final RegistryObject<Item> BATTERIE = ITEMS.register("batterie",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
+
+    public static final RegistryObject<Item> MARKET_COMPONEMENT = ITEMS.register("market_componement",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
+
+
+    public static final RegistryObject<Item> COPPER_CABLE = ITEMS.register("copper_cable",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
+
+
+
+    //spécial minerai
+    public static final RegistryObject<Item> COPPER_INGOT = ITEMS.register("copper_ingot",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
+
+    public static final RegistryObject<Item> LITHIUM_FRAGMENT = ITEMS.register("lithium_fragment",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
+
+    public static final RegistryObject<Item> LITHIUM_INGOT = ITEMS.register("lithium_ingot",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
+
+
+
+
+
+
 
     // la money
     public static final RegistryObject<Item> ONE_CF = ITEMS.register("one_cf",

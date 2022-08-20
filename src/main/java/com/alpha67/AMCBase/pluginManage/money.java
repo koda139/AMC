@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class money {
 
-    public static void giveMoney(String UUID, double sellPrice)
+    public static void giveMoney(String UUID, double sellPrice, int reason, String type)
     {
 
         try {
@@ -24,6 +24,9 @@ public class money {
 
             JSONObject jsonObject = new JSONObject();
             //Inserting key-value pairs into the json object
+
+            System.out.println("give money to " + "communication-alpha/playerData/"+UUID+".json"+ "money : " + newMoney+ "add: "+ sellPrice);
+
             jsonObject.put("money", newMoney);
             jsonObject.put("modification", true);
             try {
@@ -71,4 +74,6 @@ public class money {
             e.printStackTrace();
         }
     }
+
+
 }

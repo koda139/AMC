@@ -6,7 +6,9 @@ import com.alpha67.AMCBase.init.ModBlocks;
 
 public enum OreType {
 
-    AMETHYST(Lazy.of(ModBlocks.AMETHYST_ORE), 200, 25, 100, 200),
+   // AMETHYST(Lazy.of(ModBlocks.AMETHYST_ORE), 200, 25, 100, 200),
+    COPPER(Lazy.of(ModBlocks.COPPER_ORE), 5, 0, 100, 20),
+    LITHIUM(Lazy.of(ModBlocks.LITHIUM_ORE), 2, 0, 28, 20),
     FIRESTONE(Lazy.of(ModBlocks.FIRESTONE_BLOCK), 3, 10, 80, 5);
 
     private final Lazy<Block> block;
