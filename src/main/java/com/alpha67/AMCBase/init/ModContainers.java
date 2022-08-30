@@ -1,5 +1,6 @@
 package com.alpha67.AMCBase.init;
 
+import com.alpha67.AMCBase.container.ATMBlockContainer;
 import com.alpha67.AMCBase.container.LightningChannelerContainer;
 import com.alpha67.AMCBase.container.market.DiamondMarketContainer;
 import com.alpha67.AMCBase.container.market.GoldMarketContainer;
@@ -76,6 +77,14 @@ public class ModContainers {
                 BlockPos pos = data.readBlockPos();
                 World world = inv.player.getEntityWorld();
                 return new electricBankContainer(windowId, world, pos, inv, inv.player);
+            })));
+
+    public static final RegistryObject<ContainerType<ATMBlockContainer>> ATM_BLOCK_CONTAINER
+            = CONTAINERS.register("atm_block_container",
+            () -> IForgeContainerType.create(((windowId, inv, data) -> {
+                BlockPos pos = data.readBlockPos();
+                World world = inv.player.getEntityWorld();
+                return new ATMBlockContainer(windowId, world, pos, inv, inv.player);
             })));
 
 

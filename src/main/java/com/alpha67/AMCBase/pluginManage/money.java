@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class money {
 
-    public static void giveMoney(String UUID, double sellPrice, int reason, String type)
+    public static void giveMoney(String UUID, double sellPrice)
     {
 
         try {
@@ -44,10 +44,10 @@ public class money {
         }
     }
 
-    public static void removeMoney(String UUID, int sellPrice)
+    public static boolean removeMoney(String UUID, int sellPrice)
     {
-
-        try {
+        try
+        {
             Object ob = new JSONParser().parse(new FileReader("communication-alpha/playerData/"+UUID+".json"));
 
             JSONObject js = (JSONObject) ob;
@@ -58,21 +58,51 @@ public class money {
 
             JSONObject jsonObject = new JSONObject();
             //Inserting key-value pairs into the json object
-            jsonObject.put("money", newMoney);
-            jsonObject.put("modification", true);
-            try {
-                FileWriter file = new FileWriter("communication-alpha/playerData/" + UUID + ".json");
-                file.write(jsonObject.toJSONString());
-                file.close();
+            if (newMoney > 0) {
+                jsonObject.put("money", newMoney);
+                jsonObject.put("modification", true);
+                try {
+                    FileWriter file = new FileWriter("communication-alpha/playerData/" + UUID + ".json");
+                    file.write(jsonObject.toJSONString());
+                    file.close();
+                    return true;
 
-            } catch (IOException e) {
-                e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            } else
+            {
+                return false;
             }
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
 
+
+
+    }
+
+    public static double getMoney(String UUID)
+    {
+
+        try {
+            Object ob = new JSONParser().parse(new FileReader("communication-alpha/playerData/" + UUID + ".json"));
+
+            JSONObject js = (JSONObject) ob;
+
+            double money = (double) js.get("money");
+
+            return money;
 
         } catch (IOException | ParseException e) {
             e.printStackTrace();
+            return -1;
         }
+
+
     }
 
 

@@ -15,7 +15,7 @@ public class ModBiomesDatapack {
     public static final DeferredRegister<Biome> BIOMES
             = DeferredRegister.create(ForgeRegistries.BIOMES, AMCBase.MOD_ID);
 
-    public static RegistryKey<Biome> AMETHYST_BIOME = registerBiome("amethyst_biome");
+    //public static RegistryKey<Biome> AMETHYST_BIOME = registerBiome("amethyst_biome");
 
     public static RegistryKey<Biome> registerBiome(String biomeName) {
         BIOMES.register(biomeName, BiomeMaker::makeVoidBiome);
@@ -25,6 +25,6 @@ public class ModBiomesDatapack {
     public static void register(IEventBus eventBus) {
         BIOMES.register(eventBus);
 
-        BiomeManager.addBiome(BiomeManager.BiomeType.DESERT, new BiomeManager.BiomeEntry(AMETHYST_BIOME, 10));
+        //BiomeManager.addBiome(BiomeManager.BiomeType.DESERT, new BiomeManager.BiomeEntry(AMETHYST_BIOME, 10));
     }
 }

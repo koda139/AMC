@@ -12,7 +12,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
-import com.alpha67.AMCBase.item.custom.Firestone;
 import com.alpha67.AMCBase.util.ModSoundEvents;
 
 import java.util.Random;
@@ -65,7 +64,6 @@ public class FirestoneBlock extends Block {
 
     @Override
     public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) {
-        Firestone.lightEntityOnFire(entityIn, 5);
         super.onEntityWalk(worldIn, pos, entityIn);
     }
 }

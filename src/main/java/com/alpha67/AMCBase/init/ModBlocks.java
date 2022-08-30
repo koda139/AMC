@@ -3,6 +3,7 @@ package com.alpha67.AMCBase.init;
 import com.alpha67.AMCBase.block.ModWoodTypes;
 import com.alpha67.AMCBase.block.custom.*;
 import com.alpha67.AMCBase.block.custom.trees.RedwoodTree;
+import com.alpha67.AMCBase.block.tileBlock.ATMBlock;
 import com.alpha67.AMCBase.block.tileBlock.LightningChannelerBlock;
 import com.alpha67.AMCBase.block.tileBlock.market.DiamondMarketBlock;
 import com.alpha67.AMCBase.block.tileBlock.market.GoldMarketBlock;
@@ -38,6 +39,10 @@ public class ModBlocks {
     public static final RegistryObject<Block> ALPHARIUM_LOGO = registerBlock("alpharium_logo",
             () -> new Block(AbstractBlock.Properties.create(Material.ROCK)
                     .harvestLevel(2).setRequiresTool().harvestTool(ToolType.PICKAXE).hardnessAndResistance(5f)), 64);
+
+    public static final RegistryObject<Block> ATM = registerBlock("atm",
+            () -> new ATMBlock(AbstractBlock.Properties.create(Material.IRON)
+                    .harvestLevel(1).hardnessAndResistance(5f)), 64);
 
     public static final RegistryObject<Block> STONE_MARKET = registerBlock("stone_market",
             () -> new StoneMarketBlock(AbstractBlock.Properties.create(Material.IRON)

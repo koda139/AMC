@@ -212,7 +212,7 @@ public class WoodMarketTile extends TileEntityBase implements ITickableTileEntit
 
                         System.out.println("give the money !!!!!");
 
-                        money.giveMoney(owner, WoodPrice, 0, "Wood");
+                        money.giveMoney(owner, WoodPrice);
 
                         itemHandler.extractItem(0, 1, false);
 

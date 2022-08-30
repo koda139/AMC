@@ -10,11 +10,13 @@ import com.alpha67.AMCBase.entity.render.ModBoatRenderer;
 import com.alpha67.AMCBase.entity.render.PigeonRenderer;
 import com.alpha67.AMCBase.init.ModFluids;
 import com.alpha67.AMCBase.init.ModItems;
+import com.alpha67.AMCBase.network.ButtonATM;
 import com.alpha67.AMCBase.network.ButtonPacket;
 import com.alpha67.AMCBase.network.ButtonMarket;
 import com.alpha67.AMCBase.paintings.ModPaintings;
 import com.alpha67.AMCBase.screen.*;
 import com.alpha67.AMCBase.init.ModTileEntities;
+import com.alpha67.AMCBase.screen.mainMenu.mainMenuScreen;
 import com.alpha67.AMCBase.screen.market.DiamondMarketScreen;
 import com.alpha67.AMCBase.screen.market.GoldMarketScreen;
 import com.alpha67.AMCBase.screen.market.StoneMarketScreen;
@@ -45,18 +47,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ExtensionPoint;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -66,8 +67,6 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import top.theillusivec4.curios.api.SlotTypeMessage;
-import top.theillusivec4.curios.api.SlotTypePreset;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -101,6 +100,8 @@ public class AMCBase {
         // Register the setup method for modloading
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        MinecraftForge.EVENT_BUS.addListener(this::onOpenGui);
+
         //MinecraftForge.EVENT_BUS.register(this);
 
         ModItems.register(eventBus);
@@ -121,7 +122,6 @@ public class AMCBase {
 
         eventBus.addListener(this::setup);
         // Register the enqueueIMC method for modloading
-        eventBus.addListener(this::enqueueIMC);
         // Register the processIMC method for modloading
         eventBus.addListener(this::processIMC);
         // Register the doClientStuff method for modloading
@@ -133,13 +133,9 @@ public class AMCBase {
 
     private void setup(final FMLCommonSetupEvent event) {
 
-
-        int index = 0;
-        PACKET_HANDLER.registerMessage(index, ButtonPacket.class, ButtonPacket::encode, ButtonPacket::decode, ButtonPacket::handle);
-        PACKET_HANDLER.registerMessage(index, ButtonMarket.class,
-                ButtonMarket::toBytes,
-                ButtonMarket::new,
-                ButtonMarket::handle);
+        PACKET_HANDLER.registerMessage(0, ButtonPacket.class, ButtonPacket::encode, ButtonPacket::decode, ButtonPacket::handle);
+        PACKET_HANDLER.registerMessage(1, ButtonMarket.class, ButtonMarket::toBytes, ButtonMarket::new, ButtonMarket::handle);
+        PACKET_HANDLER.registerMessage(2, ButtonATM.class, ButtonATM::toBytes, ButtonATM::new, ButtonATM::handle);
 
 
         event.enqueueWork(() -> {
@@ -189,6 +185,9 @@ public class AMCBase {
             ScreenManager.registerFactory(ModContainers.COMPRESSOR_BLOCK_CONTAINER.get(),
                     CompressorBlockScreen::new);
 
+            ScreenManager.registerFactory(ModContainers.ATM_BLOCK_CONTAINER.get(),
+                    ATMBlockScreen::new);
+
             ClientRegistry.bindTileEntityRenderer(ModTileEntities.SIGN_TILE_ENTITIES.get(),
                     SignTileEntityRenderer::new);
             Atlases.addWoodType(ModWoodTypes.REDWOOD);
@@ -212,15 +211,11 @@ public class AMCBase {
     {
         if(event.getGui() != null && event.getGui().getClass() == MainMenuScreen.class)
         {
-            //event.setGui(new GuiCustomMainMenu(false));
-            //System.out.println("saluit");
+            event.setGui(new mainMenuScreen(true));
+            System.out.println("saluit");
         }
     }
 
-    private void enqueueIMC(final InterModEnqueueEvent event) {
-        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE,
-                () -> SlotTypePreset.CHARM.getMessageBuilder().build());
-    }
 
     private void processIMC(final InterModProcessEvent event) {
 

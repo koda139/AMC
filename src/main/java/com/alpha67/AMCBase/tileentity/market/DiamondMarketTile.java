@@ -212,7 +212,7 @@ public class DiamondMarketTile extends TileEntityBase implements ITickableTileEn
 
                             System.out.println("give the money !!!!!");
 
-                            money.giveMoney(owner, DiamondPrice, 0, "diamond");
+                            money.giveMoney(owner, DiamondPrice);
 
                             itemHandler.extractItem(0, 1, false);
 

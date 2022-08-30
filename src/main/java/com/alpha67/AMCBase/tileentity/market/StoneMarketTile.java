@@ -215,7 +215,7 @@ public class StoneMarketTile extends TileEntityBase implements ITickableTileEnti
 
                             System.out.println("give the money !!!!!");
 
-                            money.giveMoney(owner, StonePrice, 0, "Stone");
+                            money.giveMoney(owner, StonePrice);
 
                             itemHandler.extractItem(0, 1, false);
 

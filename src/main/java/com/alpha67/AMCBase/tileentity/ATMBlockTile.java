@@ -1,9 +1,9 @@
-package com.alpha67.AMCBase.tileentity.market;
+package com.alpha67.AMCBase.tileentity;
 
 import com.alpha67.AMCBase.init.ModBlocks;
+import com.alpha67.AMCBase.init.ModItems;
 import com.alpha67.AMCBase.init.ModTileEntities;
 import com.alpha67.AMCBase.pluginManage.money;
-import com.alpha67.AMCBase.pluginManage.sell;
 import com.alpha67.AMCBase.tileentity.util.CustomEnergyStorage;
 import com.alpha67.AMCBase.tileentity.util.IEnergyDisplay;
 import com.alpha67.AMCBase.tileentity.util.ISharingEnergyProvider;
@@ -16,7 +16,6 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -24,16 +23,11 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.io.FileReader;
-import java.io.IOException;
 
-public class GoldMarketTile extends TileEntityBase implements ITickableTileEntity, ISharingEnergyProvider, IEnergyDisplay {
+public class ATMBlockTile extends TileEntityBase implements ITickableTileEntity, ISharingEnergyProvider, IEnergyDisplay {
 
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
@@ -42,35 +36,29 @@ public class GoldMarketTile extends TileEntityBase implements ITickableTileEntit
 
     int state;
     int time;
-    int finishTime = 10;
+    int finishTime = 3;
     int maxStack = 64;
     int i = 0;
 
-    int x;
-    int y;
-    int z;
-
-    boolean buttonClick;
-
     public int avanc;
 
-    public GoldMarketTile(TileEntityType<?> tileEntityTypeIn) {
+    public ATMBlockTile(TileEntityType<?> tileEntityTypeIn) {
         super(tileEntityTypeIn);
     }
 
-    public GoldMarketTile() {
-        this(ModTileEntities.GOLD_MARKET_TILE.get());
+    public ATMBlockTile() {
+        this(ModTileEntities.ATM_BLOCK_TILE.get());
     }
 
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
-        //System.out.println("packet 2");
+        System.out.println("packet 2");
         return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-       // System.out.println("packet 1");
+        System.out.println("packet 1");
         this.read(this.getBlockState(), pkt.getNbtCompound());
     }
 
@@ -106,7 +94,7 @@ public class GoldMarketTile extends TileEntityBase implements ITickableTileEntit
         };
     }
 
-    @Override
+   @Override
     public void writeSyncableNBT(CompoundNBT compound, NBTType type) {
         if (type != NBTType.SAVE_BLOCK) {}
         this.storage.writeToNBT(compound);
@@ -117,7 +105,6 @@ public class GoldMarketTile extends TileEntityBase implements ITickableTileEntit
     public void readSyncableNBT(CompoundNBT compound, NBTType type) {
         if (type != NBTType.SAVE_BLOCK) {}
         this.storage.readFromNBT(compound);
-        this.buttonClick = this.getTileData().getBoolean("buttonClick");
         super.readSyncableNBT(compound, type);
     }
 
@@ -139,10 +126,81 @@ public class GoldMarketTile extends TileEntityBase implements ITickableTileEntit
         return this.getTileData().getInt("avanc");
     }
 
-    public void startSell()
+
+    public void getF()
     {
-        this.buttonClick = true;
-        this.getTileData().putBoolean("buttonClick", true);
+        String UUID = this.getTileData().getString("uuid");
+        if(itemHandler.getStackInSlot(0) == ModItems.FIVE_CF.get().getDefaultInstance() || itemHandler.getStackInSlot(0).getCount() == 0) {
+            if(money.removeMoney(UUID, 50))
+            {
+                itemHandler.insertItem(0, ModItems.FIFTY_CF.get().getDefaultInstance(), false);
+            }
+        }
+    }
+
+    public void getH()
+    {
+        String UUID = this.getTileData().getString("uuid");
+        if(itemHandler.getStackInSlot(0) == ModItems.HUNDRED_CF.get().getDefaultInstance() || itemHandler.getStackInSlot(0).getCount() == 0) {
+            if(money.removeMoney(UUID, 100))
+            {
+                itemHandler.insertItem(0, ModItems.HUNDRED_CF.get().getDefaultInstance(), false);
+            }
+        }
+    }
+
+    public void getFH()
+    {
+        String UUID = this.getTileData().getString("uuid");
+        if(itemHandler.getStackInSlot(0) == ModItems.FIVE_HUNDRED_CF.get().getDefaultInstance() || itemHandler.getStackInSlot(0).getCount() == 0) {
+            if(money.removeMoney(UUID, 500))
+            {
+                itemHandler.insertItem(0, ModItems.FIVE_HUNDRED_CF.get().getDefaultInstance(), false);
+            }
+        }
+    }
+
+    public void send()
+    {
+        String UUID = this.getTileData().getString("uuid");
+        System.out.println(itemHandler.getStackInSlot(0));
+        System.out.println(ModItems.FIVE_HUNDRED_CF.get().getDefaultInstance());
+        if(itemHandler.getStackInSlot(0).getItem() == ModItems.ONE_CF.get().asItem())
+        {
+            money.giveMoney(UUID, 1*itemHandler.getStackInSlot(0).getCount());
+            itemHandler.getStackInSlot(0).setCount(0);
+        }
+        else if(itemHandler.getStackInSlot(0).getItem() == ModItems.FIVE_CF.get().asItem())
+        {
+            money.giveMoney(UUID, 5*itemHandler.getStackInSlot(0).getCount());
+            itemHandler.getStackInSlot(0).setCount(0);
+        }
+        else if(itemHandler.getStackInSlot(0).getItem() == ModItems.TEN_CF.get().asItem())
+        {
+            money.giveMoney(UUID, 10*itemHandler.getStackInSlot(0).getCount());
+            itemHandler.getStackInSlot(0).setCount(0);
+        }
+        else if(itemHandler.getStackInSlot(0).getItem() == ModItems.TWENTY_CF.get().asItem())
+        {
+            money.giveMoney(UUID, 20*itemHandler.getStackInSlot(0).getCount());
+            itemHandler.getStackInSlot(0).setCount(0);
+        }
+        else if(itemHandler.getStackInSlot(0).getItem() == ModItems.FIVE_CF.get().asItem())
+        {
+            money.giveMoney(UUID, 50*itemHandler.getStackInSlot(0).getCount());
+            itemHandler.getStackInSlot(0).setCount(0);
+        }
+        else if(itemHandler.getStackInSlot(0).getItem() == ModItems.HUNDRED_CF.get().asItem())
+        {
+            money.giveMoney(UUID, 100*itemHandler.getStackInSlot(0).getCount());
+            itemHandler.getStackInSlot(0).setCount(0);
+        }
+        else if(itemHandler.getStackInSlot(0).getItem() == ModItems.FIVE_HUNDRED_CF.get().asItem())
+        {
+            money.giveMoney(UUID, 500*itemHandler.getStackInSlot(0).getCount());
+            itemHandler.getStackInSlot(0).setCount(0);
+        }
+
     }
 
 
@@ -151,130 +209,7 @@ public class GoldMarketTile extends TileEntityBase implements ITickableTileEntit
         super.updateEntity();
         if (!world.isRemote) {
 
-            avanc = (time/(finishTime*20))*100;
-            this.getTileData().putInt("avanc", avanc);
-            String owner = this.getTileData().getString("owner");
-
-            if(i >=5){
-                x = pos.getX();
-                y = pos.getY();
-                z = pos.getZ();
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 1);}
-            else
-                i = i+1;
-
-           // System.out.println("owner" + owner);
-
-            try {
-                Object ob2 = new JSONParser().parse(new FileReader("communication-alpha/playerData/"+owner+".json"));
-                JSONObject js2 = (JSONObject) ob2;
-
-                double money = (double) js2.get("money");
-
-                this.getTileData().putDouble("money", money);
-
-                Object ob3 = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
-                JSONObject js3 = (JSONObject) ob3;
-
-                double GoldPrice = (double) js3.get("GoldPrice");
-                double GoldMax = (double) js3.get("GoldMax");
-
-                this.getTileData().putDouble("GoldPrice", GoldPrice);
-                this.getTileData().putDouble("GoldMax", GoldMax);
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-
-            if (itemHandler.getStackInSlot(0).getItem() == ModBlocks.GOLD_PALLET.get().asItem() && this.buttonClick)
-            {
-                time = time+1;
-                this.getTileData().putInt("GoldTime", time);
-
-                if(this.buttonClick && world.getBlockState(new BlockPos((int) x, (int) y + 1, (int) z)).getBlock() == ModBlocks.ANTENNA.get()) {
-
-                if (time >= finishTime*20)
-                {
-
-                    storage.extractEnergy(100, false);
-                    time = 0;
-
-                    this.getTileData().putBoolean("buttonClick", false);
-                    this.buttonClick = false;
-
-                    Object ob = null;
-                    try {
-                        ob = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
-                        JSONObject js = (JSONObject) ob;
-
-                        double GoldPrice = (double) js.get("GoldPrice");
-
-                        System.out.println("give the money !!!!!");
-
-                        money.giveMoney(owner, GoldPrice);
-
-                        itemHandler.extractItem(0, 1, false);
-
-                        sell.sell("gold");
-
-
-                    } catch (IOException | ParseException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                }else {time = 0;}
-
-            }
         }
-    }
-
-    public double getGoldPrice() {
-        try{
-            return this.getTileData().getDouble("GoldPrice");
-        }
-
-        catch (Exception e)
-        {
-            return -1;
-        }
-    }
-
-    public int getGoldTime() {
-        try{
-            return this.getTileData().getInt("GoldTime");
-        }
-
-        catch (Exception e)
-        {
-            return -1;
-        }
-    }
-
-    public double getMaxPrice() {
-        try{
-            return this.getTileData().getDouble("GoldMax");
-        }
-
-        catch (Exception e)
-        {
-            return -1;
-        }
-    }
-
-    public double getMoney()
-    {
-        try{
-            double teee = this.getTileData().getDouble("money");
-            //System.out.println("teeee"+teee);
-            return teee;}
-        catch (Exception e)
-        {
-            return -2;
-        }
-
     }
 
 

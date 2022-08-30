@@ -1,9 +1,9 @@
-package com.alpha67.AMCBase.container.market;
+package com.alpha67.AMCBase.container;
 
 import com.alpha67.AMCBase.init.ModBlocks;
 import com.alpha67.AMCBase.init.ModContainers;
+import com.alpha67.AMCBase.tileentity.ATMBlockTile;
 import com.alpha67.AMCBase.tileentity.market.DiamondMarketTile;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -13,47 +13,30 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class DiamondMarketContainer extends Container {
+public class ATMBlockContainer extends Container {
     private final TileEntity tileEntity;
     private final PlayerEntity playerEntity;
     private final IItemHandler playerInventory;
-    public BlockPos BlockPos;
 
-    public final DiamondMarketTile generator;
-
-    protected DiamondMarketTile te;
-
-    public PlayerEntity player;
-
+    protected ATMBlockTile te;
     public int x, y, z;
 
-    public Block block;
+    public BlockPos BlockPos;
 
-    public World world;
-    //public BlockPos;
+    public final ATMBlockTile generator;
 
-
-    public DiamondMarketContainer(int windowId, World world, BlockPos pos,
-                                  PlayerInventory playerInventory, PlayerEntity player) {
-        super(ModContainers.DIAMOND_MARKET_CONTAINER.get(), windowId);
+    public ATMBlockContainer(int windowId, World world, BlockPos pos,
+                             PlayerInventory playerInventory, PlayerEntity player) {
+        super(ModContainers.ATM_BLOCK_CONTAINER.get(), windowId);
         this.tileEntity = world.getTileEntity(pos);
-        playerEntity = player;
-        this.playerInventory = new InvWrapper(playerInventory);
-        layoutPlayerInventorySlots(8, 86);
+        this.generator = (ATMBlockTile) tileEntity;
 
-        this.generator = (DiamondMarketTile) tileEntity;
-        this.world = world;
-
-        this.player = player;
-
-        this.te = (DiamondMarketTile) world.getTileEntity(pos);
+        this.te = (ATMBlockTile) world.getTileEntity(pos);
 
         this.BlockPos = pos;
 
@@ -61,49 +44,30 @@ public class DiamondMarketContainer extends Container {
         this.y = pos.getY();
         this.z = pos.getZ();
 
-        //addSlot(new SlotItemHandler(this.playerInventory, 0, 80, 31));
+        playerEntity = player;
+        this.playerInventory = new InvWrapper(playerInventory);
+        layoutPlayerInventorySlots(8, 86);
 
         if(tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 129, 31));
+                addSlot(new SlotItemHandler(h, 0, 138, 14));
+                //addSlot(new SlotItemHandler(h, 1, 80, 53));
             });
         }
+    }
 
-
-        }
-
-
+    public int getAvanc()
+    {
+        return this.generator.getAvanc();
+    }
 
 
     @Override
     public boolean canInteractWith(PlayerEntity playerIn) {
         return isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()),
-                playerIn, ModBlocks.DIAMOND_MARKET.get());
+                playerIn, ModBlocks.ATM.get());
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public double getMoneyContainer()
-    {
-        return this.te.getMoney();
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public double getDiamondPrice()
-    {
-        return this.te.getDiamondPrice();
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public int getDiamondTime()
-    {
-        return this.te.getDiamondTime();
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public double getMaxPrice()
-    {
-        return this.te.getMaxPrice();
-    }
 
     private int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
         for (int i = 0; i < amount; i++) {
@@ -147,7 +111,7 @@ public class DiamondMarketContainer extends Container {
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
 
     // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 1;  // must match TileEntityInventoryBasic.NUMBER_OF_SLOTS
+    private static final int TE_INVENTORY_SLOT_COUNT = 2;  // must match TileEntityInventoryBasic.NUMBER_OF_SLOTS
 
     @Override
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
@@ -181,5 +145,4 @@ public class DiamondMarketContainer extends Container {
         sourceSlot.onTake(playerEntity, sourceStack);
         return copyOfSourceStack;
     }
-
 }
