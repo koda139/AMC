@@ -54,7 +54,7 @@ public class money {
 
             double pastMoney = (double) js.get("money");
 
-            double newMoney = pastMoney + sellPrice;
+            double newMoney = pastMoney - sellPrice;
 
             JSONObject jsonObject = new JSONObject();
             //Inserting key-value pairs into the json object

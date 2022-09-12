@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "dad",
+    "ece",
+    "#a#"
+  ],
+  "key": {
+    "d": {
+      "item": "amcbase:batterie"
+    },
+    "a": {
+      "item": "amcbase:market_componement_tier2"
+    },
+    "c": {
+      "item": "minecraft:planks"
+    },
+    "#": {
+      "item": "minecraft:iron_block"
+    },
+    "e": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "result": {
+    "item": "amcbase:stone_market"
+  }
+}

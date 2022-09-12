@@ -21,9 +21,12 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
@@ -68,7 +71,7 @@ public class DiamondMarketBlock extends HorizontalBlock {
                 tile.getTileData().putString("owner", String.valueOf(player.getUniqueID()));
 
                 String message = "This Diamond market block is now yours";
-                //player.sendMessage(ITextComponent.getTextComponentOrEmpty(message), player.getUniqueID());
+                player.sendMessage(new StringTextComponent("This Diamond market block is now yours"), player.getUniqueID());
             }
         }
 
@@ -97,13 +100,13 @@ public class DiamondMarketBlock extends HorizontalBlock {
                 }
                 else{
                     String message = "sorry but your Diamond market block is not connecte to the the network ! You need an antenna.";
-                   // player.sendMessage(ITextComponent.getTextComponentOrEmpty(message), player.getUniqueID());
+                    player.sendMessage(new StringTextComponent(message), player.getUniqueID());
                 }
             }
 
             else {
                 String message = "Sorry but this is not your Diamond market block";
-                //player.sendMessage(ITextComponent.getTextComponentOrEmpty(message), player.getUniqueID());
+                player.sendMessage(new StringTextComponent(message), player.getUniqueID());
             }
         }
 

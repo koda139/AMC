@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "a",
+    "cbc",
+    "a"
+  ],
+  "key": {
+    "c": {
+      "item": "amcbase:copper_cable"
+    },
+    "a": {
+      "item": "amcbase:batterie"
+    },
+    "b": {
+      "item": "amcbase:electronic_card"
+    }
+  },
+  "result": {
+    "item": "amcbase:market_componement"
+  }
+}

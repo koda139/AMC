@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "amcbase:block/atm",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "amcbase:block/atm"
+    },
+    "facing=south": {
+      "model": "amcbase:block/atm",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "amcbase:block/atm",
+      "y": 270
+    }
+  }
+}

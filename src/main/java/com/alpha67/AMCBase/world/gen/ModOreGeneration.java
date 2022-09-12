@@ -27,6 +27,8 @@ public class ModOreGeneration {
         //spawnOreInAllBiomes(OreType.FIRESTONE, event, Dimension.THE_NETHER.toString());
         spawnOreInAllBiomes(OreType.COPPER, event, Dimension.OVERWORLD.toString());
         spawnOreInAllBiomes(OreType.LITHIUM, event, Dimension.OVERWORLD.toString());
+        spawnOreInAllBiomes(OreType.RUBY, event, Dimension.OVERWORLD.toString());
+        spawnOreInAllBiomes(OreType.RUBY_NETHER, event, Dimension.THE_NETHER.toString());
     }
 
 

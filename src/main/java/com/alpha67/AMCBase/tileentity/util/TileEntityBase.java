@@ -10,6 +10,7 @@
 
 package com.alpha67.AMCBase.tileentity.util;
 
+import com.alpha67.AMCBase.util.ItemStackHandlerAA;
 import com.alpha67.AMCBase.util.VanillaPacketDispatcher;
 import com.alpha67.AMCBase.util.WorldUtil;
 import net.minecraft.block.BlockState;
@@ -201,9 +202,18 @@ public abstract class TileEntityBase extends TileEntity implements ITickableTile
                             amount = total;
                         }
 
+                        for (Direction side : Direction.values()) {
+                            BlockPos pos = this.getPos().offset(side);
+                            System.out.println(pos);
+                            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 1);
+                        }
+
                         for (Direction side : sides) {
                             TileEntity tile = this.tilesAround[side.ordinal()];
+                            System.out.println(tile);
+
                             if (tile != null && provider.canShareTo(tile)) {
+                                System.out.println("can");
                                 WorldUtil.doEnergyInteraction(this, tile, side, amount);
                             }
                         }
@@ -305,6 +315,14 @@ public abstract class TileEntityBase extends TileEntity implements ITickableTile
 
     public void activateOnPulse() {
 
+    }
+
+    public ItemStackHandlerAA.IAcceptor getAcceptor() {
+        return ItemStackHandlerAA.ACCEPT_TRUE;
+    }
+
+    public ItemStackHandlerAA.IRemover getRemover() {
+        return ItemStackHandlerAA.REMOVE_TRUE;
     }
 
     public boolean respondsToPulses() {

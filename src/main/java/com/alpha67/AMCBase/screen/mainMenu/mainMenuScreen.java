@@ -6,10 +6,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.screen.ConnectingScreen;
-import net.minecraft.client.gui.screen.MainMenuScreen;
-import net.minecraft.client.gui.screen.OptionsScreen;
-import net.minecraft.client.gui.screen.WorldSelectionScreen;
+import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.ImageButton;
@@ -126,6 +123,8 @@ public class mainMenuScreen extends MainMenuScreen {
         this.addButton(new Button(buttonWidth + 2, buttonHeight + 72 + 12, 98, 20, new TranslationTextComponent("menu.quit"), (p_213094_1_) -> {
             this.minecraft.shutdown();
         }));
+
+        this.addButton(new Button(buttonWidth - 100, buttonHeight + 24 * 1, 200, 20, new TranslationTextComponent("menu.multiplayer"), (p_213086_1_) -> {this.minecraft.displayGuiScreen(new MultiplayerScreen(this));}));
 
         //discord
         this.addButton(new ImageButton(420, 5, 40, 40, 0, 0, 40, BUTTON_TEXTURE, 120, 80, (p_213088_1_) -> {

@@ -23,12 +23,6 @@ public class messageDisplay {
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             ServerPlayerEntity player = ctx.get().getSender();
-           // BlockPos pos = new BlockPos(x, y, z);
-          //  StoneMarketTile te = (StoneMarketTile) player.getServerWorld().getTileEntity(pos);
-
-
-            //te.craftTheItem();
-
 
         ctx.get().setPacketHandled(true);
         });

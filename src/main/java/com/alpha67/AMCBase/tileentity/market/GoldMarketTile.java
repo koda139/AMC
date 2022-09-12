@@ -155,41 +155,39 @@ public class GoldMarketTile extends TileEntityBase implements ITickableTileEntit
             this.getTileData().putInt("avanc", avanc);
             String owner = this.getTileData().getString("owner");
 
-            if(i >=5){
+            if(i >=15){
                 x = pos.getX();
                 y = pos.getY();
                 z = pos.getZ();
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 1);}
+                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 1);
+
+                try {
+                    Object ob2 = new JSONParser().parse(new FileReader("communication-alpha/playerData/"+owner+".json"));
+                    JSONObject js2 = (JSONObject) ob2;
+
+                    double money = (double) js2.get("money");
+
+                    this.getTileData().putDouble("money", money);
+
+                    Object ob3 = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
+                    JSONObject js3 = (JSONObject) ob3;
+
+                    double GoldPrice = (double) js3.get("GoldPrice");
+                    double GoldMax = (double) js3.get("GoldMax");
+
+                    this.getTileData().putDouble("GoldPrice", GoldPrice);
+                    this.getTileData().putDouble("GoldMax", GoldMax);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }}
             else
                 i = i+1;
 
            // System.out.println("owner" + owner);
 
-            try {
-                Object ob2 = new JSONParser().parse(new FileReader("communication-alpha/playerData/"+owner+".json"));
-                JSONObject js2 = (JSONObject) ob2;
-
-                double money = (double) js2.get("money");
-
-                this.getTileData().putDouble("money", money);
-
-                Object ob3 = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
-                JSONObject js3 = (JSONObject) ob3;
-
-                double GoldPrice = (double) js3.get("GoldPrice");
-                double GoldMax = (double) js3.get("GoldMax");
-
-                this.getTileData().putDouble("GoldPrice", GoldPrice);
-                this.getTileData().putDouble("GoldMax", GoldMax);
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-
-            if (itemHandler.getStackInSlot(0).getItem() == ModBlocks.GOLD_PALLET.get().asItem() && this.buttonClick)
+            if (itemHandler.getStackInSlot(0).getItem() == ModBlocks.GOLD_PALLET.get().asItem() && this.buttonClick && storage.getEnergyStored() >= 100)
             {
                 time = time+1;
                 this.getTileData().putInt("GoldTime", time);

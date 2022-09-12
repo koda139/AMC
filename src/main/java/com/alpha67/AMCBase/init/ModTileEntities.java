@@ -49,6 +49,12 @@ public class ModTileEntities {
             TILE_ENTITIES.register("atm_block_tile", () -> TileEntityType.Builder.create(
                     ATMBlockTile::new, ModBlocks.ATM.get()).build(null));
 
+    public static RegistryObject<TileEntityType<CoalGeneratorTile>> COAL_GENERATOR_BLOCK =
+            TILE_ENTITIES.register("coal_generator_tile", () -> TileEntityType.Builder.create(
+                    CoalGeneratorTile::new, ModBlocks.COAL_GENERATOR.get()).build(null));
+
+
+
     public static final RegistryObject<TileEntityType<ModSignTileEntity>> SIGN_TILE_ENTITIES =
             TILE_ENTITIES.register("sign", () -> TileEntityType.Builder.create(ModSignTileEntity::new,
                     ModBlocks.REDWOOD_SIGN.get(),

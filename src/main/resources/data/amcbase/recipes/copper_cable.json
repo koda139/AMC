@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "#a#",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "amcbase:copper_ingot"
+    },
+    "a": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "item": "amcbase:copper_cable"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#a#",
+    "aba",
+    "#a#"
+  ],
+  "key": {
+    "#": {
+      "item": "amcbase:copper_cable"
+    },
+    "a": {
+      "item": "amcbase:iron_cable"
+    },
+    "b": {
+      "item": "amcbase:row_plack"
+    }
+  },
+  "result": {
+    "item": "amcbase:electronic_card"
+  }
+}

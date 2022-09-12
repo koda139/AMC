@@ -31,6 +31,7 @@ public class ATMBlockScreen extends ContainerScreen<ATMBlockContainer> {
     private BlockPos pos;
 
     int avanc;
+    double money;
 
     public ATMBlockScreen(ATMBlockContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);
@@ -45,7 +46,7 @@ public class ATMBlockScreen extends ContainerScreen<ATMBlockContainer> {
     @Override
     public void init() {
         super.init();
-        this.energy = new EnergyDisplay(this.guiLeft + 10, this.guiTop + 10, this.generator.storage);
+        this.energy = new EnergyDisplay(this.guiLeft + 10, this.guiTop - 10, this.generator.storage);
         //this.avanc = this.generator.avanc;
 
     }
@@ -56,29 +57,33 @@ public class ATMBlockScreen extends ContainerScreen<ATMBlockContainer> {
         super.render(matrices, x, y, f);
         this.energy.render(matrices, x, y);
 
+        money = this.getContainer().getMoneyContainer();
+
+        this.font.drawString(matrices, String.valueOf(this.money) + " CF", this.guiLeft + 110, this.guiTop -24, 11896576);
+
         ITextComponent a = ITextComponent.getTextComponentOrEmpty("50");
-        this.addButton(new Button(this.guiLeft + 28, this.guiTop + 8, 35, 20, a, e -> {
+        this.addButton(new Button(this.guiLeft + 28, this.guiTop - 24, 35, 20, a, e -> {
             if (true) {
                 AMCBase.PACKET_HANDLER.sendToServer(new ButtonATM(this.pos, 0));
             }
         }));
 
         ITextComponent b = ITextComponent.getTextComponentOrEmpty("100");
-        this.addButton(new Button(this.guiLeft + 25, this.guiTop + 33, 40, 15, b, e -> {
+        this.addButton(new Button(this.guiLeft + 25, this.guiTop + 10, 40, 20, b, e -> {
             if (true) {
                 AMCBase.PACKET_HANDLER.sendToServer(new ButtonATM(this.pos, 1));
             }
         }));
 
         ITextComponent c = ITextComponent.getTextComponentOrEmpty("500");
-        this.addButton(new Button(this.guiLeft + 25, this.guiTop + 59, 40, 15, c, e -> {
+        this.addButton(new Button(this.guiLeft + 25, this.guiTop + 50, 40, 20, c, e -> {
             if (true) {
                 AMCBase.PACKET_HANDLER.sendToServer(new ButtonATM(this.pos, 2));
             }
         }));
 
         ITextComponent d = ITextComponent.getTextComponentOrEmpty("send");
-        this.addButton(new Button(this.guiLeft + 119, this.guiTop + 58, 46, 15, d, e -> {
+        this.addButton(new Button(this.guiLeft + 119, this.guiTop + 58, 46, 20, d, e -> {
             if (true) {
                 AMCBase.PACKET_HANDLER.sendToServer(new ButtonATM(this.pos, 3));
             }
@@ -95,7 +100,7 @@ public class ATMBlockScreen extends ContainerScreen<ATMBlockContainer> {
         this.minecraft.getTextureManager().bindTexture(GUI_off);
         i = (this.width - this.xSize) / 2;
         j = (this.height - this.ySize) / 2;
-       this.blit(matrices, i, j, 0, 0, this.xSize, this.ySize, 176, 167);
+       this.blit(matrices, i, j-33, 0, 0, this.xSize, this.ySize+33, 176, 200);
 
         this.font.drawString(matrices, String.valueOf(avanc) + "%", this.guiLeft + 145, this.guiTop + 58, -12829636);
 
@@ -112,7 +117,7 @@ public class ATMBlockScreen extends ContainerScreen<ATMBlockContainer> {
     @Override
     public void tick()
     {
-        avanc = this.getContainer().getAvanc();
+        //avanc = this.getContainer().getAvanc();
       //  System.out.println(avanc);
     }
 }

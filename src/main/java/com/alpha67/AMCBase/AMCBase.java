@@ -14,8 +14,11 @@ import com.alpha67.AMCBase.network.ButtonATM;
 import com.alpha67.AMCBase.network.ButtonPacket;
 import com.alpha67.AMCBase.network.ButtonMarket;
 import com.alpha67.AMCBase.paintings.ModPaintings;
-import com.alpha67.AMCBase.screen.*;
 import com.alpha67.AMCBase.init.ModTileEntities;
+import com.alpha67.AMCBase.screen.ATMBlockScreen;
+import com.alpha67.AMCBase.screen.CoalGeneratorScreen;
+import com.alpha67.AMCBase.screen.CompressorBlockScreen;
+import com.alpha67.AMCBase.screen.LightningChannelerScreen;
 import com.alpha67.AMCBase.screen.mainMenu.mainMenuScreen;
 import com.alpha67.AMCBase.screen.market.DiamondMarketScreen;
 import com.alpha67.AMCBase.screen.market.GoldMarketScreen;
@@ -46,6 +49,8 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
@@ -80,6 +85,13 @@ import java.nio.file.StandardOpenOption;
 public class AMCBase {
     public static final String MOD_ID = "amcbase";
 
+    public static final ItemGroup AMCBase = new ItemGroup("AMCBase") {
+        @Override
+        public ItemStack createIcon() {
+            return new ItemStack(ModItems.AMC_LOGO.get());
+        }
+    };
+
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -99,8 +111,6 @@ public class AMCBase {
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
         // Register the setup method for modloading
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
-        MinecraftForge.EVENT_BUS.addListener(this::onOpenGui);
 
         //MinecraftForge.EVENT_BUS.register(this);
 
@@ -158,17 +168,26 @@ public class AMCBase {
     private void doClientStuff(final FMLClientSetupEvent event) {
 
         event.getMinecraftSupplier().get().execute(this::updateTitle);
+        MinecraftForge.EVENT_BUS.addListener(this::onOpenGui);
 
         event.enqueueWork(() -> {
+
+            //render transparent block
             RenderTypeLookup.setRenderLayer(ModBlocks.AMETHYST_DOOR.get(), RenderType.getCutout());
             RenderTypeLookup.setRenderLayer(ModBlocks.AMETHYST_TRAPDOOR.get(), RenderType.getCutout());
-
             RenderTypeLookup.setRenderLayer(ModBlocks.OATS.get(), RenderType.getCutout());
-
             RenderTypeLookup.setRenderLayer(ModBlocks.REDWOOD_LEAVES.get(), RenderType.getCutout());
             RenderTypeLookup.setRenderLayer(ModBlocks.REDWOOD_SAPLING.get(), RenderType.getCutout());
-
             RenderTypeLookup.setRenderLayer(ModBlocks.HYACINTH.get(), RenderType.getCutout());
+
+            RenderTypeLookup.setRenderLayer(ModBlocks.ANTENNA.get(), RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlocks.ATM.get(), RenderType.getCutout());
+
+            RenderTypeLookup.setRenderLayer(ModBlocks.STONE_PALLET.get(), RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlocks.WOOD_PALLET.get(), RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlocks.GOLD_PALLET.get(), RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlocks.DIAMOND_PALLET.get(), RenderType.getTranslucent());
+
 
             ScreenManager.registerFactory(ModContainers.LIGHTNING_CHANNELER_CONTAINER.get(),
                     LightningChannelerScreen::new);
@@ -187,6 +206,9 @@ public class AMCBase {
 
             ScreenManager.registerFactory(ModContainers.ATM_BLOCK_CONTAINER.get(),
                     ATMBlockScreen::new);
+
+            ScreenManager.registerFactory(ModContainers.COAL_GENERATOR_CONTAINER.get(),
+                    CoalGeneratorScreen::new);
 
             ClientRegistry.bindTileEntityRenderer(ModTileEntities.SIGN_TILE_ENTITIES.get(),
                     SignTileEntityRenderer::new);
@@ -207,12 +229,12 @@ public class AMCBase {
     }
 
     @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
     public void onOpenGui(GuiOpenEvent event)
     {
         if(event.getGui() != null && event.getGui().getClass() == MainMenuScreen.class)
         {
             event.setGui(new mainMenuScreen(true));
-            System.out.println("saluit");
         }
     }
 
@@ -230,6 +252,7 @@ public class AMCBase {
 
     private void updateTitle(){
         String Name = "Capitalium Factory";
+        String currentPath = System.getProperty("user.dir");
         final MainWindow window = Minecraft.getInstance().getMainWindow();
         window.setWindowTitle(Name);
         window.setWindowIcon(readIcon16(), readIcon32());
@@ -264,11 +287,4 @@ public class AMCBase {
             LOGGER.info("HELLO from Register Block");
         }
     }
-
-    public static final ItemGroup AMCBase = new ItemGroup("AMCBase") {
-        @Override
-        public ItemStack createIcon() {
-            return new ItemStack(ModItems.AMC_LOGO.get());
-        }
-    };
 }

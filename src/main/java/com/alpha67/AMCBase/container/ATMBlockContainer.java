@@ -13,6 +13,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -50,7 +52,8 @@ public class ATMBlockContainer extends Container {
 
         if(tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 138, 14));
+                addSlot(new SlotItemHandler(h, 1, 138, -3));
+                addSlot(new SlotItemHandler(h, 0, 138, 30));
                 //addSlot(new SlotItemHandler(h, 1, 80, 53));
             });
         }
@@ -59,6 +62,12 @@ public class ATMBlockContainer extends Container {
     public int getAvanc()
     {
         return this.generator.getAvanc();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public double getMoneyContainer()
+    {
+        return this.te.getMoney();
     }
 
 

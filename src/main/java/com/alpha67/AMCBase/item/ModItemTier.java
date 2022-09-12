@@ -10,6 +10,8 @@ import java.util.function.Supplier;
 public enum ModItemTier implements IItemTier {
 
     AMETHYST(3, 150, 4f, 12f, 10,
+            () -> Ingredient.fromItems(ModItems.AMETHYST.get())),
+    RUBY(3, 1500, 7f, 12f, 20,
             () -> Ingredient.fromItems(ModItems.AMETHYST.get()));
 
     private final int harvestLevel;

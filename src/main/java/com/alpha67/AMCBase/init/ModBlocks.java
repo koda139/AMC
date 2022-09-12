@@ -4,6 +4,7 @@ import com.alpha67.AMCBase.block.ModWoodTypes;
 import com.alpha67.AMCBase.block.custom.*;
 import com.alpha67.AMCBase.block.custom.trees.RedwoodTree;
 import com.alpha67.AMCBase.block.tileBlock.ATMBlock;
+import com.alpha67.AMCBase.block.tileBlock.CoalGeneratorBlock;
 import com.alpha67.AMCBase.block.tileBlock.LightningChannelerBlock;
 import com.alpha67.AMCBase.block.tileBlock.market.DiamondMarketBlock;
 import com.alpha67.AMCBase.block.tileBlock.market.GoldMarketBlock;
@@ -14,6 +15,8 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
 import net.minecraft.potion.Effects;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -24,6 +27,8 @@ import com.alpha67.AMCBase.AMCBase;
 //import net.tutorialsbykaupenjoe.tutorialmod.block.custom.*;
 import com.alpha67.AMCBase.item.ModItemGroup;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class ModBlocks {
@@ -44,6 +49,14 @@ public class ModBlocks {
             () -> new ATMBlock(AbstractBlock.Properties.create(Material.IRON)
                     .harvestLevel(1).hardnessAndResistance(5f)), 64);
 
+    public static final RegistryObject<Block> COPPER_BLOCK = registerBlock("copper_block",
+            () -> new Block(AbstractBlock.Properties.create(Material.IRON)
+                    .harvestLevel(1).hardnessAndResistance(3f)), 64);
+
+    public static final RegistryObject<Block> LITHIUM_BLOCK = registerBlock("lithium_block",
+            () -> new Block(AbstractBlock.Properties.create(Material.IRON)
+                    .harvestLevel(1).hardnessAndResistance(3f)), 64);
+
     public static final RegistryObject<Block> STONE_MARKET = registerBlock("stone_market",
             () -> new StoneMarketBlock(AbstractBlock.Properties.create(Material.IRON)
                     .harvestLevel(1).hardnessAndResistance(5f)), 64);
@@ -62,30 +75,39 @@ public class ModBlocks {
                     .harvestLevel(1).hardnessAndResistance(5f)), 64);
 
     public static final RegistryObject<Block> ANTENNA = registerBlock("antenna",
-            () -> new antennaBlock(AbstractBlock.Properties.create(Material.IRON).notSolid()), 64);
+            () -> new antennaBlock(AbstractBlock.Properties.create(Material.IRON).notSolid().hardnessAndResistance(3F, 3F)), 64);
 
     public static final RegistryObject<Block> ELECTRIC_BANK = registerBlock("electric_bank",
-            () -> new palletBlock(AbstractBlock.Properties.create(Material.IRON).notSolid()), 64);
+            () -> new palletBlock(AbstractBlock.Properties.create(Material.IRON).notSolid().hardnessAndResistance(4F, 3F)), 64);
 
     public static final RegistryObject<Block> STONE_PALLET = registerBlock("stone_pallet",
-            () -> new palletBlock(AbstractBlock.Properties.create(Material.WOOD)), 1);
+            () -> new palletBlock(AbstractBlock.Properties.create(Material.WOOD).harvestLevel(4).hardnessAndResistance(5F, 3F)), 1);
 
     public static final RegistryObject<Block> WOOD_PALLET = registerBlock("wood_pallet",
-            () -> new palletBlock(AbstractBlock.Properties.create(Material.WOOD)), 1);
+            () -> new palletBlock(AbstractBlock.Properties.create(Material.WOOD).harvestLevel(4).hardnessAndResistance(5F, 3F)), 1);
 
     public static final RegistryObject<Block> GOLD_PALLET = registerBlock("gold_pallet",
-            () -> new palletBlock(AbstractBlock.Properties.create(Material.WOOD)), 1);
+            () -> new palletBlock(AbstractBlock.Properties.create(Material.WOOD).harvestLevel(4).hardnessAndResistance(5F, 3F)), 1);
 
     public static final RegistryObject<Block> DIAMOND_PALLET = registerBlock("diamond_pallet",
-            () -> new palletBlock(AbstractBlock.Properties.create(Material.WOOD)), 1);
+            () -> new palletBlock(AbstractBlock.Properties.create(Material.WOOD).harvestLevel(5).hardnessAndResistance(5F, 3F)), 1);
+
+    public static final RegistryObject<Block> COAL_GENERATOR = registerBlock("coal_generator",
+            () -> new CoalGeneratorBlock(AbstractBlock.Properties.create(Material.ROCK).harvestLevel(1).hardnessAndResistance(5F, 3F)), 64);
 
 
     //monerai
     public static final RegistryObject<Block> COPPER_ORE = registerBlock("copper_ore",
-            () -> new Block(AbstractBlock.Properties.create(Material.ROCK)), 64);
+            () -> new Block(AbstractBlock.Properties.create(Material.ROCK).hardnessAndResistance(3F, 3F).harvestLevel(2).harvestTool(ToolType.PICKAXE)), 64);
 
     public static final RegistryObject<Block> LITHIUM_ORE = registerBlock("lithium_ore",
-            () -> new Block(AbstractBlock.Properties.create(Material.ROCK)), 64);
+            () -> new dropLIFR(AbstractBlock.Properties.create(Material.ROCK).hardnessAndResistance(3F, 3F).harvestLevel(2).harvestTool(ToolType.PICKAXE)), 64);
+
+    public static final RegistryObject<Block> RUBY_ORE = registerBlock("ruby_ore",
+            () -> new dropRuby(AbstractBlock.Properties.create(Material.ROCK).hardnessAndResistance(3F, 3F).harvestLevel(2).harvestTool(ToolType.PICKAXE)), 64);
+
+    public static final RegistryObject<Block> RUBY_ORE_NETHER = registerBlock("ruby_ore_nether",
+            () -> new dropRuby(AbstractBlock.Properties.create(Material.ROCK).hardnessAndResistance(3F, 3F).harvestLevel(2).harvestTool(ToolType.PICKAXE)), 64);
 
 
 
@@ -98,6 +120,18 @@ public class ModBlocks {
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block, int maxStack) {
         ModItems.ITEMS.register(name, () -> new BlockItem(block.get(),
                 new Item.Properties().group(AMCBase.AMCBase).maxStackSize(maxStack)));
+    }
+
+
+    private static <T extends Block>RegistryObject<T> registerBlockC(String name, Supplier<T> block, int maxStack) {
+        RegistryObject<T> toReturn = BLOCKS.register(name, block);
+        registerBlockItemC(name, toReturn, maxStack);
+        return toReturn;
+    }
+
+    private static <T extends Block> void registerBlockItemC(String name, RegistryObject<T> block, int maxStack) {
+        ModItems.ITEMS.register(name, () -> new BlockItem(block.get(),
+                new Item.Properties().maxStackSize(maxStack)));
     }
 
 
@@ -206,5 +240,33 @@ public class ModBlocks {
     public static void register(IEventBus eventBus) {
         BLOCKS_TUTO.register(eventBus);
         BLOCKS.register(eventBus);
+    }
+
+    private static class dropLIFR extends Block {
+        public dropLIFR(AbstractBlock.Properties properties) {
+            super(properties);
+        }
+        @Override
+        public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+
+            List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+            if (!dropsOriginal.isEmpty())
+                return dropsOriginal;
+            return Collections.singletonList(ModItems.LITHIUM_FRAGMENT.get().getDefaultInstance());
+        }
+    }
+
+    private static class dropRuby extends Block {
+        public dropRuby(AbstractBlock.Properties properties) {
+            super(properties);
+        }
+        @Override
+        public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+
+            List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+            if (!dropsOriginal.isEmpty())
+                return dropsOriginal;
+            return Collections.singletonList(ModItems.RUBY_NUGETS.get().getDefaultInstance());
+        }
     }
 }

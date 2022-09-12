@@ -9,6 +9,7 @@ import com.alpha67.AMCBase.tileentity.util.IEnergyDisplay;
 import com.alpha67.AMCBase.tileentity.util.ISharingEnergyProvider;
 import com.alpha67.AMCBase.tileentity.util.TileEntityBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -23,9 +24,12 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.FileReader;
 
 public class ATMBlockTile extends TileEntityBase implements ITickableTileEntity, ISharingEnergyProvider, IEnergyDisplay {
 
@@ -39,6 +43,7 @@ public class ATMBlockTile extends TileEntityBase implements ITickableTileEntity,
     int finishTime = 3;
     int maxStack = 64;
     int i = 0;
+    int a = 0;
 
     public int avanc;
 
@@ -130,9 +135,12 @@ public class ATMBlockTile extends TileEntityBase implements ITickableTileEntity,
     public void getF()
     {
         String UUID = this.getTileData().getString("uuid");
-        if(itemHandler.getStackInSlot(0) == ModItems.FIVE_CF.get().getDefaultInstance() || itemHandler.getStackInSlot(0).getCount() == 0) {
+        if(itemHandler.getStackInSlot(0).getItem() == ModItems.FIVE_CF.get().asItem() || itemHandler.getStackInSlot(0).getCount() == 0
+                && itemHandler.getStackInSlot(1).getItem() == Items.PAPER.asItem() && this.getEnergyStorage().getEnergyStored() >= 1500) {
             if(money.removeMoney(UUID, 50))
             {
+                storage.setEnergyStored(storage.getEnergyStored()-1500);
+                itemHandler.extractItem(1, 1, false);
                 itemHandler.insertItem(0, ModItems.FIFTY_CF.get().getDefaultInstance(), false);
             }
         }
@@ -141,9 +149,12 @@ public class ATMBlockTile extends TileEntityBase implements ITickableTileEntity,
     public void getH()
     {
         String UUID = this.getTileData().getString("uuid");
-        if(itemHandler.getStackInSlot(0) == ModItems.HUNDRED_CF.get().getDefaultInstance() || itemHandler.getStackInSlot(0).getCount() == 0) {
+        if(itemHandler.getStackInSlot(0).getItem() == ModItems.HUNDRED_CF.get().asItem() || itemHandler.getStackInSlot(0).getCount() == 0
+                && itemHandler.getStackInSlot(1).getItem() == Items.PAPER.asItem() && this.getEnergyStorage().getEnergyStored() >= 1500) {
             if(money.removeMoney(UUID, 100))
             {
+                storage.setEnergyStored(storage.getEnergyStored()-1500);
+                itemHandler.extractItem(1, 1, false);
                 itemHandler.insertItem(0, ModItems.HUNDRED_CF.get().getDefaultInstance(), false);
             }
         }
@@ -152,9 +163,12 @@ public class ATMBlockTile extends TileEntityBase implements ITickableTileEntity,
     public void getFH()
     {
         String UUID = this.getTileData().getString("uuid");
-        if(itemHandler.getStackInSlot(0) == ModItems.FIVE_HUNDRED_CF.get().getDefaultInstance() || itemHandler.getStackInSlot(0).getCount() == 0) {
+        if(itemHandler.getStackInSlot(0).getItem() == ModItems.FIVE_HUNDRED_CF.get().asItem() || itemHandler.getStackInSlot(0).getCount() == 0
+                && itemHandler.getStackInSlot(1).getItem() == Items.PAPER.asItem() && this.getEnergyStorage().getEnergyStored() >= 1500){
             if(money.removeMoney(UUID, 500))
             {
+                storage.setEnergyStored(storage.getEnergyStored()-1500);
+                itemHandler.extractItem(1, 1, false);
                 itemHandler.insertItem(0, ModItems.FIVE_HUNDRED_CF.get().getDefaultInstance(), false);
             }
         }
@@ -163,42 +177,53 @@ public class ATMBlockTile extends TileEntityBase implements ITickableTileEntity,
     public void send()
     {
         String UUID = this.getTileData().getString("uuid");
-        System.out.println(itemHandler.getStackInSlot(0));
-        System.out.println(ModItems.FIVE_HUNDRED_CF.get().getDefaultInstance());
-        if(itemHandler.getStackInSlot(0).getItem() == ModItems.ONE_CF.get().asItem())
+        int itemNumber = itemHandler.getStackInSlot(0).getCount();
+
+        if(this.getEnergyStorage().getEnergyStored() >= 750*itemNumber)
         {
-            money.giveMoney(UUID, 1*itemHandler.getStackInSlot(0).getCount());
-            itemHandler.getStackInSlot(0).setCount(0);
-        }
-        else if(itemHandler.getStackInSlot(0).getItem() == ModItems.FIVE_CF.get().asItem())
-        {
-            money.giveMoney(UUID, 5*itemHandler.getStackInSlot(0).getCount());
-            itemHandler.getStackInSlot(0).setCount(0);
-        }
-        else if(itemHandler.getStackInSlot(0).getItem() == ModItems.TEN_CF.get().asItem())
-        {
-            money.giveMoney(UUID, 10*itemHandler.getStackInSlot(0).getCount());
-            itemHandler.getStackInSlot(0).setCount(0);
-        }
-        else if(itemHandler.getStackInSlot(0).getItem() == ModItems.TWENTY_CF.get().asItem())
-        {
-            money.giveMoney(UUID, 20*itemHandler.getStackInSlot(0).getCount());
-            itemHandler.getStackInSlot(0).setCount(0);
-        }
-        else if(itemHandler.getStackInSlot(0).getItem() == ModItems.FIVE_CF.get().asItem())
-        {
-            money.giveMoney(UUID, 50*itemHandler.getStackInSlot(0).getCount());
-            itemHandler.getStackInSlot(0).setCount(0);
-        }
-        else if(itemHandler.getStackInSlot(0).getItem() == ModItems.HUNDRED_CF.get().asItem())
-        {
-            money.giveMoney(UUID, 100*itemHandler.getStackInSlot(0).getCount());
-            itemHandler.getStackInSlot(0).setCount(0);
-        }
-        else if(itemHandler.getStackInSlot(0).getItem() == ModItems.FIVE_HUNDRED_CF.get().asItem())
-        {
-            money.giveMoney(UUID, 500*itemHandler.getStackInSlot(0).getCount());
-            itemHandler.getStackInSlot(0).setCount(0);
+            if(itemHandler.getStackInSlot(0).getItem() == ModItems.ONE_CF.get().asItem())
+            {
+                storage.setEnergyStored(storage.getEnergyStored()-1000*itemNumber);
+                money.giveMoney(UUID, itemNumber*1*itemHandler.getStackInSlot(0).getCount());
+                itemHandler.getStackInSlot(0).setCount(0);
+            }
+            else if(itemHandler.getStackInSlot(0).getItem() == ModItems.FIVE_CF.get().asItem())
+            {
+                storage.setEnergyStored(storage.getEnergyStored()-1000*itemNumber);
+                money.giveMoney(UUID, itemNumber*5*itemHandler.getStackInSlot(0).getCount());
+                itemHandler.getStackInSlot(0).setCount(0);
+            }
+            else if(itemHandler.getStackInSlot(0).getItem() == ModItems.TEN_CF.get().asItem())
+            {
+                storage.setEnergyStored(storage.getEnergyStored()-1000*itemNumber);
+                money.giveMoney(UUID, itemNumber*10*itemHandler.getStackInSlot(0).getCount());
+                itemHandler.getStackInSlot(0).setCount(0);
+            }
+            else if(itemHandler.getStackInSlot(0).getItem() == ModItems.TWENTY_CF.get().asItem())
+            {
+                storage.setEnergyStored(storage.getEnergyStored()-1000*itemNumber);
+                money.giveMoney(UUID, itemNumber*20*itemHandler.getStackInSlot(0).getCount());
+                itemHandler.getStackInSlot(0).setCount(0);
+            }
+            else if(itemHandler.getStackInSlot(0).getItem() == ModItems.FIFTY_CF.get().asItem())
+            {
+                storage.setEnergyStored(storage.getEnergyStored()-1000*itemNumber);
+                money.giveMoney(UUID, itemNumber*50*itemHandler.getStackInSlot(0).getCount());
+                itemHandler.getStackInSlot(0).setCount(0);
+            }
+            else if(itemHandler.getStackInSlot(0).getItem() == ModItems.HUNDRED_CF.get().asItem())
+            {
+                storage.setEnergyStored(storage.getEnergyStored()-1000*itemNumber);
+                money.giveMoney(UUID, itemNumber*100*itemHandler.getStackInSlot(0).getCount());
+                itemHandler.getStackInSlot(0).setCount(0);
+            }
+            else if(itemHandler.getStackInSlot(0).getItem() == ModItems.FIVE_HUNDRED_CF.get().asItem())
+            {
+                storage.setEnergyStored(storage.getEnergyStored()-1000*itemNumber);
+                money.giveMoney(UUID, itemNumber*500*itemHandler.getStackInSlot(0).getCount());
+                itemHandler.getStackInSlot(0).setCount(0);
+            }
+
         }
 
     }
@@ -209,7 +234,48 @@ public class ATMBlockTile extends TileEntityBase implements ITickableTileEntity,
         super.updateEntity();
         if (!world.isRemote) {
 
+            this.getEnergyStorage().extractEnergy(7, false);
+
+            if (a >= 10)
+            {
+                System.out.println(this.getEnergyStorage().getEnergyStored());
+                a = 0;
+                String UUID = this.getTileData().getString("uuid");
+
+                try {
+                    Object ob2 = new JSONParser().parse(new FileReader("communication-alpha/playerData/"+UUID+".json"));
+                    JSONObject js2 = (JSONObject) ob2;
+
+                    double money = (double) js2.get("money");
+
+                    this.getTileData().putDouble("money", money);
+                    System.out.println(money);
+
+                    Object ob3 = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
+                    JSONObject js3 = (JSONObject) ob3;
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            a = a +1;
+
         }
+    }
+
+    public double getMoney()
+    {
+        try{
+            double teee = this.getTileData().getDouble("money");
+            System.out.println(teee);
+            return teee;}
+        catch (Exception e)
+        {
+            return -2;
+        }
+
     }
 
 

@@ -155,41 +155,38 @@ public class DiamondMarketTile extends TileEntityBase implements ITickableTileEn
             this.getTileData().putInt("avanc", avanc);
             String owner = this.getTileData().getString("owner");
 
-            if(i >=5){
+            if(i >=15){
+                i = 0;
                 x = pos.getX();
                 y = pos.getY();
                 z = pos.getZ();
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 1);}
+                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 1);
+                try {
+                    Object ob2 = new JSONParser().parse(new FileReader("communication-alpha/playerData/"+owner+".json"));
+                    JSONObject js2 = (JSONObject) ob2;
+
+                    double money = (double) js2.get("money");
+
+                    this.getTileData().putDouble("money", money);
+
+                    Object ob3 = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
+                    JSONObject js3 = (JSONObject) ob3;
+
+                    double DiamondPrice = (double) js3.get("DiamondPrice");
+                    double DiamondMax = (double) js3.get("DiamondMax");
+
+                    this.getTileData().putDouble("DiamondPrice", DiamondPrice);
+                    this.getTileData().putDouble("DiamondMax", DiamondMax);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             else
                 i = i+1;
 
-           // System.out.println("owner" + owner);
-
-            try {
-                Object ob2 = new JSONParser().parse(new FileReader("communication-alpha/playerData/"+owner+".json"));
-                JSONObject js2 = (JSONObject) ob2;
-
-                double money = (double) js2.get("money");
-
-                this.getTileData().putDouble("money", money);
-
-                Object ob3 = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
-                JSONObject js3 = (JSONObject) ob3;
-
-                double DiamondPrice = (double) js3.get("DiamondPrice");
-                double DiamondMax = (double) js3.get("DiamondMax");
-
-                this.getTileData().putDouble("DiamondPrice", DiamondPrice);
-                this.getTileData().putDouble("DiamondMax", DiamondMax);
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-
-            if (itemHandler.getStackInSlot(0).getItem() == ModBlocks.DIAMOND_PALLET.get().asItem() && this.buttonClick)
+            if (itemHandler.getStackInSlot(0).getItem() == ModBlocks.DIAMOND_PALLET.get().asItem() && this.buttonClick && storage.getEnergyStored() >= 100)
             {
                 time = time+1;
                 this.getTileData().putInt("DiamondTime", time);

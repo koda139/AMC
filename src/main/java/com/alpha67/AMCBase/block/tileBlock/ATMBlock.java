@@ -1,6 +1,7 @@
 package com.alpha67.AMCBase.block.tileBlock;
 
 import com.alpha67.AMCBase.container.ATMBlockContainer;
+import com.alpha67.AMCBase.init.ModItems;
 import com.alpha67.AMCBase.init.ModTileEntities;
 import com.alpha67.AMCBase.tileentity.ATMBlockTile;
 import net.minecraft.block.Block;
@@ -19,6 +20,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -49,16 +51,22 @@ public class ATMBlock extends HorizontalBlock {
         if(!worldIn.isRemote()) {
             ATMBlockTile tileEntity = (ATMBlockTile) worldIn.getTileEntity(pos);
 
-            if(tileEntity instanceof ATMBlockTile) {
-                INamedContainerProvider containerProvider = createContainerProvider(worldIn, pos);
+            if (player.getHeldItemMainhand().getItem() == ModItems.CREDIT_CARD.get().asItem())
+            {
+                if(tileEntity instanceof ATMBlockTile) {
+                    INamedContainerProvider containerProvider = createContainerProvider(worldIn, pos);
 
-                tileEntity.getTileData().putString("uuid", player.getUniqueID().toString());
-                System.out.println(tileEntity.getTileData().getString("uuid"));
-                worldIn.notifyBlockUpdate(pos, state, state, 1);
+                    tileEntity.getTileData().putString("uuid", player.getUniqueID().toString());
+                    System.out.println(tileEntity.getTileData().getString("uuid"));
+                    worldIn.notifyBlockUpdate(pos, state, state, 1);
 
-                NetworkHooks.openGui(((ServerPlayerEntity)player), containerProvider, tileEntity.getPos());
-            } else {
-                throw new IllegalStateException("Our Container provider is missing!");
+                    NetworkHooks.openGui(((ServerPlayerEntity)player), containerProvider, tileEntity.getPos());
+                } else {
+                    throw new IllegalStateException("Our Container provider is missing!");
+                }
+            }
+            else {
+                player.sendMessage(new StringTextComponent("sorry but you need to the atm with a credit card"), player.getUniqueID());
             }
         }
         return ActionResultType.SUCCESS;

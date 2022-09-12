@@ -141,6 +141,12 @@ dependencies {
     // at runtime, use the full JEI jar
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.5:7.7.1.121")
 
+    //runtimeOnly fg.deobf("de.maxhenkel.corelib:corelib:1.16.5-1.0.5:javadoc")
+
+   // compile fg.deobf("mcp.mobius.waila:Hwyla:${hwyla_version}")
+
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+
    // runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.2")
    // compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.2:api")
 
@@ -193,7 +199,18 @@ jar.finalizedBy('reobfJar')
 // However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
 //publish.dependsOn('reobfJar')
 
-publishing {
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allJava
+}
+
+artifacts {
+    archives jar
+    archives sourcesJar
+
+}
+
+/*publishing {
     publications {
         mavenJava(MavenPublication) {
             artifact jar
@@ -204,4 +221,4 @@ publishing {
             url "file:///${project.projectDir}/mcmodsrepo"
         }
     }
-}
+}*/

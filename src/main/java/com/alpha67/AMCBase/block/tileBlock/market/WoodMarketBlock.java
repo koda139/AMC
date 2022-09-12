@@ -21,6 +21,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -68,7 +69,7 @@ public class WoodMarketBlock extends HorizontalBlock {
                 tile.getTileData().putString("owner", String.valueOf(player.getUniqueID()));
 
                 String message = "This Wood market block is now yours";
-                //player.sendMessage(ITextComponent.getTextComponentOrEmpty(message), player.getUniqueID());
+                player.sendMessage(new StringTextComponent(message), player.getUniqueID());
             }
         }
 
@@ -101,14 +102,14 @@ public class WoodMarketBlock extends HorizontalBlock {
                 else{
                     String message = "sorry but your Wood market block is not connecte to the the network ! You need an antenna.";
                     System.out.println(message);
-                   // player.sendMessage(ITextComponent.getTextComponentOrEmpty(message), player.getUniqueID());
+                    player.sendMessage(new StringTextComponent(message), player.getUniqueID());
                 }
             }
 
             else {
                 String message = "Sorry but this is not your Wood market block";
                 System.out.println(message);
-                //player.sendMessage(ITextComponent.getTextComponentOrEmpty(message), player.getUniqueID());
+                player.sendMessage(new StringTextComponent(message), player.getUniqueID());
             }
         }
 

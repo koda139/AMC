@@ -19,7 +19,7 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, AMCBase.MOD_ID);
 
-    // les items de AMC
+    // un peu tout
     public static final RegistryObject<Item> AMC_LOGO = ITEMS.register("amc_logo",
             () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
 
@@ -32,11 +32,31 @@ public class ModItems {
     public static final RegistryObject<Item> BATTERIE = ITEMS.register("batterie",
             () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
 
-    public static final RegistryObject<Item> MARKET_COMPONEMENT = ITEMS.register("market_componement",
+    public static final RegistryObject<Item> ELECTRONIC_CARD = ITEMS.register("electronic_card",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
+
+    public static final RegistryObject<Item> ROW_PLACK = ITEMS.register("row_plack",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
+
+    public static final RegistryObject<Item> WATER_CAPSULE = ITEMS.register("water_capsule",
             () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
 
 
+    //les market componment
+    public static final RegistryObject<Item> MARKET_COMPONEMENT = ITEMS.register("market_componement",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
+    public static final RegistryObject<Item> MARKET_COMPONEMENT_TIER2 = ITEMS.register("market_componement_tier2",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
+    public static final RegistryObject<Item> MARKET_COMPONEMENT_TIER3 = ITEMS.register("market_componement_tier3",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
+    public static final RegistryObject<Item> MARKET_COMPONEMENT_TIER4 = ITEMS.register("market_componement_tier4",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
+
+
+    //les cables
     public static final RegistryObject<Item> COPPER_CABLE = ITEMS.register("copper_cable",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
+    public static final RegistryObject<Item> IRON_CABLE = ITEMS.register("iron_cable",
             () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
 
 
@@ -51,7 +71,25 @@ public class ModItems {
     public static final RegistryObject<Item> LITHIUM_INGOT = ITEMS.register("lithium_ingot",
             () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
 
+    public static final RegistryObject<Item> RUBY_NUGETS = ITEMS.register("ruby_nugets",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
 
+    public static final RegistryObject<Item> RUBY_INGOT = ITEMS.register("ruby_ingot",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
+
+
+
+    //les outils
+    public static final RegistryObject<Item> RUBY_SWORD = ITEMS.register("ruby_sword",
+            () -> new SwordItem(ModItemTier.RUBY, 2, 3f, new Item.Properties().group(AMCBase.AMCBase)));
+    public static final RegistryObject<Item> RUBY_PICKAXE = ITEMS.register("ruby_pickaxe",
+            () -> new PickaxeItem(ModItemTier.RUBY, 2, 3f, new Item.Properties().group(AMCBase.AMCBase)));
+    public static final RegistryObject<Item> RUBY_AXE = ITEMS.register("ruby_axe",
+            () -> new AxeItem(ModItemTier.RUBY, 2, 3f, new Item.Properties().group(AMCBase.AMCBase)));
+    public static final RegistryObject<Item> RUBY_SHOVEL = ITEMS.register("ruby_shovel",
+            () -> new ShovelItem(ModItemTier.RUBY, 2, 3f, new Item.Properties().group(AMCBase.AMCBase)));
+    public static final RegistryObject<Item> RUBY_HOE = ITEMS.register("ruby_hoe",
+            () -> new HoeItem(ModItemTier.RUBY, 2, 3f, new Item.Properties().group(AMCBase.AMCBase)));
 
 
 
@@ -81,7 +119,7 @@ public class ModItems {
 
 
 
-    //les Items du tuot
+    //les Items du tuto
     public static final RegistryObject<Item> AMETHYST = ITEMS.register("amethyst",
             () -> new Item(new Item.Properties().group(ModItemGroup.TUTORIAL_GROUP)));
 

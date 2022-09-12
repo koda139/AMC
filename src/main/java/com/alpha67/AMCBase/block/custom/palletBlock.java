@@ -21,19 +21,19 @@ public class palletBlock extends HorizontalBlock {
     }
 
     private static final VoxelShape SHAPE_N = Stream.of(
-            Block.makeCuboidShape(0, 0, 0, 16, 32, 16)
+            Block.makeCuboidShape(0, 0, 0, 16, 16, 16)
     ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
 
     private static final VoxelShape SHAPE_E = Stream.of(
-            Block.makeCuboidShape(0, 0, 0, 16, 32, 16)
+            Block.makeCuboidShape(0, 0, 0, 16, 16, 16)
     ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
 
     private static final VoxelShape SHAPE_S = Stream.of(
-            Block.makeCuboidShape(0, 0, 0, 16, 32, 16)
+            Block.makeCuboidShape(0, 0, 0, 16, 16, 16)
     ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
 
     private static final VoxelShape SHAPE_W = Stream.of(
-            Block.makeCuboidShape(0, 0, 0, 16, 32, 16)
+            Block.makeCuboidShape(0, 0, 0, 16, 16, 16)
     ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
 
     @Override
