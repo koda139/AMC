@@ -110,6 +110,7 @@ public class WoodMarketTile extends TileEntityBase implements ITickableTileEntit
     public void writeSyncableNBT(CompoundNBT compound, NBTType type) {
         if (type != NBTType.SAVE_BLOCK) {}
         this.storage.writeToNBT(compound);
+        compound.put("inv", itemHandler.serializeNBT());
         super.writeSyncableNBT(compound, type);
     }
 
@@ -118,6 +119,7 @@ public class WoodMarketTile extends TileEntityBase implements ITickableTileEntit
         if (type != NBTType.SAVE_BLOCK) {}
         this.storage.readFromNBT(compound);
         this.buttonClick = this.getTileData().getBoolean("buttonClick");
+        itemHandler.deserializeNBT(compound.getCompound("inv"));
         super.readSyncableNBT(compound, type);
     }
 
@@ -155,73 +157,78 @@ public class WoodMarketTile extends TileEntityBase implements ITickableTileEntit
             this.getTileData().putInt("avanc", avanc);
             String owner = this.getTileData().getString("owner");
 
-            if(i >=15){
-                x = pos.getX();
-                y = pos.getY();
-                z = pos.getZ();
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 1);
-                try {
-                    Object ob2 = new JSONParser().parse(new FileReader("communication-alpha/playerData/"+owner+".json"));
-                    JSONObject js2 = (JSONObject) ob2;
+            if (owner.contains("1") || owner.contains("2") ||owner.contains("3") ||owner.contains("4") ||owner.contains("5") ||owner.contains("6") || owner.contains("7") || owner.contains("8") || owner.contains("9")) {
 
-                    double money = (double) js2.get("money");
-
-                    this.getTileData().putDouble("money", money);
-
-                    Object ob3 = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
-                    JSONObject js3 = (JSONObject) ob3;
-
-                    double WoodPrice = (double) js3.get("WoodPrice");
-                    double WoodMax = (double) js3.get("WoodMax");
-
-                    this.getTileData().putDouble("WoodPrice", WoodPrice);
-                    this.getTileData().putDouble("WoodMax", WoodMax);
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }}
-            else
-                i = i+1;
-
-
-            if (itemHandler.getStackInSlot(0).getItem() == ModBlocks.WOOD_PALLET.get().asItem() && this.buttonClick && storage.getEnergyStored() >= 100)
-            {
-                time = time+1;
-                this.getTileData().putInt("WoodTime", time);
-
-                if(this.buttonClick && world.getBlockState(new BlockPos((int) x, (int) y + 1, (int) z)).getBlock() == ModBlocks.ANTENNA.get()) {
-
-                if (time >= finishTime*20)
-                {
-
-                    storage.extractEnergy(100, false);
-                    time = 0;
-
-                    this.getTileData().putBoolean("buttonClick", false);
-                    this.buttonClick = false;
-
-                    Object ob = null;
+                if (i >= 8) {
+                    x = pos.getX();
+                    y = pos.getY();
+                    z = pos.getZ();
+                    world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 1);
                     try {
-                        ob = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
-                        JSONObject js = (JSONObject) ob;
+                        Object ob2 = new JSONParser().parse(new FileReader("communication-alpha/playerData/" + owner + ".json"));
+                        JSONObject js2 = (JSONObject) ob2;
 
-                        double WoodPrice = (double) js.get("WoodPrice");
+                        double money = (double) js2.get("money");
 
-                        System.out.println("give the money !!!!!");
+                        this.getTileData().putDouble("money", money);
 
-                        money.giveMoney(owner, WoodPrice);
+                        Object ob3 = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
+                        JSONObject js3 = (JSONObject) ob3;
 
-                        itemHandler.extractItem(0, 1, false);
+                        double WoodPrice = (double) js3.get("WoodPrice");
+                        double WoodMax = (double) js3.get("WoodMax");
 
-                        sell.sell("Wood");
+                        this.getTileData().putDouble("WoodPrice", WoodPrice);
+                        this.getTileData().putDouble("WoodMax", WoodMax);
 
 
-                    } catch (IOException | ParseException e) {
-                        throw new RuntimeException(e);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+                } else
+                    i = i + 1;
+
+
+                if (itemHandler.getStackInSlot(0).getItem() == ModBlocks.WOOD_PALLET.get().asItem() && this.buttonClick && storage.getEnergyStored() >= 100) {
+                    time = time + 1;
+                    this.getTileData().putInt("WoodTime", time / 2);
+
+                    if (this.buttonClick && world.getBlockState(new BlockPos((int) x, (int) y + 1, (int) z)).getBlock() == ModBlocks.ANTENNA.get()) {
+
+                        if (time >= finishTime * 20) {
+
+                            storage.extractEnergy(100, false);
+                            time = 0;
+
+                            this.getTileData().putBoolean("buttonClick", false);
+                            this.buttonClick = false;
+
+                            Object ob = null;
+                            try {
+                                ob = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
+                                JSONObject js = (JSONObject) ob;
+
+                                double WoodPrice = (double) js.get("WoodPrice");
+
+                                System.out.println("give the money !!!!!");
+
+                                money.giveMoney(owner, WoodPrice);
+
+                                itemHandler.extractItem(0, 1, false);
+
+                                sell.sell("Wood");
+
+
+                            } catch (IOException | ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    } else {
+                        time = 0;
+                    }
+
                 }
-                }else {time = 0;}
+                else {time=0;}
 
             }
         }

@@ -39,6 +39,9 @@ public class ModItems {
             () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
 
     public static final RegistryObject<Item> WATER_CAPSULE = ITEMS.register("water_capsule",
+            () -> new Item(new Item.Properties().group(AMCBase.AMCBase).maxStackSize(1)));
+
+    public static final RegistryObject<Item> ENERGY_CRYSTAL = ITEMS.register("energy_cristal",
             () -> new Item(new Item.Properties().group(AMCBase.AMCBase)));
 
 

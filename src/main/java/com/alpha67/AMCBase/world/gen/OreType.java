@@ -7,10 +7,10 @@ import com.alpha67.AMCBase.init.ModBlocks;
 public enum OreType {
 
    // AMETHYST(Lazy.of(ModBlocks.AMETHYST_ORE), 200, 25, 100, 200),
-    COPPER(Lazy.of(ModBlocks.COPPER_ORE), 5, 0, 100, 20),
-    LITHIUM(Lazy.of(ModBlocks.LITHIUM_ORE), 3, 0, 35, 20),
-    RUBY(Lazy.of(ModBlocks.RUBY_ORE), 1, 0, 15, 15),
-    RUBY_NETHER(Lazy.of(ModBlocks.RUBY_ORE_NETHER), 3, 0, 200, 12),
+    COPPER(Lazy.of(ModBlocks.COPPER_ORE), 7, 0, 100, 18),
+    LITHIUM(Lazy.of(ModBlocks.LITHIUM_ORE), 3, 0, 25, 20),
+    RUBY(Lazy.of(ModBlocks.RUBY_ORE), 3, 0, 40, 40),
+    RUBY_NETHER(Lazy.of(ModBlocks.RUBY_ORE_NETHER), 3, 0, 200, 15),
     FIRESTONE(Lazy.of(ModBlocks.FIRESTONE_BLOCK), 3, 10, 80, 5);
 
     private final Lazy<Block> block;

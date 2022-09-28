@@ -4,6 +4,7 @@ import com.alpha67.AMCBase.AMCBase;
 import com.alpha67.AMCBase.container.ATMBlockContainer;
 import com.alpha67.AMCBase.network.ButtonATM;
 import com.alpha67.AMCBase.network.ButtonMarket;
+import com.alpha67.AMCBase.network.GuiOpen;
 import com.alpha67.AMCBase.screen.util.EnergyDisplay;
 import com.alpha67.AMCBase.tileentity.ATMBlockTile;
 import com.alpha67.AMCBase.util.AssetUtil;
@@ -47,6 +48,7 @@ public class ATMBlockScreen extends ContainerScreen<ATMBlockContainer> {
     public void init() {
         super.init();
         this.energy = new EnergyDisplay(this.guiLeft + 10, this.guiTop - 10, this.generator.storage);
+        AMCBase.PACKET_HANDLER.sendToServer(new GuiOpen(this.pos, true));
         //this.avanc = this.generator.avanc;
 
     }
@@ -113,6 +115,12 @@ public class ATMBlockScreen extends ContainerScreen<ATMBlockContainer> {
     int j;
 
     int energyValue;
+
+
+    @Override
+    public void onClose() {
+        AMCBase.PACKET_HANDLER.sendToServer(new GuiOpen(this.pos, false));
+    }
 
     @Override
     public void tick()

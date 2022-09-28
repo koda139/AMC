@@ -110,6 +110,7 @@ public class GoldMarketTile extends TileEntityBase implements ITickableTileEntit
     public void writeSyncableNBT(CompoundNBT compound, NBTType type) {
         if (type != NBTType.SAVE_BLOCK) {}
         this.storage.writeToNBT(compound);
+        compound.put("inv", itemHandler.serializeNBT());
         super.writeSyncableNBT(compound, type);
     }
 
@@ -118,6 +119,7 @@ public class GoldMarketTile extends TileEntityBase implements ITickableTileEntit
         if (type != NBTType.SAVE_BLOCK) {}
         this.storage.readFromNBT(compound);
         this.buttonClick = this.getTileData().getBoolean("buttonClick");
+        itemHandler.deserializeNBT(compound.getCompound("inv"));
         super.readSyncableNBT(compound, type);
     }
 
@@ -155,76 +157,81 @@ public class GoldMarketTile extends TileEntityBase implements ITickableTileEntit
             this.getTileData().putInt("avanc", avanc);
             String owner = this.getTileData().getString("owner");
 
-            if(i >=15){
-                x = pos.getX();
-                y = pos.getY();
-                z = pos.getZ();
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 1);
-
-                try {
-                    Object ob2 = new JSONParser().parse(new FileReader("communication-alpha/playerData/"+owner+".json"));
-                    JSONObject js2 = (JSONObject) ob2;
-
-                    double money = (double) js2.get("money");
-
-                    this.getTileData().putDouble("money", money);
-
-                    Object ob3 = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
-                    JSONObject js3 = (JSONObject) ob3;
-
-                    double GoldPrice = (double) js3.get("GoldPrice");
-                    double GoldMax = (double) js3.get("GoldMax");
-
-                    this.getTileData().putDouble("GoldPrice", GoldPrice);
-                    this.getTileData().putDouble("GoldMax", GoldMax);
+            if (owner.contains("1") || owner.contains("2") ||owner.contains("3") ||owner.contains("4") ||owner.contains("5") ||owner.contains("6") || owner.contains("7") || owner.contains("8") || owner.contains("9")) {
 
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }}
-            else
-                i = i+1;
+                if (i >= 8) {
+                    x = pos.getX();
+                    y = pos.getY();
+                    z = pos.getZ();
+                    world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 1);
 
-           // System.out.println("owner" + owner);
-
-            if (itemHandler.getStackInSlot(0).getItem() == ModBlocks.GOLD_PALLET.get().asItem() && this.buttonClick && storage.getEnergyStored() >= 100)
-            {
-                time = time+1;
-                this.getTileData().putInt("GoldTime", time);
-
-                if(this.buttonClick && world.getBlockState(new BlockPos((int) x, (int) y + 1, (int) z)).getBlock() == ModBlocks.ANTENNA.get()) {
-
-                if (time >= finishTime*20)
-                {
-
-                    storage.extractEnergy(100, false);
-                    time = 0;
-
-                    this.getTileData().putBoolean("buttonClick", false);
-                    this.buttonClick = false;
-
-                    Object ob = null;
                     try {
-                        ob = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
-                        JSONObject js = (JSONObject) ob;
+                        Object ob2 = new JSONParser().parse(new FileReader("communication-alpha/playerData/" + owner + ".json"));
+                        JSONObject js2 = (JSONObject) ob2;
 
-                        double GoldPrice = (double) js.get("GoldPrice");
+                        double money = (double) js2.get("money");
 
-                        System.out.println("give the money !!!!!");
+                        this.getTileData().putDouble("money", money);
 
-                        money.giveMoney(owner, GoldPrice);
+                        Object ob3 = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
+                        JSONObject js3 = (JSONObject) ob3;
 
-                        itemHandler.extractItem(0, 1, false);
+                        double GoldPrice = (double) js3.get("GoldPrice");
+                        double GoldMax = (double) js3.get("GoldMax");
 
-                        sell.sell("gold");
+                        this.getTileData().putDouble("GoldPrice", GoldPrice);
+                        this.getTileData().putDouble("GoldMax", GoldMax);
 
 
-                    } catch (IOException | ParseException e) {
-                        throw new RuntimeException(e);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                }
-                }else {time = 0;}
+                } else
+                    i = i + 1;
 
+                // System.out.println("owner" + owner);
+
+                if (itemHandler.getStackInSlot(0).getItem() == ModBlocks.GOLD_PALLET.get().asItem() && this.buttonClick && storage.getEnergyStored() >= 100) {
+                    time = time + 1;
+                    this.getTileData().putInt("GoldTime", time / 2);
+
+                    if (this.buttonClick && world.getBlockState(new BlockPos((int) x, (int) y + 1, (int) z)).getBlock() == ModBlocks.ANTENNA.get()) {
+
+                        if (time >= finishTime * 20) {
+
+                            storage.extractEnergy(100, false);
+                            time = 0;
+
+                            this.getTileData().putBoolean("buttonClick", false);
+                            this.buttonClick = false;
+
+                            Object ob = null;
+                            try {
+                                ob = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
+                                JSONObject js = (JSONObject) ob;
+
+                                double GoldPrice = (double) js.get("GoldPrice");
+
+                                System.out.println("give the money !!!!!");
+
+                                money.giveMoney(owner, GoldPrice);
+
+                                itemHandler.extractItem(0, 1, false);
+
+                                sell.sell("gold");
+
+
+                            } catch (IOException | ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    } else {
+                        time = 0;
+                    }
+
+                }
+                else {time=0;}
             }
         }
     }

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "amcbase:ruby_ingot"
+    }
+  },
+  "result": {
+    "item": "amcbase:ruby_block"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "eae",
+    "ece",
+    "eee"
+  ],
+  "key": {
+    "a": {
+      "item": "amcbase:lithium_ingot"
+    },
+    "c": {
+      "item": "minecraft:water_bucket"
+    },
+    "e": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "amcbase:water_capsule"
+  }
+}

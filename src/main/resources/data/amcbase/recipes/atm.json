@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "gfg",
+    "acd",
+    "eee"
+  ],
+  "key": {
+    "d": {
+      "item": "amcbase:iron_cable"
+    },
+    "a": {
+      "item": "amcbase:copper_cable"
+    },
+    "c": {
+      "item": "amcbase:energy_cristal"
+    },
+    "f": {
+      "item": "amcbase:electronic_card"
+    },
+    "e": {
+      "item": "minecraft:iron_block"
+    },
+    "g": {
+      "item": "amcbase:batterie"
+    }
+  },
+  "result": {
+    "item": "amcbase:atm"
+  }
+}

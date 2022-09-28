@@ -13,6 +13,7 @@ import com.alpha67.AMCBase.init.ModItems;
 import com.alpha67.AMCBase.network.ButtonATM;
 import com.alpha67.AMCBase.network.ButtonPacket;
 import com.alpha67.AMCBase.network.ButtonMarket;
+import com.alpha67.AMCBase.network.GuiOpen;
 import com.alpha67.AMCBase.paintings.ModPaintings;
 import com.alpha67.AMCBase.init.ModTileEntities;
 import com.alpha67.AMCBase.screen.ATMBlockScreen;
@@ -146,6 +147,7 @@ public class AMCBase {
         PACKET_HANDLER.registerMessage(0, ButtonPacket.class, ButtonPacket::encode, ButtonPacket::decode, ButtonPacket::handle);
         PACKET_HANDLER.registerMessage(1, ButtonMarket.class, ButtonMarket::toBytes, ButtonMarket::new, ButtonMarket::handle);
         PACKET_HANDLER.registerMessage(2, ButtonATM.class, ButtonATM::toBytes, ButtonATM::new, ButtonATM::handle);
+        PACKET_HANDLER.registerMessage(3, GuiOpen.class, GuiOpen::toBytes, GuiOpen::new, GuiOpen::handle);
 
 
         event.enqueueWork(() -> {

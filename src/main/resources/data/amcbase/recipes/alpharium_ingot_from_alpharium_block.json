@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "amcbase:alpharium_block"
+    }
+  ],
+  "result": {
+    "item": "amcbase:alpharium_ingot",
+    "count": 9
+  }
+}

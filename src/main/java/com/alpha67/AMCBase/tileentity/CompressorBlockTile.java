@@ -103,6 +103,7 @@ public class CompressorBlockTile extends TileEntityBase implements ITickableTile
     public void writeSyncableNBT(CompoundNBT compound, NBTType type) {
         if (type != NBTType.SAVE_BLOCK) {}
         this.storage.writeToNBT(compound);
+        compound.put("inv", itemHandler.serializeNBT());
         super.writeSyncableNBT(compound, type);
     }
 

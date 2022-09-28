@@ -124,7 +124,7 @@ public class mainMenuScreen extends MainMenuScreen {
             this.minecraft.shutdown();
         }));
 
-        this.addButton(new Button(buttonWidth - 100, buttonHeight + 24 * 1, 200, 20, new TranslationTextComponent("menu.multiplayer"), (p_213086_1_) -> {this.minecraft.displayGuiScreen(new MultiplayerScreen(this));}));
+       // this.addButton(new Button(buttonWidth - 100, buttonHeight + 24 * 1, 200, 20, new TranslationTextComponent("menu.multiplayer"), (p_213086_1_) -> {this.minecraft.displayGuiScreen(new MultiplayerScreen(this));}));
 
         //discord
         this.addButton(new ImageButton(420, 5, 40, 40, 0, 0, 40, BUTTON_TEXTURE, 120, 80, (p_213088_1_) -> {

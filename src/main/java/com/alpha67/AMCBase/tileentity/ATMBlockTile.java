@@ -45,6 +45,8 @@ public class ATMBlockTile extends TileEntityBase implements ITickableTileEntity,
     int i = 0;
     int a = 0;
 
+    Boolean guiOpen = false;
+
     public int avanc;
 
     public ATMBlockTile(TileEntityType<?> tileEntityTypeIn) {
@@ -103,6 +105,7 @@ public class ATMBlockTile extends TileEntityBase implements ITickableTileEntity,
     public void writeSyncableNBT(CompoundNBT compound, NBTType type) {
         if (type != NBTType.SAVE_BLOCK) {}
         this.storage.writeToNBT(compound);
+       compound.put("inv", itemHandler.serializeNBT());
         super.writeSyncableNBT(compound, type);
     }
 
@@ -110,6 +113,7 @@ public class ATMBlockTile extends TileEntityBase implements ITickableTileEntity,
     public void readSyncableNBT(CompoundNBT compound, NBTType type) {
         if (type != NBTType.SAVE_BLOCK) {}
         this.storage.readFromNBT(compound);
+        itemHandler.deserializeNBT(compound.getCompound("inv"));
         super.readSyncableNBT(compound, type);
     }
 
@@ -228,39 +232,47 @@ public class ATMBlockTile extends TileEntityBase implements ITickableTileEntity,
 
     }
 
+    public void isGuiOpen(Boolean guiopen){
+        guiOpen = guiopen;
+        System.out.println(guiopen + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    }
+
 
     @Override
     public void updateEntity() {
         super.updateEntity();
         if (!world.isRemote) {
 
-            this.getEnergyStorage().extractEnergy(7, false);
+            if(guiOpen) {
 
-            if (a >= 10)
-            {
-                System.out.println(this.getEnergyStorage().getEnergyStored());
-                a = 0;
-                String UUID = this.getTileData().getString("uuid");
+                this.getEnergyStorage().extractEnergy(7, false);
 
-                try {
-                    Object ob2 = new JSONParser().parse(new FileReader("communication-alpha/playerData/"+UUID+".json"));
-                    JSONObject js2 = (JSONObject) ob2;
+                if (a >= 10) {
+                    System.out.println(this.getEnergyStorage().getEnergyStored());
+                    a = 0;
+                    String UUID = this.getTileData().getString("uuid");
 
-                    double money = (double) js2.get("money");
+                    try {
+                        Object ob2 = new JSONParser().parse(new FileReader("communication-alpha/playerData/" + UUID + ".json"));
+                        JSONObject js2 = (JSONObject) ob2;
 
-                    this.getTileData().putDouble("money", money);
-                    System.out.println(money);
+                        double money = (double) js2.get("money");
 
-                    Object ob3 = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
-                    JSONObject js3 = (JSONObject) ob3;
+                        this.getTileData().putDouble("money", money);
+                        System.out.println(money);
+
+                        Object ob3 = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
+                        JSONObject js3 = (JSONObject) ob3;
 
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
 
-            a = a +1;
+                a = a + 1;
+
+            }
 
         }
     }
@@ -297,7 +309,7 @@ public class ATMBlockTile extends TileEntityBase implements ITickableTileEntity,
 
     @Override
     public boolean canShareTo(TileEntity tile) {
-        return true;
+        return false;
     }
 
     @Override

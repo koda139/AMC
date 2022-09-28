@@ -204,16 +204,9 @@ public abstract class TileEntityBase extends TileEntity implements ITickableTile
                         }
 
                         for (Direction side : sides) {
-                            TileEntity tile = this.tilesAround[side.ordinal()];
-                            System.out.println(tile);
-                            if (this.world.getChunk(pos) != null) {
-                                this.tilesAround[side.ordinal()] = this.world.getTileEntity(pos);
-                            }
-
-
+                            BlockPos pos = this.pos.offset(side);
+                            TileEntity tile = world.getTileEntity(pos);
                             if (tile != null && provider.canShareTo(tile)) {
-                                System.out.println("can");
-
                                 WorldUtil.doEnergyInteraction(this, tile, side, amount);
                             }
                         }
@@ -234,10 +227,10 @@ public abstract class TileEntityBase extends TileEntity implements ITickableTile
                         }
 
                         for (Direction side : sides) {
-                            TileEntity tile = this.tilesAround[side.ordinal()];
-                            if (tile != null) {
-                                WorldUtil.doFluidInteraction(this, tile, side, amount);
-                            }
+                            BlockPos pos = this.pos.offset(side);
+                            TileEntity tile = world.getTileEntity(pos);
+                            WorldUtil.doFluidInteraction(this, tile, side, amount);
+
                         }
                     }
                 }

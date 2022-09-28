@@ -57,6 +57,12 @@ public class CoalGeneratorContainer extends Container {
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
+    public String time()
+    {
+        return this.te.getTime();
+    }
+
 
     @Override
     public boolean canInteractWith(PlayerEntity playerIn) {

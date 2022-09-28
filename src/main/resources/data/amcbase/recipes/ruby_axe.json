@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " ##",
+    " a#",
+    " a "
+  ],
+  "key": {
+    "#": {
+      "item": "amcbase:ruby_ingot"
+    },
+    "a": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "amcbase:ruby_axe"
+  }
+}

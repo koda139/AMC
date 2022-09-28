@@ -60,7 +60,9 @@ public class CoalGeneratorTile extends TileEntityBase implements ITickableTileEn
     public int avanc;
 
     int time;
+    int pour;
     int maxTime;
+    Boolean guiOpen = false;
 
     public CoalGeneratorTile(TileEntityType<?> tileEntityTypeIn) {
         super(tileEntityTypeIn);
@@ -114,12 +116,14 @@ public class CoalGeneratorTile extends TileEntityBase implements ITickableTileEn
     public void writeSyncableNBT(CompoundNBT compound, NBTType type) {
         if (type != NBTType.SAVE_BLOCK) {}
         this.storage.writeToNBT(compound);
+        compound.put("inv", itemHandler.serializeNBT());
         super.writeSyncableNBT(compound, type);
     }
 
     @Override
     public void readSyncableNBT(CompoundNBT compound, NBTType type) {
         if (type != NBTType.SAVE_BLOCK) {}
+        itemHandler.deserializeNBT(compound.getCompound("inv"));
         this.storage.readFromNBT(compound);
         super.readSyncableNBT(compound, type);
     }
@@ -137,20 +141,23 @@ public class CoalGeneratorTile extends TileEntityBase implements ITickableTileEn
         return super.getCapability(cap, side);
     }
 
+    public void isGuiOpen(Boolean guiopen){
+        guiOpen = guiopen;
+        System.out.println(guiopen + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    }
+
+
 
     @Override
     public void updateEntity() {
         super.updateEntity();
         if (!world.isRemote) {
             world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 1);
-            if (storage.getEnergyStored() <= 50000 && itemHandler.getStackInSlot(1).getItem() == ModItems.WATER_CAPSULE.get()) {
-
-                System.out.println(ForgeHooks.getBurnTime(itemHandler.getStackInSlot(0)));
-
+            if (storage.getEnergyStored() < 50000 && itemHandler.getStackInSlot(1).getItem() == ModItems.WATER_CAPSULE.get()) {
                 if (ForgeHooks.getBurnTime(itemHandler.getStackInSlot(0)) >= 1 && time < 50) {
                     itemHandler.extractItem(0, 1, false);
-                    time = ForgeHooks.getBurnTime(itemHandler.getStackInSlot(0));
-                    maxTime = ForgeHooks.getBurnTime(itemHandler.getStackInSlot(0));
+                    time = (int) (ForgeHooks.getBurnTime(itemHandler.getStackInSlot(0))*5);
+                    maxTime = (int) (ForgeHooks.getBurnTime(itemHandler.getStackInSlot(0))*5);
                 }
 
                 if (time >= 100)
@@ -158,19 +165,25 @@ public class CoalGeneratorTile extends TileEntityBase implements ITickableTileEn
                     time = (int) (time-(20+time*0.052));
                     this.storage.receiveEnergyInternal(30, false);
 
-                    int pour = 100*time/maxTime;
+                    pour = 100*time/maxTime;
 
                 }
                 else {
                     time = 0;
                 }
+            }
 
-
-                }
+            this.getTileData().putString("time", String.valueOf(pour));
 
         }
     }
 
+
+
+    public String getTime()
+    {
+       return this.getTileData().getString("time");
+    }
 
 
     @Override

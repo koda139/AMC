@@ -110,6 +110,7 @@ public class StoneMarketTile extends TileEntityBase implements ITickableTileEnti
     public void writeSyncableNBT(CompoundNBT compound, NBTType type) {
         if (type != NBTType.SAVE_BLOCK) {}
         this.storage.writeToNBT(compound);
+        compound.put("inv", itemHandler.serializeNBT());
         super.writeSyncableNBT(compound, type);
     }
 
@@ -118,6 +119,7 @@ public class StoneMarketTile extends TileEntityBase implements ITickableTileEnti
         if (type != NBTType.SAVE_BLOCK) {}
         this.storage.readFromNBT(compound);
         this.buttonClick = this.getTileData().getBoolean("buttonClick");
+        itemHandler.deserializeNBT(compound.getCompound("inv"));
         super.readSyncableNBT(compound, type);
     }
 
@@ -151,79 +153,83 @@ public class StoneMarketTile extends TileEntityBase implements ITickableTileEnti
         super.updateEntity();
         if (!world.isRemote) {
 
-            avanc = (time/(finishTime*20))*100;
+            avanc = (time / (finishTime * 20)) * 100;
             this.getTileData().putInt("avanc", avanc);
             String owner = this.getTileData().getString("owner");
 
-            if(i >=15){
-                x = pos.getX();
-                y = pos.getY();
-                z = pos.getZ();
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 1);
+            if (owner.contains("1") || owner.contains("2") ||owner.contains("3") ||owner.contains("4") ||owner.contains("5") ||owner.contains("6") || owner.contains("7") || owner.contains("8") || owner.contains("9")) {
 
-                try {
-                    Object ob2 = new JSONParser().parse(new FileReader("communication-alpha/playerData/"+owner+".json"));
-                    JSONObject js2 = (JSONObject) ob2;
+                if (i >= 8) {
+                    x = pos.getX();
+                    y = pos.getY();
+                    z = pos.getZ();
+                    world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 1);
 
-                    double money = (double) js2.get("money");
+                    try {
+                        Object ob2 = new JSONParser().parse(new FileReader("communication-alpha/playerData/" + owner + ".json"));
+                        JSONObject js2 = (JSONObject) ob2;
 
-                    this.getTileData().putDouble("money", money);
+                        double money = (double) js2.get("money");
 
-                    Object ob3 = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
-                    JSONObject js3 = (JSONObject) ob3;
+                        this.getTileData().putDouble("money", money);
 
-                    double StonePrice = (double) js3.get("StonePrice");
-                    double StoneMax = (double) js3.get("StoneMax");
+                        Object ob3 = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
+                        JSONObject js3 = (JSONObject) ob3;
 
-                    this.getTileData().putDouble("StonePrice", StonePrice);
-                    this.getTileData().putDouble("StoneMax", StoneMax);
+                        double StonePrice = (double) js3.get("StonePrice");
+                        double StoneMax = (double) js3.get("StoneMax");
 
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            else
-                i = i+1;
+                        this.getTileData().putDouble("StonePrice", StonePrice);
+                        this.getTileData().putDouble("StoneMax", StoneMax);
 
 
-            if (itemHandler.getStackInSlot(0).getItem() == ModBlocks.STONE_PALLET.get().asItem() && this.buttonClick && storage.getEnergyStored() >= 100)
-            {
-                time = time+1;
-                this.getTileData().putInt("StoneTime", time);
-
-                if(this.buttonClick && world.getBlockState(new BlockPos((int) x, (int) y + 1, (int) z)).getBlock() == ModBlocks.ANTENNA.get()) {
-
-                    if (time >= finishTime * 20) {
-
-                        storage.extractEnergy(100, false);
-                        time = 0;
-
-                        sell.sell("stone");
-
-                        this.getTileData().putBoolean("buttonClick", false);
-                        this.buttonClick = false;
-
-                        Object ob = null;
-                        try {
-                            ob = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
-                            JSONObject js = (JSONObject) ob;
-
-                            double StonePrice = (double) js.get("StonePrice");
-
-                            System.out.println("give the money !!!!!");
-
-                            money.giveMoney(owner, StonePrice);
-
-                            itemHandler.extractItem(0, 1, false);
-
-
-                        } catch (IOException | ParseException e) {
-                            throw new RuntimeException(e);
-                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                }else {time = 0;}
+                } else
+                    i = i + 1;
 
+
+                if (itemHandler.getStackInSlot(0).getItem() == ModBlocks.STONE_PALLET.get().asItem() && this.buttonClick && storage.getEnergyStored() >= 100) {
+                    time = time + 1;
+                    this.getTileData().putInt("StoneTime", time/2);
+
+                    if (this.buttonClick && world.getBlockState(new BlockPos((int) x, (int) y + 1, (int) z)).getBlock() == ModBlocks.ANTENNA.get()) {
+
+                        if (time >= finishTime * 20) {
+
+                            storage.extractEnergy(100, false);
+                            time = 0;
+
+                            sell.sell("stone");
+
+                            this.getTileData().putBoolean("buttonClick", false);
+                            this.buttonClick = false;
+
+                            Object ob = null;
+                            try {
+                                ob = new JSONParser().parse(new FileReader("communication-alpha/bridge-server-.json"));
+                                JSONObject js = (JSONObject) ob;
+
+                                double StonePrice = (double) js.get("StonePrice");
+
+                                System.out.println("give the money !!!!!");
+
+                                money.giveMoney(owner, StonePrice);
+
+                                itemHandler.extractItem(0, 1, false);
+
+
+                            } catch (IOException | ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    } else {
+                        time = 0;
+                    }
+
+                }
+                else {time=0;}
             }
         }
     }

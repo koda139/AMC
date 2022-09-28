@@ -33,6 +33,8 @@ public class CoalGeneratorScreen extends ContainerScreen<CoalGeneratorContainer>
     private final CoalGeneratorTile generator;
     private EnergyDisplay energy;
 
+    String time;
+
 
     private final ResourceLocation GUI = new ResourceLocation(AMCBase.MOD_ID,
             "textures/gui/coal_generator_gui.png");
@@ -59,6 +61,13 @@ public class CoalGeneratorScreen extends ContainerScreen<CoalGeneratorContainer>
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        time = this.container.time();
+
+    }
+
+    @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 
       this.renderBackground(matrixStack);
@@ -68,6 +77,7 @@ public class CoalGeneratorScreen extends ContainerScreen<CoalGeneratorContainer>
         ITextComponent name = ITextComponent.getTextComponentOrEmpty("Sell");
         String test = String.valueOf(System.currentTimeMillis());
 
+        this.font.drawString(matrixStack, "fuel : " + time + "%", this.guiLeft + 124, this.guiTop + 40, -13421773);
 
         this.energy.render(matrixStack, mouseX, mouseY);
 
