@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "amcbase:item/amethyst_shovel"
+  }
+}

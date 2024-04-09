@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#a#",
+    "aca",
+    "#a#"
+  ],
+  "key": {
+    "#": {
+      "item": "amcbase:batterie"
+    },
+    "a": {
+      "item": "minecraft:piston"
+    },
+    "c": {
+      "item": "amcbase:electronic_card"
+    }
+  },
+  "result": {
+    "item": "amcbase:compressor_block"
+  }
+}

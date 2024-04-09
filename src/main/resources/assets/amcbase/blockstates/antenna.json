@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "amcbase:block/antenna",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "amcbase:block/antenna"
+    },
+    "facing=south": {
+      "model": "amcbase:block/antenna",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "amcbase:block/antenna",
+      "y": 270
+    }
+  }
+}

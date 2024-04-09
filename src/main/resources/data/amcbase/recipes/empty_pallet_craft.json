@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "# #",
+    "# #",
+    "#a#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "a": {
+      "item": "minecraft:cobblestone"
+    }
+  },
+  "result": {
+    "item": "amcbase:empty_pallet"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "amcbase:ruby_ingot"
+    }
+  ],
+  "result": {
+    "item": "amcbase:ruby_nugets",
+    "count": 9
+  }
+}

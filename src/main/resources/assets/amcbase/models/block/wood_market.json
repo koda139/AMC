@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "amcbase:block/maket_side",
+    "up": "amcbase:block/maket_side",
+    "north": "amcbase:block/wood_market_face",
+    "east": "amcbase:block/maket_side",
+    "south": "amcbase:block/maket_side",
+    "west": "amcbase:block/maket_side",
+    "particle": "amcbase:block/maket_side"
+  }
+}

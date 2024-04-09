@@ -1,0 +1,17 @@
+{
+  "small_explosion": {
+    "category": "blocks",
+    "subtitle": "amcbase.small_explosion",
+    "sounds": [
+      "amcbase:small_explosion"
+    ]
+  },
+  "bar_brawl": {
+    "sounds": [
+      {
+        "name": "amcbase:bar_brawl",
+        "stream": true
+      }
+    ]
+  }
+}

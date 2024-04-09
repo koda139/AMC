@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#e#",
+    "ece",
+    "#e#"
+  ],
+  "key": {
+    "c": {
+      "item": "amcbase:lithium_ingot"
+    },
+    "#": {
+      "item": "amcbase:iron_cable"
+    },
+    "e": {
+      "item": "amcbase:copper_cable"
+    }
+  },
+  "result": {
+    "item": "amcbase:batterie"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "amcbase:block/compressor_block",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "amcbase:block/compressor_block"
+    },
+    "facing=south": {
+      "model": "amcbase:block/compressor_block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "amcbase:block/compressor_block",
+      "y": 270
+    }
+  }
+}

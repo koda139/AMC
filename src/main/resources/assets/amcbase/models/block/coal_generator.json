@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "amcbase:block/coal_generator_side",
+    "up": "amcbase:block/coal_generator_side",
+    "north": "amcbase:block/coal_generator_face",
+    "east": "amcbase:block/coal_generator_side",
+    "south": "amcbase:block/coal_generator_side",
+    "west": "amcbase:block/coal_generator_side",
+    "particle": "amcbase:block/coal_generator_side"
+  }
+}

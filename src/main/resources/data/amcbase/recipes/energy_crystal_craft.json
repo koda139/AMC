@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#a#",
+    "#c#",
+    "###"
+  ],
+  "key": {
+    "a": {
+      "item": "amcbase:lithium_ingot"
+    },
+    "c": {
+      "item": "minecraft:redstone"
+    },
+    "#": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "amcbase:energy_cristal"
+  }
+}

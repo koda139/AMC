@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "amcbase:block/lightning_channeler" }
+    }
+}

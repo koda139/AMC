@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "amcbase:block/coal_generator",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "amcbase:block/coal_generator"
+    },
+    "facing=south": {
+      "model": "amcbase:block/coal_generator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "amcbase:block/coal_generator",
+      "y": 270
+    }
+  }
+}

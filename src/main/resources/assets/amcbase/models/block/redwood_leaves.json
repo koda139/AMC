@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/leaves",
+  "textures": {
+    "all": "amcbase:block/redwood_leaves"
+  }
+}

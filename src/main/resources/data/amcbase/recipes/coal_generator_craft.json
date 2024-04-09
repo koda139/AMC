@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ded",
+    "ece",
+    "#e#"
+  ],
+  "key": {
+    "d": {
+      "item": "minecraft:iron_block"
+    },
+    "c": {
+      "item": "minecraft:furnace"
+    },
+    "#": {
+      "item": "minecraft:cobblestone"
+    },
+    "e": {
+      "item": "minecraft:bricks"
+    }
+  },
+  "result": {
+    "item": "amcbase:coal_generator"
+  }
+}

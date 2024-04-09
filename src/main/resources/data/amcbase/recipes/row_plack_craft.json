@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#a#",
+    "a#a",
+    "#a#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:gold_ingot"
+    },
+    "a": {
+      "item": "amcbase:lithium_ingot"
+    }
+  },
+  "result": {
+    "item": "amcbase:row_plack"
+  }
+}
